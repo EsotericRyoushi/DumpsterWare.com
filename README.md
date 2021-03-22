@@ -4,6 +4,8 @@ title: About
 permalink: /about/
 ---
 
+![alt text](/public/img/logo2.jpg)
+
 ## Theme Monos
 > Simple and lightweight theme for Jekyll
 
@@ -22,7 +24,4 @@ highlighter-theme: monokai //you can change your syntax color scheme.
 date_format: "%Y-%M-%D" //and date format.
 ```
 
-### Screenshots
-#### Logo
-![alt text](/public/img/logo2.jpg)
 

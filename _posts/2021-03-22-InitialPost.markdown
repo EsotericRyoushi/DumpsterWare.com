@@ -8,4 +8,3 @@ category: Posts
 Just getting the website setup today!
 If anyone sees this, hello from the past!
 
-```

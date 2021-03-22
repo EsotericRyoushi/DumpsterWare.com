@@ -1,13 +1,11 @@
 ---
 layout: post
-title: post-sample
+title: Initial-Post
 date: 2020-01-02 19:20:23 +0900
-category: sample
+category: Posts
 ---
-# post-sample
-> Hello!
+# Initial-Post
+Just getting the website setup today!
+If anyone sees this, hello from the past!
 
-This is code
-```ruby
-print 'hello world'
 ```

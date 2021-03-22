@@ -1,13 +1,33 @@
-# Welcome to the DumpsterWare Games Official Website!
+---
+layout: page
+title: About
+permalink: /about/
+---
 
-### About Us!
+## Theme Monos
+> Simple and lightweight theme for Jekyll
 
-We are a small team, learning game dev in our free time to eventually break out and make games for everyone!
+### Features
+- Responsive.
+- Syntax Highlight
+- Most optimized theme for tech blog.
+- Lightweight with minimum stylesheet.
+- Easy to customize.
+- Offers category menu.
 
-### Links!
+### _config.yml
+> Code block will look like this.
+```yml
+highlighter-theme: monokai //you can change your syntax color scheme.
+date_format: "%Y-%M-%D" //and date format.
+```
 
-You can find us at many different places, here are some:
-
-https://www.patreon.com/DumpsterWare
-
-https://dumpsterware.itch.io/
+### Screenshots
+#### Page
+![alt text](/public/img/screenshot-1.png)
+#### Articles
+![alt text](/public/img/screenshot-2.png)
+#### Page - Mobile
+![alt text](/public/img/screenshot-m1.png)
+#### Page - Articles
+![alt text](/public/img/screenshot-m2.png)

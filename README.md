@@ -59,11 +59,13 @@ GitHub Pages ignores `_redirects` and uses the meta refresh pages instead.
 
 ## Hosting
 
-The root of `main` is deploy-ready for static hosting. `.nojekyll` disables
-Jekyll processing so files are served exactly as committed.
+Live at **https://esotericryoushi.github.io/DumpsterWare.com/** on GitHub Pages
+(public repo, deployed from `main` / root). `.nojekyll` disables Jekyll
+processing, and pushes to `main` rebuild automatically.
 
-The `CNAME` file was removed because `dumpsterware.com` did not resolve. Re-add
-it at the repo root once the custom domain is configured.
+For a custom domain, add `dumpsterware.com` in the repository's Pages settings
+and create the DNS records GitHub shows; GitHub provisions HTTPS. The `CNAME`
+file was removed because the domain did not resolve.
 
 ## Quality notes
 

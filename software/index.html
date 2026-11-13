@@ -3,262 +3,53 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DumpsterWare Software — Apps for the field and the road</title>
-  <meta name="description" content="DumpsterWare Software builds practical, offline-first apps: EMT Bender Buddy for electricians and Are We There Yet for family road trips.">
+  <title>DumpsterWare — Software has moved</title>
+  <meta name="robots" content="noindex">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#0a0807">
   <link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
-  <link rel="icon" href="../assets/img/logo-32.png" sizes="32x32" type="image/png">
-  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="DumpsterWare Software — Apps for the field and the road">
-  <meta property="og:description" content="Practical, offline-first apps: EMT Bender Buddy and Are We There Yet.">
-  <meta name="twitter:card" content="summary">
-
-  <script>document.documentElement.classList.add('js');</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/site.css">
-  <link rel="stylesheet" href="../assets/css/pages.css">
+  <meta http-equiv="refresh" content="0; url=../home/">
+  <script>location.replace("../home/");</script>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #f6eee5;
+      text-align: center;
+      background:
+        radial-gradient(900px 520px at 50% -10%, rgba(184, 73, 47, 0.30), transparent 62%),
+        radial-gradient(700px 420px at 50% 110%, rgba(232, 90, 28, 0.14), transparent 60%),
+        #0a0807;
+    }
+    img { width: 78px; height: 78px; border-radius: 18px; box-shadow: 0 26px 60px -24px rgba(217, 72, 27, 0.8); }
+    p { margin: 20px 0 0; color: #b7a89b; font-size: 0.92rem; }
+    a.continue {
+      display: inline-flex;
+      margin-top: 24px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #f4792f, #d9481b);
+      color: #1b0d04;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:focus-visible { outline: 2px solid #e85a1c; outline-offset: 3px; }
+  </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <header class="site-header" id="top">
-    <div class="wrap header-inner">
-      <a class="brand" href="../home/" aria-label="DumpsterWare home">
-        <img class="brand-mark" src="../assets/img/logo.svg" alt="" width="38" height="38" decoding="async">
-        <span>Dumpster<em>Ware</em></span>
-      </a>
-
-      <nav class="sites" aria-label="DumpsterWare divisions">
-        <a href="../home/">Company</a>
-        <a href="../games/">Games</a>
-        <a href="../software/" aria-current="page">Software</a>
-      </nav>
-
-      <a class="nav-icon" href="https://github.com/EsotericRyoushi" target="_blank" rel="me noopener" aria-label="DumpsterWare on GitHub">
-        <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.53-.49-.34-.86-.83-1.09-.83-1.09-.68-.46.05-.45.05-.45.75.05 1.14.77 1.14.77.67 1.14 1.76.81 2.19.62.07-.48.26-.81.47-1-1.61-.18-3.3-.8-3.3-3.58 0-.79.28-1.44.74-1.94-.07-.18-.32-.92.07-1.91 0 0 .6-.19 1.97.74A6.9 6.9 0 0 1 8 3.87c.61 0 1.22.08 1.79.24 1.37-.93 1.97-.74 1.97-.74.39.99.14 1.73.07 1.91.46.5.74 1.15.74 1.94 0 2.79-1.69 3.4-3.31 3.58.26.22.49.66.49 1.33 0 .96-.01 1.73-.01 1.97 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-      </a>
-    </div>
-  </header>
-
-  <main id="main" tabindex="-1">
-    <section class="page-hero">
-      <div class="wrap hero-grid">
-        <div class="hero-copy reveal">
-          <p class="eyebrow"><span class="pulse" aria-hidden="true"></span>DumpsterWare Software</p>
-          <h1>Tools that<br> <span class="grad">earn their place.</span></h1>
-          <p class="lede">Apps for the jobsite, the road, and everywhere the signal drops. Offline-first, account-free, and sized for real hands.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="#apps">
-              See the apps
-              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <a class="btn btn-ghost" href="mailto:admin@dumpsterware.com?subject=Software%20idea">Tell us what you need</a>
-          </div>
-        </div>
-
-        <div class="hero-panel reveal">
-          <div class="hero-panel-icons">
-            <img src="../assets/img/emt-bender/icon.svg" alt="" width="512" height="512" decoding="async">
-            <img src="../assets/img/app-are-we-there-yet.svg" alt="" width="512" height="512" decoding="async">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="apps">
-      <div class="wrap">
-        <header class="section-head reveal">
-          <p class="eyebrow">Our programs</p>
-          <h2>Two apps, one standard.</h2>
-          <p class="section-sub">One is in the field. One is on the drawing board. Both are built to work without a signal — and without an account.</p>
-        </header>
-
-        <article class="program reveal">
-          <div class="program-media">
-            <div class="phone phone-a">
-              <picture>
-                <source type="image/webp" srcset="../assets/img/emt-bender/offset-diagram.webp">
-                <img src="../assets/img/emt-bender/offset-diagram.png" alt="Offset bend diagram inside EMT Bender Buddy" loading="lazy" decoding="async" width="420" height="900">
-              </picture>
-            </div>
-            <div class="phone phone-b">
-              <picture>
-                <source type="image/webp" srcset="../assets/img/emt-bender/single-result.webp">
-                <img src="../assets/img/emt-bender/single-result.png" alt="Single bend results screen in EMT Bender Buddy" loading="lazy" decoding="async" width="420" height="900">
-              </picture>
-            </div>
-            <div class="phone phone-c">
-              <picture>
-                <source type="image/webp" srcset="../assets/img/emt-bender/run.webp">
-                <img src="../assets/img/emt-bender/run.png" alt="Run mode inputs in EMT Bender Buddy" loading="lazy" decoding="async" width="420" height="900">
-              </picture>
-            </div>
-          </div>
-
-          <div class="program-body">
-            <div class="program-top">
-              <img class="program-icon" src="../assets/img/emt-bender/icon.svg" alt="" width="56" height="56">
-              <div>
-                <div class="meta-row">
-                  <p class="tag">Flagship · Field tool</p>
-                  <span class="status status-live">Available</span>
-                </div>
-                <h3>EMT Bender Buddy</h3>
-              </div>
-            </div>
-
-            <p class="program-tagline">Mark it. Set the arrow. Bend it.</p>
-            <p class="program-desc">A conduit-bending calculator for electricians. It works out where to mark EMT, which bender mark to line up, how far to bend, and how much length the bend eats — for single bends, offsets, back-to-backs, saddles, and full runs.</p>
-
-            <ul class="checks" role="list">
-              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Five modes: Single, Offset, Back-to-back, Saddle, Run</li>
-              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Live 360° bend budget (NEC 358.26)</li>
-              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Fraction-friendly inputs and 1/16&quot; marks</li>
-              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Installable PWA plus a native Godot app</li>
-            </ul>
-
-            <ul class="chips" role="list">
-              <li>Web app</li>
-              <li>Android</li>
-              <li>iOS</li>
-              <li>Works offline</li>
-            </ul>
-
-            <div class="actions">
-              <a class="btn btn-primary" href="../programs/emt-bender/">
-                Launch web app
-                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </a>
-              <a class="btn btn-ghost" href="https://github.com/EsotericRyoushi/emt-bender-buddy-godot" target="_blank" rel="noopener" aria-label="Source code for EMT Bender Buddy">Source code</a>
-            </div>
-
-            <p class="program-note">Runs in any browser. Install it to your home screen, or build the Godot version for Android and iOS.</p>
-          </div>
-        </article>
-
-        <article class="program compact media-right reveal">
-          <div class="program-body">
-            <div class="program-top">
-              <img class="program-icon" src="../assets/img/app-are-we-there-yet.svg" alt="" width="56" height="56">
-              <div>
-                <div class="meta-row">
-                  <p class="tag">Family · Road trip</p>
-                  <span class="status status-dev">In development</span>
-                </div>
-                <h3>Are We There Yet</h3>
-              </div>
-            </div>
-
-            <p class="program-tagline">The road trip app for the back seat.</p>
-            <p class="program-desc">A calmer way to plan a family drive: shared stops, a trip timeline everyone can see, and something for the kids to do besides asking the question. Built to keep working when the signal doesn't.</p>
-
-            <ul class="checks" role="list">
-              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Shared trip plan and packing list</li>
-              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Kid-friendly countdown and milestones</li>
-              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Offline stops, notes, and car games</li>
-            </ul>
-
-            <ul class="chips" role="list">
-              <li>Android</li>
-              <li>iOS</li>
-              <li>Offline-first</li>
-            </ul>
-
-            <div class="actions">
-              <a class="btn btn-primary" href="mailto:admin@dumpsterware.com?subject=Are%20We%20There%20Yet">Tell us what you'd want</a>
-              <a class="btn btn-ghost" href="#how-we-build">How we build</a>
-            </div>
-
-            <p class="app-note">In development. No release date yet — we're still deciding what belongs in the first version. Suggestions are welcome.</p>
-          </div>
-
-          <div class="program-media program-media--icon">
-            <img src="../assets/img/app-are-we-there-yet.svg" alt="Are We There Yet app icon" width="512" height="512" loading="lazy" decoding="async">
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="how-we-build">
-      <div class="wrap">
-        <header class="section-head reveal">
-          <p class="eyebrow">How we build</p>
-          <h2>Boring on purpose.</h2>
-          <p class="section-sub">The best compliment an app can get is that it just works when everything else is going wrong.</p>
-        </header>
-
-        <div class="principles reveal">
-          <article class="principle">
-            <p class="num">01</p>
-            <h3>Offline-first</h3>
-            <p>The job doesn't wait for bars. Core features work with the radio off, and sync later if there's anything to sync.</p>
-          </article>
-          <article class="principle">
-            <p class="num">02</p>
-            <h3>No accounts</h3>
-            <p>Nothing to sign up for, nothing to remember, nothing to leak. Open it and get the answer.</p>
-          </article>
-          <article class="principle">
-            <p class="num">03</p>
-            <h3>Small and fast</h3>
-            <p>No frameworks for the sake of it. Tiny downloads, readable numbers, and targets sized for real hands.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
-      <div class="wrap">
-        <div class="contact-card reveal">
-          <div>
-            <p class="eyebrow">Contact</p>
-            <h2>Need a tool that doesn't exist?</h2>
-            <p>Tell us about the job. If it's a good fit, we'll build it properly.</p>
-          </div>
-          <div class="contact-actions">
-            <a class="btn btn-primary" href="mailto:admin@dumpsterware.com?subject=Software%20idea">admin@dumpsterware.com</a>
-            <a class="btn btn-ghost" href="https://github.com/EsotericRyoushi" target="_blank" rel="me noopener" aria-label="DumpsterWare on GitHub">
-              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.53-.49-.34-.86-.83-1.09-.83-1.09-.68-.46.05-.45.05-.45.75.05 1.14.77 1.14.77.67 1.14 1.76.81 2.19.62.07-.48.26-.81.47-1-1.61-.18-3.3-.8-3.3-3.58 0-.79.28-1.44.74-1.94-.07-.18-.32-.92.07-1.91 0 0 .6-.19 1.97.74A6.9 6.9 0 0 1 8 3.87c.61 0 1.22.08 1.79.24 1.37-.93 1.97-.74 1.97-.74.39.99.14 1.73.07 1.91.46.5.74 1.15.74 1.94 0 2.79-1.69 3.4-3.31 3.58.26.22.49.66.49 1.33 0 .96-.01 1.73-.01 1.97 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-              GitHub
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+  <main>
+    <a href="../home/" aria-label="DumpsterWare home">
+      <img src="../assets/img/logo.svg" alt="DumpsterWare" width="78" height="78">
+    </a>
+    <p>Software has split into Apps and Tools. Taking you to the studio…</p>
+    <a class="continue" href="../home/">Continue to DumpsterWare</a>
   </main>
-
-  <footer class="site-footer">
-    <div class="wrap footer-grid">
-      <div class="footer-brand">
-        <a class="brand brand-small" href="../home/" aria-label="DumpsterWare home">
-          <img class="brand-mark" src="../assets/img/logo.svg" alt="" width="28" height="28" decoding="async">
-          <span>Dumpster<em>Ware</em></span>
-        </a>
-        <p>Independent software and game studio. Games, field tools, and the occasional odd idea. Est. 2021.</p>
-      </div>
-      <nav class="footer-col" aria-label="Footer">
-        <p class="footer-title">Sites</p>
-        <a href="../home/">Company</a>
-        <a href="../games/">Games</a>
-        <a href="../software/">Software</a>
-      </nav>
-      <div class="footer-col">
-        <p class="footer-title">Contact</p>
-        <a href="mailto:admin@dumpsterware.com">admin@dumpsterware.com</a>
-        <a href="https://github.com/EsotericRyoushi" target="_blank" rel="me noopener">GitHub</a>
-      </div>
-    </div>
-    <div class="wrap footer-bottom">
-      <p>© <span id="year">2026</span> DumpsterWare. Built by hand, tested on the job.</p>
-      <p>Good bones. Sharp tools. Built to last.</p>
-    </div>
-  </footer>
-
-  <script src="../assets/js/site.js" defer></script>
 </body>
 </html>

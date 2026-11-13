@@ -1,15 +1,17 @@
 # DumpsterWare.com
 
-The official DumpsterWare site — one company, three divisions.
+The official DumpsterWare site — one studio, three divisions.
 
 ## Structure
 
 | Path | Site |
 | --- | --- |
 | `/` | Redirects to `/home/` |
-| `/home/` | **Company** — who we are, how we work, contact |
+| `/home/` | **Company** — the studio, house rules, contact |
 | `/games/` | **Games** — story-driven games from the world we grew up in |
-| `/software/` | **Software** — EMT Bender Buddy, Are We There Yet, and future tools |
+| `/apps/` | **Apps** — family apps such as Are We There Yet |
+| `/tools/` | **Tools** — field tools such as EMT Bender Buddy |
+| `/software/` | Redirects to `/home/` (old combined page) |
 | `/programs/emt-bender/` | The playable EMT Bender Buddy PWA (self-contained) |
 
 Shared files:
@@ -17,14 +19,14 @@ Shared files:
 | Path | Purpose |
 | --- | --- |
 | `assets/css/site.css` | Design system, typography, shared components |
-| `assets/css/pages.css` | Division switcher, page heroes, app and game cards, footer |
+| `assets/css/pages.css` | Site switcher, page heroes, app and game cards, footer |
 | `assets/js/site.js` | Sticky header, scroll reveal, current year |
 | `assets/img/` | Brand art, WebP screenshots, brick texture, division icons |
 | `404.html` | Styled not-found page |
 | `legacy/` | The original 2021 Jekyll site, preserved for reference |
 
-Every page shares the same header switcher, so moving between Company, Games,
-and Software is always one click.
+Every page shares the same header switcher — Company, Games, Apps, Tools — so
+moving between sites is always one click.
 
 ## Editing
 
@@ -45,14 +47,15 @@ worker can register.
 ## Routing
 
 The root `index.html` sends visitors to `/home/` with a meta refresh plus a
-JavaScript fallback. `_redirects` adds a server-level rule for Netlify and
+JavaScript fallback. `_redirects` adds server-level rules for Netlify and
 Cloudflare Pages:
 
 ```
-/    /home/    301
+/           /home/    301
+/software/  /home/    301
 ```
 
-GitHub Pages ignores `_redirects` and uses the meta refresh instead.
+GitHub Pages ignores `_redirects` and uses the meta refresh pages instead.
 
 ## Hosting
 
@@ -74,21 +77,24 @@ it at the repo root once the custom domain is configured.
 
 ## Divisions
 
-### Company
-
-The parent site. The garage, the standards, and the contact details.
-
 ### Games
 
 Story-driven games drawn from the faith, family, and folklore we grew up in.
 The first project, working title **Project: Belonging**, is in development.
 
-### Software
+### Apps
+
+Family apps for the road and the kitchen table.
+
+- **Are We There Yet** — a family road-trip app, in development.
+
+### Tools
+
+Practical, offline-first tools for the trades.
 
 - **EMT Bender Buddy** — a conduit-bending calculator for electricians. The web
   build lives in `programs/emt-bender/`; the native Godot build is developed at
   [`emt-bender-buddy-godot`](https://github.com/EsotericRyoushi/emt-bender-buddy-godot).
-- **Are We There Yet** — a family road-trip app, in development.
 
 ---
 

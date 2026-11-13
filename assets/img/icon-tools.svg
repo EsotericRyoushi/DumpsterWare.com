@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="DumpsterWare Tools">
+  <title>DumpsterWare Tools</title>
+  <rect width="512" height="512" rx="112" fill="#d9481b"/>
+  <path d="M330 240 160 410" stroke="#1d110b" stroke-width="80" stroke-linecap="round"/>
+  <path d="M330 240 160 410" stroke="#f4e8d4" stroke-width="54" stroke-linecap="round"/>
+  <path d="M430 132c-30-28-78-28-108 0-30 28-30 76 0 104 28 26 74 26 102 2" fill="none" stroke="#1d110b" stroke-width="80" stroke-linecap="round"/>
+  <path d="M430 132c-30-28-78-28-108 0-30 28-30 76 0 104 28 26 74 26 102 2" fill="none" stroke="#f4e8d4" stroke-width="54" stroke-linecap="round"/>
+</svg>

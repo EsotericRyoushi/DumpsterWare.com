@@ -2,9 +2,9 @@
   <title>DumpsterWare Games</title>
   <rect width="512" height="512" rx="112" fill="#d9481b"/>
   <path d="M152 176h208c40 0 72 27 80 66l20 100c8 40-40 64-66 34l-50-58H168l-50 58c-26 30-74 6-66-34l20-100c8-39 40-66 80-66z" fill="#f4e8d4" stroke="#1d110b" stroke-width="18" stroke-linejoin="round"/>
-  <path d="M214 238v74M177 275h74" stroke="#1d110b" stroke-width="24" stroke-linecap="round"/>
-  <circle cx="328" cy="252" r="16" fill="#1d110b"/>
-  <circle cx="364" cy="288" r="16" fill="#1d110b"/>
-  <circle cx="328" cy="324" r="16" fill="#1d110b"/>
-  <circle cx="292" cy="288" r="16" fill="#d9481b" stroke="#1d110b" stroke-width="10"/>
+  <path d="M214 222v72M178 258h72" stroke="#1d110b" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="324" cy="232" r="14" fill="#1d110b"/>
+  <circle cx="356" cy="262" r="14" fill="#1d110b"/>
+  <circle cx="324" cy="292" r="14" fill="#1d110b"/>
+  <circle cx="292" cy="262" r="14" fill="#d9481b" stroke="#1d110b" stroke-width="9"/>
 </svg>

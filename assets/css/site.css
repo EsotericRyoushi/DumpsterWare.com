@@ -3,22 +3,28 @@
    ========================================================================== */
 
 :root {
-  --bg: #070a0f;
-  --bg-soft: #0b1119;
-  --panel: #0f1620;
-  --panel-2: #0b1119;
-  --line: rgba(255, 255, 255, 0.09);
-  --line-strong: rgba(255, 255, 255, 0.16);
-  --txt: #eef2f8;
-  --mut: #9aa7bb;
-  --dim: #6d7b90;
+  color-scheme: dark;
+  --bg: #0a0807;
+  --bg-soft: #100c09;
+  --panel: #150f0c;
+  --panel-2: #100c0a;
+  --line: rgba(255, 231, 208, 0.10);
+  --line-strong: rgba(255, 231, 208, 0.18);
+  --txt: #f6eee5;
+  --mut: #b7a89b;
+  --dim: #9c8d80;
   --accent: #ffb020;
-  --accent-2: #ff8a1f;
+  --accent-2: #e8933a;
   --red: #e03131;
+  --brick: #b8492f;
   --radius: 22px;
   --max: 1160px;
   --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --display: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+}
+
+html {
+  scrollbar-color: #4b382d var(--bg);
 }
 
 *,
@@ -36,17 +42,18 @@ html {
 body {
   margin: 0;
   font-family: var(--font);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6;
   color: var(--txt);
   background:
-    radial-gradient(1100px 620px at 82% -12%, rgba(224, 49, 49, 0.20), transparent 62%),
+    radial-gradient(1100px 620px at 82% -12%, rgba(184, 73, 47, 0.28), transparent 62%),
     radial-gradient(900px 520px at -5% 8%, rgba(255, 176, 32, 0.10), transparent 58%),
-    radial-gradient(800px 700px at 50% 120%, rgba(255, 138, 31, 0.07), transparent 60%),
+    radial-gradient(800px 700px at 50% 120%, rgba(232, 147, 58, 0.07), transparent 60%),
     var(--bg);
-  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
+  font-size-adjust: from-font;
 }
 
 body::before {
@@ -56,8 +63,8 @@ body::before {
   z-index: -1;
   pointer-events: none;
   opacity: 0.35;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(255, 231, 208, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 231, 208, 0.022) 1px, transparent 1px);
   background-size: 72px 72px;
   mask-image: radial-gradient(circle at 50% 30%, #000 0%, transparent 78%);
 }
@@ -75,13 +82,20 @@ a {
 h1, h2, h3, h4 {
   font-family: var(--display);
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   line-height: 1.04;
   margin: 0;
+  text-wrap: balance;
+  font-size-adjust: from-font;
 }
 
 p {
   margin: 0;
+  text-wrap: pretty;
+}
+
+li {
+  text-wrap: pretty;
 }
 
 ul, dl, dd {
@@ -102,6 +116,11 @@ ul {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 6px;
+}
+
+#main:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -6px;
 }
 
 .skip-link {
@@ -133,12 +152,12 @@ ul {
   top: 0;
   z-index: 50;
   border-bottom: 1px solid transparent;
-  background: rgba(7, 10, 15, 0.55);
+  background: rgba(10, 8, 7, 0.55);
   transition: background 0.25s ease, border-color 0.25s ease, backdrop-filter 0.25s ease;
 }
 
 .site-header.scrolled {
-  background: rgba(7, 10, 15, 0.82);
+  background: rgba(10, 8, 7, 0.84);
   border-bottom-color: var(--line);
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
@@ -157,9 +176,9 @@ ul {
   align-items: center;
   gap: 10px;
   font-family: var(--display);
-  font-size: 1.28rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   color: var(--txt);
   white-space: nowrap;
 }
@@ -186,6 +205,7 @@ ul {
 }
 
 .nav a {
+  padding-block: 0.3rem;
   color: var(--mut);
   transition: color 0.18s ease;
 }
@@ -347,7 +367,21 @@ ul {
 /* ---------- Hero --------------------------------------------------------- */
 
 .hero {
+  position: relative;
   padding: clamp(48px, 7vw, 96px) 0 clamp(40px, 6vw, 80px);
+  isolation: isolate;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("../img/brick.svg") 0 0 / 140px 70px repeat;
+  opacity: 0.075;
+  mask-image: linear-gradient(180deg, #000 0%, transparent 92%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 92%);
 }
 
 .hero-grid {
@@ -358,9 +392,9 @@ ul {
 }
 
 .hero h1 {
-  font-size: clamp(3rem, 6.4vw, 5.1rem);
-  font-weight: 700;
-  letter-spacing: -0.045em;
+  font-size: clamp(3rem, 6.2vw, 4.9rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
 }
 
 .lede {
@@ -417,6 +451,10 @@ ul {
   transform: rotate(-1.2deg);
 }
 
+.sign picture {
+  display: block;
+}
+
 .sign img {
   display: block;
   width: 100%;
@@ -429,7 +467,7 @@ ul {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, transparent 55%, rgba(7, 10, 15, 0.72) 100%);
+  background: linear-gradient(180deg, transparent 55%, rgba(10, 8, 7, 0.72) 100%);
 }
 
 .sign figcaption {
@@ -443,7 +481,7 @@ ul {
   padding: 7px 13px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
-  background: rgba(7, 10, 15, 0.55);
+  background: rgba(10, 8, 7, 0.55);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   font-size: 0.72rem;
@@ -470,7 +508,7 @@ ul {
   padding: 16px 20px;
   border: 1px solid var(--line-strong);
   border-radius: 16px;
-  background: rgba(13, 18, 26, 0.92);
+  background: rgba(20, 15, 12, 0.92);
   box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -490,6 +528,44 @@ ul {
   font-size: 0.72rem;
   line-height: 1.35;
   color: var(--mut);
+}
+
+/* ---------- Creed band --------------------------------------------------- */
+
+.creed {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(184, 73, 47, 0.12), rgba(255, 176, 32, 0.05) 50%, rgba(184, 73, 47, 0.12)),
+    var(--bg-soft);
+  text-align: center;
+}
+
+.creed::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: url("../img/brick.svg") 0 0 / 130px 65px repeat;
+  opacity: 0.06;
+}
+
+.creed {
+  padding: 20px 18px;
+  font-family: var(--display);
+  font-size: clamp(0.74rem, 1.2vw, 0.88rem);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: #dcc6b2;
+}
+
+.creed .sep {
+  padding: 0 0.9em;
+  color: var(--accent);
 }
 
 /* ---------- Sections ----------------------------------------------------- */
@@ -535,9 +611,9 @@ ul {
   padding: 44px 24px;
   border-right: 1px solid var(--line);
   background:
-    radial-gradient(circle at 50% 38%, rgba(255, 176, 32, 0.20), transparent 62%),
-    radial-gradient(circle at 50% 100%, rgba(224, 49, 49, 0.12), transparent 55%),
-    #090e15;
+    radial-gradient(circle at 50% 38%, rgba(255, 176, 32, 0.18), transparent 62%),
+    radial-gradient(circle at 50% 100%, rgba(184, 73, 47, 0.16), transparent 55%),
+    #0c0907;
   overflow: hidden;
 }
 
@@ -546,9 +622,10 @@ ul {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-  background-size: 22px 22px;
-  mask-image: radial-gradient(circle at 50% 45%, #000, transparent 72%);
+  background: url("../img/brick.svg") 0 0 / 120px 60px repeat;
+  opacity: 0.09;
+  mask-image: radial-gradient(circle at 50% 45%, #000, transparent 78%);
+  -webkit-mask-image: radial-gradient(circle at 50% 45%, #000, transparent 78%);
 }
 
 .phone {
@@ -556,7 +633,7 @@ ul {
   flex: none;
   width: 162px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 231, 208, 0.16);
   border-radius: 20px;
   background: #0b0e13;
   box-shadow: 0 30px 70px -24px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(0, 0, 0, 0.4);
@@ -662,9 +739,11 @@ ul {
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 26px;
+  padding: 0;
+  list-style: none;
 }
 
-.chips span {
+.chips li {
   padding: 6px 12px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -712,7 +791,35 @@ ul {
 .about-sign {
   font-family: var(--display);
   font-weight: 600;
-  color: #dfe6f0 !important;
+  color: #f0e3d4 !important;
+}
+
+.about-foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.about-foot p {
+  margin: 0;
+}
+
+.plaque {
+  width: 64px;
+  height: 64px;
+  flex: none;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 14px 34px -14px rgba(184, 73, 47, 0.65);
+}
+
+.about-note {
+  margin-top: 2px !important;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--dim) !important;
 }
 
 .facts {
@@ -763,7 +870,7 @@ ul {
   border-radius: 30px;
   background:
     radial-gradient(700px 320px at 12% -20%, rgba(255, 176, 32, 0.16), transparent 62%),
-    radial-gradient(600px 300px at 100% 120%, rgba(224, 49, 49, 0.16), transparent 60%),
+    radial-gradient(600px 300px at 100% 120%, rgba(184, 73, 47, 0.20), transparent 60%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
   box-shadow: 0 40px 100px -50px rgba(0, 0, 0, 0.9);
 }
@@ -823,6 +930,10 @@ ul {
   gap: 22px;
   font-size: 0.82rem;
   color: var(--mut);
+}
+
+.footer-nav a {
+  padding-block: 0.35rem;
 }
 
 .footer-nav a:hover {
@@ -909,7 +1020,7 @@ ul {
     padding: 10px;
     border: 1px solid var(--line-strong);
     border-radius: 18px;
-    background: rgba(10, 14, 21, 0.97);
+    background: rgba(14, 10, 8, 0.97);
     box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.9);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -1010,6 +1121,17 @@ ul {
     align-items: flex-start;
     gap: 14px;
   }
+
+  .creed {
+    letter-spacing: 0.16em;
+  }
+}
+
+@media (max-width: 480px) {
+  .creed {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+  }
 }
 
 @media (max-width: 420px) {
@@ -1031,6 +1153,54 @@ ul {
 
   .program-media {
     min-height: 350px;
+  }
+}
+
+/* ---------- Contrast and forced colors ----------------------------------- */
+
+@media (prefers-contrast: more) {
+  :root {
+    --mut: #d8cabd;
+    --dim: #c3b2a3;
+    --line: rgba(255, 231, 208, 0.28);
+    --line-strong: rgba(255, 231, 208, 0.46);
+  }
+}
+
+@media (forced-colors: active) {
+  .grad {
+    color: CanvasText;
+    -webkit-text-fill-color: CanvasText;
+    background: none;
+  }
+
+  .btn {
+    border: 1px solid ButtonText;
+    background: Canvas;
+    color: ButtonText;
+    box-shadow: none;
+  }
+
+  .btn-primary {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .hero::before,
+  .creed::before,
+  .program-media::after,
+  .sign::after {
+    display: none;
+  }
+
+  .sign,
+  .program,
+  .facts,
+  .contact-card,
+  .chips li,
+  .phone {
+    border-color: CanvasText;
   }
 }
 

@@ -8,7 +8,7 @@ The official DumpsterWare site — one studio, three divisions.
 | --- | --- |
 | `/` | Redirects to `/home/` |
 | `/home/` | **Company** — the studio, house rules, contact |
-| `/games/` | **Games** — story-driven games from the world we grew up in |
+| `/games/` | **Games** - life-sim sandboxes with no finish line |
 | `/apps/` | **Apps** — family apps such as Are We There Yet |
 | `/tools/` | **Tools** — field tools such as EMT Bender Buddy |
 | `/software/` | Redirects to `/home/` (old combined page) |
@@ -81,8 +81,9 @@ file was removed because the domain did not resolve.
 
 ### Games
 
-Story-driven games drawn from the faith, family, and folklore we grew up in.
-The first project, working title **Project: Belonging**, is in development.
+Life-sim sandboxes with no finish line — drop into a world, pick a trade, make
+a living, and keep playing. The first project, working title
+**Project: Sandbox**, is in development.
 
 ### Apps
 

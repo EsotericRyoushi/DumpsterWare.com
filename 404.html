@@ -7,7 +7,8 @@
   <meta name="robots" content="noindex">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#0a0807">
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/img/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -17,7 +18,7 @@
       --bg: #0a0807;
       --txt: #f6eee5;
       --mut: #b7a89b;
-      --accent: #ffb020;
+      --accent: #e85a1c;
       --line: rgba(255, 231, 208, 0.14);
     }
     * { box-sizing: border-box; }
@@ -34,15 +35,15 @@
       overflow-wrap: break-word;
       background:
         radial-gradient(900px 520px at 50% -10%, rgba(184, 73, 47, 0.30), transparent 62%),
-        radial-gradient(700px 420px at 50% 110%, rgba(255, 176, 32, 0.12), transparent 60%),
+        radial-gradient(700px 420px at 50% 110%, rgba(232, 90, 28, 0.14), transparent 60%),
         var(--bg);
     }
     .mark {
-      width: 56px;
-      height: 56px;
-      color: var(--accent);
+      width: 88px;
+      height: 88px;
+      border-radius: 20px;
       margin-bottom: 28px;
-      filter: drop-shadow(0 0 20px rgba(255, 176, 32, 0.4));
+      filter: drop-shadow(0 18px 36px rgba(217, 72, 27, 0.45));
     }
     .code {
       font-family: "Fraunces", Georgia, "Times New Roman", serif;
@@ -51,7 +52,7 @@
       line-height: 1;
       padding-block: 0.04em;
       letter-spacing: -0.04em;
-      background: linear-gradient(102deg, #ffe0a1, var(--accent) 45%, #e0612f);
+      background: linear-gradient(102deg, #ffb877, #ef6a24 45%, #c9430f);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -79,9 +80,9 @@
     }
     a:hover { transform: translateY(-2px); }
     a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-    .primary { background: linear-gradient(180deg, #ffc94f, #ffa000); color: #1b1305; }
+    .primary { background: linear-gradient(180deg, #f4792f, #d9481b); color: #1b1305; }
     .ghost { border: 1px solid var(--line); color: var(--txt); }
-    .ghost:hover { border-color: rgba(255, 176, 32, 0.5); }
+    .ghost:hover { border-color: rgba(232, 90, 28, 0.55); }
     @media (forced-colors: active) {
       .code { color: CanvasText; -webkit-text-fill-color: CanvasText; background: none; }
       .primary { background: Highlight; color: HighlightText; border: 1px solid Highlight; }
@@ -94,10 +95,7 @@
 </head>
 <body>
   <main>
-    <svg class="mark" viewBox="0 0 432 432" aria-hidden="true">
-      <path d="M118 302h100a62 62 0 0 0 62-62V126" fill="none" stroke="currentColor" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="156" cy="302" r="18" fill="currentColor"/>
-    </svg>
+    <img class="mark" src="/assets/img/logo.svg" alt="" width="88" height="88" decoding="async">
     <div class="code">404</div>
     <h1>That page went in the dumpster.</h1>
     <p>The link is broken or the page has moved. Head back to the homepage and we'll get you sorted.</p>

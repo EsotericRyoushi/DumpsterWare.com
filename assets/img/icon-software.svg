@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="DumpsterWare Software">
+  <title>DumpsterWare Software</title>
+  <rect width="512" height="512" rx="112" fill="#d9481b"/>
+  <g transform="rotate(-6 256 270)">
+    <path d="M160 140h150l42 42v190H160z" fill="#2b3038" stroke="#1d110b" stroke-width="18" stroke-linejoin="round"/>
+    <rect x="196" y="164" width="106" height="62" rx="8" fill="#cfc9bd" stroke="#1d110b" stroke-width="12"/>
+    <rect x="252" y="178" width="30" height="34" rx="4" fill="#2b3038"/>
+    <rect x="194" y="252" width="124" height="92" rx="8" fill="#f4e8d4" stroke="#1d110b" stroke-width="12"/>
+    <path d="M216 278h80M216 302h80M216 326h56" stroke="#d9481b" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -3,233 +3,62 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DumpsterWare — Games &amp; field tools, built to last</title>
-  <meta name="description" content="DumpsterWare is an independent studio building games and practical field tools. Home of EMT Bender Buddy, the conduit-bending calculator for electricians.">
+  <title>DumpsterWare — Taking you to the company site</title>
+  <meta name="robots" content="noindex">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#0a0807">
   <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
-  <link rel="icon" href="assets/img/logo-32.png" sizes="32x32" type="image/png">
-  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="DumpsterWare — Games &amp; field tools">
-  <meta property="og:description" content="Independent studio building games and practical field tools. Home of EMT Bender Buddy.">
-  <meta name="twitter:card" content="summary">
-
-  <script>document.documentElement.classList.add('js');</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/site.css">
+  <meta http-equiv="refresh" content="0; url=home/">
+  <script>location.replace("home/");</script>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #f6eee5;
+      text-align: center;
+      background:
+        radial-gradient(900px 520px at 50% -10%, rgba(184, 73, 47, 0.30), transparent 62%),
+        radial-gradient(700px 420px at 50% 110%, rgba(232, 90, 28, 0.14), transparent 60%),
+        #0a0807;
+    }
+    img {
+      width: 78px;
+      height: 78px;
+      border-radius: 18px;
+      box-shadow: 0 26px 60px -24px rgba(217, 72, 27, 0.8);
+    }
+    p {
+      margin: 20px 0 0;
+      color: #b7a89b;
+      font-size: 0.92rem;
+    }
+    a.continue {
+      display: inline-flex;
+      margin-top: 24px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #f4792f, #d9481b);
+      color: #1b0d04;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:focus-visible { outline: 2px solid #e85a1c; outline-offset: 3px; }
+  </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <header class="site-header" id="top">
-    <div class="wrap header-inner">
-      <a class="brand" href="#top" aria-label="DumpsterWare home">
-        <img class="brand-mark" src="assets/img/logo.svg" alt="" width="38" height="38" decoding="async">
-        <span>Dumpster<em>Ware</em></span>
-      </a>
-
-      <nav class="nav" id="nav" aria-label="Primary">
-        <a href="#programs">Programs</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-        <a class="nav-icon" href="https://github.com/EsotericRyoushi" target="_blank" rel="me noopener" aria-label="DumpsterWare on GitHub">
-          <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.53-.49-.34-.86-.83-1.09-.83-1.09-.68-.46.05-.45.05-.45.75.05 1.14.77 1.14.77.67 1.14 1.76.81 2.19.62.07-.48.26-.81.47-1-1.61-.18-3.3-.8-3.3-3.58 0-.79.28-1.44.74-1.94-.07-.18-.32-.92.07-1.91 0 0 .6-.19 1.97.74A6.9 6.9 0 0 1 8 3.87c.61 0 1.22.08 1.79.24 1.37-.93 1.97-.74 1.97-.74.39.99.14 1.73.07 1.91.46.5.74 1.15.74 1.94 0 2.79-1.69 3.4-3.31 3.58.26.22.49.66.49 1.33 0 .96-.01 1.73-.01 1.97 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-        </a>
-      </nav>
-
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
-        <span></span><span></span>
-      </button>
-    </div>
-  </header>
-
-  <main id="main" tabindex="-1">
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="hero-copy reveal">
-          <p class="eyebrow"><span class="pulse" aria-hidden="true"></span>Independent studio · Est. 2021</p>
-          <h1>Good software.<br><span class="grad">No filler.</span></h1>
-          <p class="lede">DumpsterWare is a small studio making games and practical field tools — the kind that keep earning their place long after the novelty wears off.</p>
-
-          <div class="actions">
-            <a class="btn btn-primary" href="#programs">
-              Explore our programs
-              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <a class="btn btn-ghost" href="programs/emt-bender/">Launch EMT Bender Buddy</a>
-          </div>
-
-          <dl class="hero-facts">
-            <div>
-              <dt>Web + mobile</dt>
-              <dd>Tools that follow you to the job</dd>
-            </div>
-            <div>
-              <dt>Offline-first</dt>
-              <dd>Built for bad signal and busy hands</dd>
-            </div>
-          </dl>
-        </div>
-
-        <div class="hero-art reveal">
-          <figure class="sign">
-            <picture>
-              <source type="image/webp" srcset="assets/img/neon-sign-800.webp 800w, assets/img/neon-sign-1200.webp 1200w" sizes="(max-width: 1080px) 92vw, 46vw">
-              <img src="assets/img/neon-sign.jpg" alt="DumpsterWare written in red neon on a brick wall" width="1600" height="900" fetchpriority="high" decoding="async">
-            </picture>
-            <figcaption><span class="dot" aria-hidden="true"></span>Independent since 2021</figcaption>
-          </figure>
-          <div class="floating-card" aria-hidden="true">
-            <span class="floating-num">01</span>
-            <span class="floating-label">Program in the field</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <p class="creed">
-      <span>Good bones</span><span class="sep" aria-hidden="true">·</span>
-      <span>Sharp tools</span><span class="sep" aria-hidden="true">·</span>
-      <span>Built to last</span>
-    </p>
-
-    <section class="section" id="programs">
-      <div class="wrap">
-        <header class="section-head reveal">
-          <p class="eyebrow">Our programs</p>
-          <h2>Built to be used, not just downloaded.</h2>
-          <p class="section-sub">One flagship tool so far, and a simple rule for everything we ship: it has to be fast, useful, and work when the signal doesn't.</p>
-        </header>
-
-        <article class="program reveal">
-          <div class="program-media">
-            <div class="phone phone-a">
-              <picture>
-                <source type="image/webp" srcset="assets/img/emt-bender/offset-diagram.webp">
-                <img src="assets/img/emt-bender/offset-diagram.png" alt="Offset bend diagram inside EMT Bender Buddy" loading="lazy" decoding="async" width="420" height="900">
-              </picture>
-            </div>
-            <div class="phone phone-b">
-              <picture>
-                <source type="image/webp" srcset="assets/img/emt-bender/single-result.webp">
-                <img src="assets/img/emt-bender/single-result.png" alt="Single bend results screen in EMT Bender Buddy" loading="lazy" decoding="async" width="420" height="900">
-              </picture>
-            </div>
-            <div class="phone phone-c">
-              <picture>
-                <source type="image/webp" srcset="assets/img/emt-bender/run.webp">
-                <img src="assets/img/emt-bender/run.png" alt="Run mode inputs in EMT Bender Buddy" loading="lazy" decoding="async" width="420" height="900">
-              </picture>
-            </div>
-          </div>
-
-          <div class="program-body">
-            <div class="program-top">
-              <img class="program-icon" src="assets/img/emt-bender/icon.svg" alt="" width="56" height="56">
-              <div>
-                <p class="tag">Flagship · Field tool</p>
-                <h3>EMT Bender Buddy</h3>
-              </div>
-            </div>
-
-            <p class="program-tagline">Mark it. Set the arrow. Bend it.</p>
-            <p class="program-desc">A conduit-bending calculator for electricians. It works out where to mark EMT, which bender mark to line up, how far to bend, and how much length the bend eats — for single bends, offsets, back-to-backs, saddles, and full runs.</p>
-
-            <ul class="checks" role="list">
-              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Five modes: Single, Offset, Back-to-back, Saddle, Run</li>
-              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Live 360° bend budget (NEC 358.26)</li>
-              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Fraction-friendly inputs and 1/16&quot; marks</li>
-              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Installable PWA plus a native Godot app</li>
-            </ul>
-
-            <ul class="chips" role="list">
-              <li>Web app</li>
-              <li>Android</li>
-              <li>iOS</li>
-              <li>Works offline</li>
-            </ul>
-
-            <div class="actions">
-              <a class="btn btn-primary" href="programs/emt-bender/">
-                Launch web app
-                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </a>
-              <a class="btn btn-ghost" href="https://github.com/EsotericRyoushi/emt-bender-buddy-godot" target="_blank" rel="noopener" aria-label="Source code for EMT Bender Buddy">Source code</a>
-            </div>
-
-            <p class="program-note">Runs in any browser. Install it to your home screen, or build the Godot version for Android and iOS.</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section about" id="about">
-      <div class="wrap about-grid">
-        <div class="reveal">
-          <p class="eyebrow">About</p>
-          <h2>Small studio. Real tools.</h2>
-          <p>DumpsterWare started in 2021 as an excuse to make games. Along the way we picked up a habit of building the tools we wished existed — the ones that skip the marketing and just do the job.</p>
-          <p>We like things with good bones: brick warehouses, cast-iron railings, software that doesn't need a rewrite every year. Everything here follows the same rule — if it wouldn't survive a jobsite or a bad internet connection, it isn't finished.</p>
-
-          <div class="about-foot">
-            <img class="plaque" src="assets/img/dumpsterware-seal.jpg" alt="DumpsterWare neon sign" width="64" height="64" decoding="async">
-            <div>
-              <p class="about-sign">— Hunter, DumpsterWare</p>
-              <p class="about-note">The sign on the wall · Est. 2021</p>
-            </div>
-          </div>
-        </div>
-
-        <aside class="facts reveal" aria-label="Studio facts">
-          <dl>
-            <div><dt>Founded</dt><dd>2021</dd></div>
-            <div><dt>Focus</dt><dd>Games &amp; field tools</dd></div>
-            <div><dt>Stack</dt><dd>Godot · vanilla web</dd></div>
-            <div><dt>Rule</dt><dd>Jobsite-proof, or it isn't done</dd></div>
-          </dl>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section contact" id="contact">
-      <div class="wrap">
-        <div class="contact-card reveal">
-          <div>
-            <p class="eyebrow">Contact</p>
-            <h2>Have a project in mind?</h2>
-            <p>Tell us what you're building. We answer every message — usually from a garage.</p>
-          </div>
-          <div class="contact-actions">
-            <a class="btn btn-primary" href="mailto:admin@dumpsterware.com">admin@dumpsterware.com</a>
-            <a class="btn btn-ghost" href="https://github.com/EsotericRyoushi" target="_blank" rel="me noopener" aria-label="DumpsterWare on GitHub">
-              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.53-.49-.34-.86-.83-1.09-.83-1.09-.68-.46.05-.45.05-.45.75.05 1.14.77 1.14.77.67 1.14 1.76.81 2.19.62.07-.48.26-.81.47-1-1.61-.18-3.3-.8-3.3-3.58 0-.79.28-1.44.74-1.94-.07-.18-.32-.92.07-1.91 0 0 .6-.19 1.97.74A6.9 6.9 0 0 1 8 3.87c.61 0 1.22.08 1.79.24 1.37-.93 1.97-.74 1.97-.74.39.99.14 1.73.07 1.91.46.5.74 1.15.74 1.94 0 2.79-1.69 3.4-3.31 3.58.26.22.49.66.49 1.33 0 .96-.01 1.73-.01 1.97 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-              GitHub
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+  <main>
+    <a href="home/" aria-label="DumpsterWare home">
+      <img src="assets/img/logo.svg" alt="DumpsterWare" width="78" height="78">
+    </a>
+    <p>Taking you to the company site…</p>
+    <a class="continue" href="home/">Continue to DumpsterWare</a>
   </main>
-
-  <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <a class="brand brand-small" href="#top" aria-label="Back to top">
-        <img class="brand-mark" src="assets/img/logo.svg" alt="" width="28" height="28" decoding="async">
-        <span>Dumpster<em>Ware</em></span>
-      </a>
-      <p>© <span id="year">2026</span> DumpsterWare. Built by hand, tested on the job.</p>
-      <nav class="footer-nav" aria-label="Footer">
-        <a href="#programs">Programs</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </footer>
-
-  <script src="assets/js/site.js" defer></script>
 </body>
 </html>

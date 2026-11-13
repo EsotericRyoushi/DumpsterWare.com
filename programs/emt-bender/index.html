@@ -1,0 +1,3187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EMT Bender Buddy — Mark It, Bend It</title>
+<meta name="description" content="Work out exactly where to mark EMT conduit and what angle to bend it, for single bends and offsets.">
+<meta name="theme-color" content="#0b0e13">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --bg: #0b0e13;
+    --panel: #131821;
+    --panel-2: #0f141c;
+    --line: #232b38;
+    --line-2: #2e3847;
+    --txt: #e9eef6;
+    --mut: #8894a7;
+    --dim: #5d6a7d;
+    --accent: #ffb020;
+    --accent-deep: #ff8a1f;
+    --good: #35d07f;
+    --bad: #ff6464;
+    --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --r: 16px;
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(900px 520px at 82% -12%, rgba(255,176,32,.10), transparent 62%),
+      radial-gradient(700px 460px at 4% 0%, rgba(70,130,255,.07), transparent 58%),
+      var(--bg);
+    color: var(--txt);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  [hidden] { display: none !important; }
+
+  .app {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 20px 18px 64px;
+  }
+
+  /* ---------- header ---------- */
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 13px; }
+  .brand svg { display: block; flex: none; }
+  .brand h1 {
+    margin: 0;
+    font-size: 1.06rem;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .brand p {
+    margin: 2px 0 0;
+    color: var(--mut);
+    font-size: .82rem;
+    letter-spacing: .01em;
+  }
+
+  .sizeset { display: flex; align-items: center; gap: 12px; }
+  .lab {
+    font-size: .68rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--dim);
+    font-weight: 700;
+  }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .chip {
+    appearance: none;
+    border: 1px solid var(--line-2);
+    background: var(--panel-2);
+    color: var(--mut);
+    font: 600 .92rem/1 var(--mono);
+    padding: 0 14px;
+    height: 40px;
+    min-width: 44px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s, transform .06s;
+  }
+  .chip:hover { color: var(--txt); border-color: #3c4859; }
+  .chip:active { transform: scale(.97); }
+  .chip[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #22160a;
+  }
+  .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- tabs ---------- */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 18px 0;
+    padding: 4px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    width: fit-content;
+    max-width: 100%;
+  }
+  .tabs button {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--mut);
+    font: 600 .95rem/1 var(--sans);
+    padding: 0 22px;
+    height: 44px;
+    border-radius: 999px;
+    cursor: pointer;
+    letter-spacing: .01em;
+    transition: background .15s, color .15s;
+  }
+  .tabs button:hover { color: var(--txt); }
+  .tabs button.on { background: #26303e; color: var(--txt); box-shadow: inset 0 0 0 1px #38455a; }
+  .tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- layout ---------- */
+  main {
+    display: grid;
+    grid-template-columns: minmax(320px, 400px) minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+  @media (max-width: 880px) {
+    main { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  .card {
+    background: linear-gradient(180deg, #151b25, #111720);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 20px;
+    box-shadow: 0 18px 40px -28px #000;
+  }
+
+  h2 {
+    margin: 0 0 10px;
+    font-size: .7rem;
+    letter-spacing: .17em;
+    text-transform: uppercase;
+    color: var(--dim);
+    font-weight: 700;
+  }
+  h2 + .chips { margin-bottom: 22px; }
+  .card > h2:not(:first-child) { margin-top: 4px; }
+
+  .hint {
+    margin: -2px 0 12px;
+    color: var(--mut);
+    font-size: .85rem;
+  }
+
+  /* ---------- fields ---------- */
+  .fields { display: grid; gap: 10px; }
+
+  .field {
+    display: block;
+    position: relative;
+    padding: 11px 14px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    transition: border-color .15s, background .15s;
+  }
+  .field:focus-within { border-color: var(--accent); background: #121924; }
+
+  .fl {
+    display: block;
+    font-size: .8rem;
+    font-weight: 600;
+    color: #b9c4d4;
+    letter-spacing: .01em;
+  }
+  .fl em {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--dim);
+    font-size: .76rem;
+  }
+
+  .iw { display: flex; align-items: baseline; gap: 6px; }
+  .iw input {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--txt);
+    font: 600 1.6rem/1.15 var(--mono);
+    padding: 4px 0 2px;
+    letter-spacing: .01em;
+  }
+  .iw input::placeholder { color: #38414f; font-weight: 500; }
+  .iw input:focus { outline: none; }
+  .u {
+    flex: none;
+    color: var(--dim);
+    font: 600 .95rem/1 var(--mono);
+    transition: opacity .15s;
+  }
+  .field.is-auto { border-style: dashed; border-color: #34405230; }
+  .field.is-auto .iw input { color: #9fb0c6; }
+  .auto-tag {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font: 700 .6rem/1 var(--sans);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity .15s;
+    pointer-events: none;
+  }
+  .field.is-auto .auto-tag { opacity: 1; }
+
+  .note {
+    margin-top: 12px;
+    font-size: .8rem;
+    color: var(--mut);
+    position: relative;
+    padding-left: 16px;
+    line-height: 1.45;
+  }
+  .note::before { content: "›"; color: var(--accent); font-weight: 700; position: absolute; left: 0; top: 0; }
+  .note b { color: #e4ebf5; font-weight: 600; }
+  .note.warn { color: #ffc46b; }
+  .note.bad { color: var(--bad); }
+
+  .swap {
+    margin-top: 14px;
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px dashed var(--line-2);
+    background: transparent;
+    color: var(--mut);
+    font: 600 .84rem/1 var(--sans);
+    cursor: pointer;
+    transition: color .15s, border-color .15s;
+  }
+  .swap:hover { color: var(--txt); border-color: #4a586d; }
+
+  /* ---------- output ---------- */
+  .out { padding: 0; overflow: hidden; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--line);
+  }
+  .tile {
+    background: #12181f;
+    padding: 18px 20px 20px;
+    min-width: 0;
+  }
+  .tile .k {
+    display: block;
+    font: 700 .66rem/1.4 var(--sans);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .tile .v {
+    display: block;
+    font: 700 clamp(2rem, 7vw, 2.9rem)/1.05 var(--mono);
+    letter-spacing: -.02em;
+    margin: 6px 0 4px;
+    word-break: break-word;
+  }
+  .tile .v .small { font-size: .42em; color: var(--mut); letter-spacing: 0; }
+  .tile .v.long { font-size: clamp(1.2rem, 3.4vw, 1.7rem); }
+  .tile .s {
+    display: block;
+    font-size: .78rem;
+    color: var(--mut);
+    line-height: 1.35;
+  }
+  .tile.hero-1 {
+    background:
+      linear-gradient(180deg, rgba(255,176,32,.10), rgba(255,176,32,.02)),
+      #12181f;
+  }
+  .tile.hero-1 .v { color: var(--accent); }
+  .tile.hero-1 .k { color: #c08b34; }
+  .tile.hero-2 .v { color: var(--txt); }
+
+  @media (max-width: 620px) {
+    .hero { grid-template-columns: 1fr 1fr; }
+    .tile:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  }
+
+  .diagram {
+    padding: 8px 10px 4px;
+    border-bottom: 1px solid var(--line);
+    background: radial-gradient(600px 220px at 50% 0, #141c26, #0e131a);
+  }
+  .diagram svg { display: block; width: 100%; height: auto; }
+  .diagram .empty {
+    padding: 54px 20px;
+    text-align: center;
+    color: var(--dim);
+    font-size: .9rem;
+  }
+
+  .body { padding: 20px; }
+
+  .steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 2px; }
+  .steps li {
+    counter-increment: s;
+    position: relative;
+    padding: 9px 0 9px 38px;
+    font-size: .9rem;
+    color: #ccd6e4;
+    border-bottom: 1px dashed #1d242f;
+  }
+  .steps li:last-child { border-bottom: 0; }
+  .steps li::before {
+    content: counter(s);
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #1e2733;
+    color: var(--accent);
+    font: 700 .72rem/24px var(--mono);
+    text-align: center;
+    border: 1px solid #2c3747;
+  }
+  .steps b { color: #fff; font-weight: 700; }
+  .steps .num { font-family: var(--mono); color: var(--accent); font-weight: 700; }
+
+  .stats {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+    gap: 1px;
+    background: #1c232e;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .stat { background: #10161e; padding: 10px 12px; }
+  .stat dt {
+    font: 700 .6rem/1.4 var(--sans);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin: 0;
+  }
+  .stat dd {
+    margin: 3px 0 0;
+    font: 600 1rem/1.25 var(--mono);
+    color: var(--txt);
+  }
+  .stat dd span { color: var(--dim); font-size: .82em; }
+
+  .warnbox {
+    margin: 0;
+    padding: 16px 20px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: rgba(255,100,100,.08);
+    border-bottom: 1px solid #3a2020;
+    color: #ffb3b3;
+    font-size: .88rem;
+  }
+  .warnbox::before { content: "!"; flex: none; width: 20px; height: 20px; border-radius: 50%; background: #ff6464; color: #2a0c0c; font: 700 13px/20px var(--sans); text-align: center; }
+  .warnbox.soft { background: rgba(255,176,32,.07); border-color: #3a2f1a; color: #ffd394; }
+  .warnbox.soft::before { background: var(--accent); color: #2a1c04; }
+
+  .actions { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+  .btn {
+    appearance: none;
+    height: 42px;
+    padding: 0 16px;
+    border-radius: 10px;
+    border: 1px solid var(--line-2);
+    background: #19212c;
+    color: #d6dfeb;
+    font: 600 .86rem/1 var(--sans);
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .btn:hover { background: #212b38; border-color: #435066; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #22160a; }
+  .btn.primary:hover { background: #ffc04a; }
+
+  /* ---------- reference ---------- */
+  .ref { margin-top: 18px; }
+  .ref summary {
+    cursor: pointer;
+    list-style: none;
+    font: 700 .72rem/1 var(--sans);
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--mut);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ref summary::-webkit-details-marker { display: none; }
+  .ref summary::before {
+    content: "+";
+    font: 700 1rem/1 var(--mono);
+    color: var(--accent);
+    width: 18px;
+  }
+  .ref[open] summary::before { content: "−"; }
+  .ref[open] summary { margin-bottom: 18px; }
+
+  .refgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+  table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+  caption { text-align: left; color: var(--dim); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; padding-bottom: 8px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #1c232e; }
+  th { color: var(--dim); font-weight: 600; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+  td { font-family: var(--mono); color: #cbd5e3; }
+  tr.on td { color: var(--accent); }
+  td:first-child { font-family: var(--sans); color: #b9c4d4; }
+
+  .benderdata { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+  .benderdata label { font-size: .78rem; color: var(--mut); display: flex; align-items: center; gap: 8px; }
+  .benderdata input {
+    width: 74px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--line-2);
+    background: var(--panel-2);
+    color: var(--txt);
+    font: 600 .95rem/1 var(--mono);
+    padding: 0 10px;
+    text-align: center;
+  }
+  .benderdata input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .tiny { color: var(--dim); font-size: .74rem; margin: 10px 0 0; }
+
+  footer {
+    margin-top: 26px;
+    color: var(--dim);
+    font-size: .76rem;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* ---------- sub tabs ---------- */
+  .subtabs {
+    display: inline-flex;
+    gap: 3px;
+    padding: 3px;
+    margin-bottom: 20px;
+    background: #0d1219;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .subtabs button {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--dim);
+    font: 600 .8rem/1 var(--sans);
+    padding: 0 15px;
+    height: 32px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .subtabs button:hover { color: var(--txt); }
+  .subtabs button.on { background: #232d3b; color: var(--txt); box-shadow: inset 0 0 0 1px #354253; }
+  .subtabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- run builder ---------- */
+  .runhead, .runrow {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr) 82px 30px;
+    gap: 7px;
+    align-items: center;
+  }
+  .runhead {
+    font: 700 .56rem/1 var(--sans);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 6px;
+    padding: 0 2px;
+  }
+  .runrow { margin-bottom: 7px; }
+  .runidx { font: 700 .72rem/1 var(--mono); color: var(--dim); text-align: center; }
+  .runrow input {
+    width: 100%;
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--txt);
+    font: 600 1.02rem/1 var(--mono);
+    padding: 0 10px;
+  }
+  .runrow input::placeholder { color: #38414f; font-weight: 500; font-size: .8rem; }
+  .runrow input:focus { outline: none; border-color: var(--accent); }
+  .runrow select {
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--txt);
+    font: 600 .92rem/1 var(--mono);
+    padding: 0 4px 0 8px;
+    appearance: none;
+    cursor: pointer;
+  }
+  .runrow select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .runrow .del {
+    width: 30px;
+    height: 42px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--dim);
+    cursor: pointer;
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+  .runrow .del:hover { color: var(--bad); border-color: #5a2b2b; }
+  .addrow {
+    width: 100%;
+    height: 40px;
+    margin-top: 4px;
+    border-radius: 10px;
+    border: 1px dashed var(--line-2);
+    background: transparent;
+    color: var(--mut);
+    font: 600 .84rem/1 var(--sans);
+    cursor: pointer;
+  }
+  .addrow:hover { color: var(--txt); border-color: #4a586d; }
+
+  .budget {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 20px;
+    background: #10161e;
+    border-bottom: 1px solid var(--line);
+  }
+  .degbar { flex: 1; height: 7px; border-radius: 99px; background: #1c2531; overflow: hidden; }
+  .degbar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 99px; transition: width .2s; }
+  .degbar.over i { background: var(--bad); }
+  .budget .txt { font: 700 .72rem/1 var(--mono); color: var(--mut); white-space: nowrap; }
+  .budget.over .txt { color: var(--bad); }
+
+  @media (max-width: 520px) {
+    .tabs { width: 100%; }
+    .tabs button { flex: 1 1 auto; padding: 0 11px; font-size: .86rem; height: 40px; }
+  }
+
+  @media (max-width: 420px) {
+    .app { padding: 16px 12px 48px; }
+    .chip { padding: 0 11px; font-size: .86rem; }
+    .tile { padding: 14px 14px 16px; }
+    .body { padding: 16px; }
+  }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .top .sizeset, .tabs, .inputcol, .ref, .actions, .swap, footer { display: none !important; }
+    main { display: block; }
+    .card { border: 1px solid #ccc; box-shadow: none; background: #fff; color: #000; }
+    .tile, .body, .diagram { background: #fff !important; }
+    .tile .v, .steps li, .stat dd { color: #000 !important; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+        <path d="M3 27h13a8 8 0 0 0 8-8V3" stroke="#ffb020" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="9" cy="27" r="2.4" fill="#ffb020"/>
+        <circle cx="24" cy="9" r="2.4" fill="#ffb020" opacity=".45"/>
+      </svg>
+      <div>
+        <h1>EMT Bender Buddy</h1>
+        <p>Mark it. Set the arrow. Bend it.</p>
+      </div>
+    </div>
+
+    <div class="sizeset">
+      <span class="lab">Conduit</span>
+      <div class="chips" id="sizeChips" role="group" aria-label="Conduit size"></div>
+    </div>
+  </header>
+
+  <nav class="tabs" id="modeTabs" role="tablist" aria-label="Bend type">
+    <button role="tab" data-mode="single" class="on" aria-selected="true">Single</button>
+    <button role="tab" data-mode="offset" aria-selected="false">Offset</button>
+    <button role="tab" data-mode="b2b" aria-selected="false">Back-to-back</button>
+    <button role="tab" data-mode="saddle" aria-selected="false">Saddle</button>
+    <button role="tab" data-mode="run" aria-selected="false">Run</button>
+  </nav>
+
+  <main>
+    <!-- ============ INPUTS ============ -->
+    <div class="inputcol">
+      <section class="card" id="singlePanel" role="tabpanel">
+
+        <div class="subtabs" id="singleTabs" role="group" aria-label="Single bend type">
+          <button type="button" data-sub="corner" class="on">Corner</button>
+          <button type="button" data-sub="kick">Kick</button>
+        </div>
+
+        <div id="singleCorner">
+        <h2>Bend angle</h2>
+        <div class="chips" id="angleChips" role="group" aria-label="Bend angle"></div>
+
+        <h2>Measurements</h2>
+        <p class="hint">Fill in any two — the third is worked out for you.</p>
+
+        <div class="fields">
+          <label class="field" data-key="a">
+            <span class="fl">Leg A <em>— connector A to the bend</em></span>
+            <span class="iw">
+              <input id="inA" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 24 1/2" aria-label="Leg A, connector A to the bend, in inches">
+              <span class="u">in</span>
+            </span>
+            <span class="auto-tag">solved</span>
+          </label>
+
+          <label class="field" data-key="b">
+            <span class="fl">Leg B <em>— bend to connector B</em></span>
+            <span class="iw">
+              <input id="inB" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 18" aria-label="Leg B, bend to connector B, in inches">
+              <span class="u">in</span>
+            </span>
+            <span class="auto-tag">solved</span>
+          </label>
+
+          <label class="field" data-key="d">
+            <span class="fl">Diagonal <em>— connector to connector</em></span>
+            <span class="iw">
+              <input id="inD" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 30 1/4" aria-label="Diagonal, connector to connector, in inches">
+              <span class="u">in</span>
+            </span>
+            <span class="auto-tag">solved</span>
+          </label>
+        </div>
+
+        <div id="triNote" aria-live="polite"></div>
+
+        <button class="swap" id="swapLegs" type="button">⇄&nbsp;&nbsp;Swap legs (bend the other way)</button>
+        </div>
+
+        <div id="singleKick" hidden>
+          <h2>Kick</h2>
+          <p class="hint">One bend near the end to step the run over. Fill in any two.</p>
+
+          <div class="fields">
+            <label class="field" data-key="kx">
+              <span class="fl">Kick <em>— how far the end has to move</em></span>
+              <span class="iw">
+                <input id="inKickX" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 2" aria-label="Kick distance in inches">
+                <span class="u">in</span>
+              </span>
+              <span class="auto-tag">solved</span>
+            </label>
+
+            <label class="field" data-key="kl">
+              <span class="fl">Bend is at <em>— from the end of the pipe</em></span>
+              <span class="iw">
+                <input id="inKickL" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 18" aria-label="Distance from the end of the pipe to the bend, in inches">
+                <span class="u">in</span>
+              </span>
+              <span class="auto-tag">solved</span>
+            </label>
+
+            <label class="field" data-key="ka">
+              <span class="fl">Bend angle <em>— degrees</em></span>
+              <span class="iw">
+                <input id="inKickA" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="e.g. 6.4" aria-label="Bend angle in degrees">
+                <span class="u">°</span>
+              </span>
+              <span class="auto-tag">solved</span>
+            </label>
+          </div>
+
+          <div id="kickNote" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="card" id="offsetPanel" role="tabpanel" hidden>
+
+        <div class="subtabs" id="offsetTabs" role="group" aria-label="Offset type">
+          <button type="button" data-sub="straight" class="on">Straight</button>
+          <button type="button" data-sub="rolling">Rolling</button>
+          <button type="button" data-sub="box">Box</button>
+        </div>
+
+        <div id="offAngleBlock">
+          <h2>Offset angle</h2>
+          <div class="chips" id="offAngleChips" role="group" aria-label="Offset angle"></div>
+        </div>
+
+        <h2 id="offMeasureHead">Measurements</h2>
+        <p class="hint" id="offHint">Measure from the end of the pipe you will hold on your left.</p>
+
+        <div class="fields" id="offStraightFields">
+          <label class="field" data-key="start">
+            <span class="fl">Offset starts at <em>— from the end</em></span>
+            <span class="iw">
+              <input id="inStart" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 12" aria-label="Distance from the end of the pipe to where the offset starts, in inches">
+              <span class="u">in</span>
+            </span>
+          </label>
+
+          <label class="field" data-key="depth">
+            <span class="fl">Offset depth <em>— how far it kicks over</em></span>
+            <span class="iw">
+              <input id="inDepth" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 4" aria-label="Offset depth in inches">
+              <span class="u">in</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="fields" id="offRollingFields" hidden>
+          <label class="field">
+            <span class="fl">Offset starts at <em>— from the end</em></span>
+            <span class="iw">
+              <input id="inRollStart" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 12" aria-label="Distance from the end of the pipe to where the offset starts, in inches">
+              <span class="u">in</span>
+            </span>
+          </label>
+
+          <label class="field">
+            <span class="fl">Rise <em>— how far it climbs</em></span>
+            <span class="iw">
+              <input id="inRollRise" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 4" aria-label="Vertical rise in inches">
+              <span class="u">in</span>
+            </span>
+          </label>
+
+          <label class="field">
+            <span class="fl">Roll <em>— how far it moves sideways</em></span>
+            <span class="iw">
+              <input id="inRollRoll" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 3" aria-label="Sideways roll in inches">
+              <span class="u">in</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="fields" id="offBoxFields" hidden>
+          <h2>Bend angle</h2>
+          <div class="chips" id="boxAngleChips" role="group" aria-label="Box offset angle"></div>
+
+          <h2>Measurements</h2>
+          <p class="hint" style="margin-top:-2px">Keep the offset just behind the connector.</p>
+
+          <label class="field">
+            <span class="fl">First bend <em>— from the end that goes in the box</em></span>
+            <span class="iw">
+              <input id="inBoxFrom" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 2 1/2" aria-label="Distance from the box end to the first bend, in inches">
+              <span class="u">in</span>
+            </span>
+          </label>
+
+          <label class="field">
+            <span class="fl">Offset depth <em>— enough to clear the box</em></span>
+            <span class="iw">
+              <input id="inBoxDepth" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 3/8" aria-label="Box offset depth in inches">
+              <span class="u">in</span>
+            </span>
+          </label>
+        </div>
+
+        <div id="offNote" aria-live="polite"></div>
+      </section>
+
+      <section class="card" id="b2bPanel" role="tabpanel" hidden>
+        <h2>Back-to-back 90s</h2>
+        <p class="hint">Two 90s in the same direction — a U. Distance is back-of-bend to back-of-bend.</p>
+
+        <div class="fields">
+          <label class="field">
+            <span class="fl">Leg 1 <em>— End A to the back of the first 90</em></span>
+            <span class="iw">
+              <input id="inB2bLeg1" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 24" aria-label="Leg 1, end A to the back of the first 90, in inches">
+              <span class="u">in</span>
+            </span>
+          </label>
+
+          <label class="field">
+            <span class="fl">Back-to-back <em>— back of 1st 90 to back of 2nd</em></span>
+            <span class="iw">
+              <input id="inB2bDist" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 36" aria-label="Back-to-back distance in inches">
+              <span class="u">in</span>
+            </span>
+          </label>
+
+          <label class="field">
+            <span class="fl">Leg 2 <em>— back of the 2nd 90 to End B</em></span>
+            <span class="iw">
+              <input id="inB2bLeg2" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="optional" aria-label="Leg 2, back of the second 90 to end B, in inches">
+              <span class="u">in</span>
+            </span>
+          </label>
+        </div>
+
+        <div id="b2bNote" aria-live="polite"></div>
+      </section>
+
+      <section class="card" id="saddlePanel" role="tabpanel" hidden>
+
+        <div class="subtabs" id="saddleTabs" role="group" aria-label="Saddle type">
+          <button type="button" data-sub="3" class="on">3-point</button>
+          <button type="button" data-sub="4">4-point</button>
+        </div>
+
+        <div id="sad3">
+          <h2>Bend angles</h2>
+          <p class="hint">Centre 45°, outer 22.5°. The pipe hops over the obstruction and comes back level.</p>
+
+          <h2>Measurements</h2>
+          <div class="fields">
+            <label class="field">
+              <span class="fl">Obstruction height <em>— how high it has to clear</em></span>
+              <span class="iw">
+                <input id="inSadH" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 2" aria-label="Obstruction height in inches">
+                <span class="u">in</span>
+              </span>
+            </label>
+
+            <label class="field">
+              <span class="fl">Obstruction is at <em>— from End A</em></span>
+              <span class="iw">
+                <input id="inSadAt" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 36" aria-label="Distance from end A to the obstruction, in inches">
+                <span class="u">in</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div id="sad4" hidden>
+          <h2>Bend angle</h2>
+          <div class="chips" id="sadAngleChips" role="group" aria-label="Four-point saddle bend angle"></div>
+
+          <h2>Measurements</h2>
+          <p class="hint">For wide obstructions — up, across, back down. Two offsets back to back.</p>
+
+          <div class="fields">
+            <label class="field">
+              <span class="fl">Obstruction height <em>— how high it has to clear</em></span>
+              <span class="iw">
+                <input id="inSad4H" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 3" aria-label="Obstruction height in inches">
+                <span class="u">in</span>
+              </span>
+            </label>
+
+            <label class="field">
+              <span class="fl">Obstruction width <em>— across the top</em></span>
+              <span class="iw">
+                <input id="inSad4W" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 12" aria-label="Obstruction width in inches">
+                <span class="u">in</span>
+              </span>
+            </label>
+
+            <label class="field">
+              <span class="fl">Near edge is at <em>— from End A</em></span>
+              <span class="iw">
+                <input id="inSad4At" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. 36" aria-label="Distance from end A to the near edge of the obstruction, in inches">
+                <span class="u">in</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div id="sadNote" aria-live="polite"></div>
+      </section>
+
+      <section class="card" id="runPanel" role="tabpanel" hidden>
+        <h2>Run of bends</h2>
+        <p class="hint">Each leg runs from the back of the previous bend. The first leg starts at End A.</p>
+
+        <div class="runhead"><span></span><span>Leg</span><span>Bend</span><span></span></div>
+        <div id="runRows"></div>
+        <button class="addrow" id="addBend" type="button">+ Add a bend</button>
+
+        <div class="fields" style="margin-top:16px">
+          <label class="field">
+            <span class="fl">Final leg <em>— last bend to End B</em></span>
+            <span class="iw">
+              <input id="inRunFinal" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="optional" aria-label="Final leg from the last bend to end B, in inches">
+              <span class="u">in</span>
+            </span>
+          </label>
+        </div>
+
+        <div id="runNote" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <!-- ============ OUTPUT ============ -->
+    <section class="out card" aria-live="polite">
+      <div id="warnSlot"></div>
+      <div id="budget" class="budget" hidden></div>
+      <div class="hero" id="hero"></div>
+      <div class="diagram" id="diagram"></div>
+      <div class="body">
+        <ol class="steps" id="steps"></ol>
+        <dl class="stats" id="stats"></dl>
+        <div class="actions">
+          <button class="btn primary" id="copyBtn" type="button">Copy the steps</button>
+          <button class="btn" id="printBtn" type="button">Print</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ REFERENCE ============ -->
+  <details class="card ref">
+    <summary>Bender reference &amp; setup</summary>
+    <div class="refgrid">
+      <div>
+        <table>
+          <caption>Take-up &amp; gain</caption>
+          <thead><tr><th>EMT</th><th>Take-up</th><th>Gain</th></tr></thead>
+          <tbody id="refBender"></tbody>
+        </table>
+        <p class="tiny">Take-up and gain are stamped on most bender heads — check yours, they vary by brand.</p>
+      </div>
+      <div>
+        <table>
+          <caption>Offset multipliers &amp; shrink</caption>
+          <thead><tr><th>Angle</th><th>×</th><th>Shrink / in</th></tr></thead>
+          <tbody id="refOffset"></tbody>
+        </table>
+      </div>
+      <div>
+        <table>
+          <caption>Sine multipliers (exact)</caption>
+          <thead><tr><th>Angle</th><th>Multiplier</th></tr></thead>
+          <tbody id="refExact"></tbody>
+        </table>
+        <p class="tiny">The app uses exact geometry. Chart numbers are rounded for the field.</p>
+      </div>
+    </div>
+
+    <div class="benderdata">
+      <label for="takeUpInput">Take-up for this bender</label>
+      <input id="takeUpInput" type="text" inputmode="decimal" aria-label="Bender take-up in inches">
+      <button class="btn" id="resetBender" type="button" style="height:36px;font-size:.78rem;">Reset to chart</button>
+    </div>
+    <p class="tiny" id="benderMeta"></p>
+  </details>
+
+  <footer>
+    Bends must add up to 360° or less between pull points (NEC 358.26).<br>
+    Not affiliated with any bender manufacturer — always check your own tool.<br>
+    Developed by DumpsterWare.
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* =====================================================================
+     Bender data & constants
+     ===================================================================== */
+
+  var CONDUITS = {
+    "1/2":   { label: '1/2"',   takeUp: 5,  gain: 2.5,  radius: 4.0,  od: 0.706 },
+    "3/4":   { label: '3/4"',   takeUp: 6,  gain: 3.25, radius: 4.5,  od: 0.922 },
+    "1":     { label: '1"',     takeUp: 8,  gain: 4.0,  radius: 5.75, od: 1.163 },
+    "1-1/4": { label: '1-1/4"', takeUp: 11, gain: 5.5,  radius: 8.0,  od: 1.51 }
+  };
+
+  var SIZE_ORDER = ["1/2", "3/4", "1", "1-1/4"];
+  var SINGLE_ANGLES = [15, 30, 45, 60, 75, 90];
+  var OFFSET_ANGLES = [10, 15, 22.5, 30, 45, 60];
+
+  var SHRINK_PER_IN = { 10: 1 / 16, 15: 1 / 8, 22.5: 3 / 16, 30: 1 / 4, 45: 3 / 8, 60: 1 / 2 };
+  var CHART_MULT = { 10: 6.0, 15: 3.9, 22.5: 2.6, 30: 2.0, 45: 1.4, 60: 1.2 };
+
+  var DEG = Math.PI / 180;
+  var STORAGE_KEY = "emt-bender-v1";
+
+  /* =====================================================================
+     Small helpers
+     ===================================================================== */
+
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  function gcd(a, b) { while (b) { var t = a % b; a = b; b = t; } return a; }
+
+  /** Parse "24 1/2", "24-1/2", '24.5', "1/2", '24 1/2"' -> inches. NaN if unreadable. */
+  function parseIn(raw) {
+    if (raw === null || raw === undefined) return NaN;
+    var s = String(raw).trim();
+    if (!s) return NaN;
+    s = s.replace(/[\u2033\u201d"]/g, "").replace(/,/g, " ").trim();
+    s = s.replace(/(\d)\s*[-+]\s*(?=\d+\s*\/)/, "$1 ");
+    var m = s.match(/^([+-]?)(?:(\d+(?:\.\d*)?|\.\d+)\s+)?(\d+)\s*\/\s*(\d+)$/);
+    if (m) {
+      var den = parseInt(m[4], 10);
+      if (!den) return NaN;
+      var whole = m[2] ? parseFloat(m[2]) : 0;
+      return (m[1] === "-" ? -1 : 1) * (whole + parseInt(m[3], 10) / den);
+    }
+    if (/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(s)) return parseFloat(s);
+    return NaN;
+  }
+
+  /** 24.375 -> '24 3/8"' (nearest 1/16). */
+  function frac(v, denom) {
+    if (!isFinite(v)) return "—";
+    denom = denom || 16;
+    var sign = v < 0 ? "-" : "";
+    var a = Math.abs(v);
+    var whole = Math.floor(a + 1e-9);
+    var n = Math.round((a - whole) * denom);
+    if (n === denom) { whole += 1; n = 0; }
+    if (n === 0) return sign + whole + '"';
+    var g = gcd(n, denom);
+    return sign + (whole ? whole + " " : "") + (n / g) + "/" + (denom / g) + '"';
+  }
+
+  /** 24.375 -> '24.38"' */
+  function dec(v, places) {
+    if (!isFinite(v)) return "—";
+    var p = places === undefined ? 2 : places;
+    var s = v.toFixed(p).replace(/\.?0+$/, "");
+    return s + '"';
+  }
+
+  function mult(a) { return 1 / Math.sin(a * DEG); }
+  function shrinkFactor(a) { return Math.tan((a / 2) * DEG); }
+  function gainAt(angle, c) {
+    if (angle === 90) return c.gain;
+    return 2 * (c.radius + c.od / 2) * Math.tan((angle / 2) * DEG) - c.radius * (angle * DEG);
+  }
+
+  /** 24.375 -> '24 3/8' (no inch mark) for writing back into an input. */
+  function inputFrac(v) {
+    var denom = 16;
+    var whole = Math.floor(v + 1e-9);
+    var n = Math.round((v - whole) * denom);
+    if (n === denom) { whole += 1; n = 0; }
+    if (n === 0) return String(whole);
+    var g = gcd(n, denom);
+    return (whole ? whole + " " : "") + (n / g) + "/" + (denom / g);
+  }
+
+  function num(v) { return isFinite(v) ? frac(v) + " <span>" + dec(v) + "</span>" : "—"; }
+
+  /* =====================================================================
+     State
+     ===================================================================== */
+
+  var state = {
+    size: "1/2",
+    mode: "single",
+    singleAngle: 90,
+    offsetAngle: 30,
+    tri: { a: "", b: "", d: "" },
+    autoKey: null,
+    lastEdit: null,
+    singleMode: "corner",
+    kick: { x: "", l: "", a: "" },
+    kickAuto: null,
+    kickLast: null,
+    box: { from: "", depth: "" },
+    boxAngle: 10,
+    offset: { start: "", depth: "" },
+    offsetMode: "straight",
+    rolling: { start: "", rise: "", roll: "" },
+    b2b: { leg1: "", dist: "", leg2: "" },
+    saddle: { h: "", at: "", w: "" },
+    saddleMode: "3",
+    saddleAngle: 30,
+    run: { rows: [{ leg: "", angle: 90 }], final: "" },
+    overrides: {}
+  };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      var s = JSON.parse(raw);
+      if (s && typeof s === "object") {
+        if (s.size && CONDUITS[s.size]) state.size = s.size;
+        if (s.mode === "single" || s.mode === "offset" || s.mode === "b2b" ||
+            s.mode === "saddle" || s.mode === "run") state.mode = s.mode;
+        if (SINGLE_ANGLES.indexOf(s.singleAngle) >= 0) state.singleAngle = s.singleAngle;
+        if (OFFSET_ANGLES.indexOf(s.offsetAngle) >= 0) state.offsetAngle = s.offsetAngle;
+        if (s.tri && typeof s.tri === "object") {
+          ["a", "b", "d"].forEach(function (k) { if (typeof s.tri[k] === "string") state.tri[k] = s.tri[k]; });
+        }
+        if (s.offset) {
+          if (typeof s.offset.start === "string") state.offset.start = s.offset.start;
+          if (typeof s.offset.depth === "string") state.offset.depth = s.offset.depth;
+        }
+        if (s.b2b) {
+          ["leg1", "dist", "leg2"].forEach(function (k) {
+            if (typeof s.b2b[k] === "string") state.b2b[k] = s.b2b[k];
+          });
+        }
+        if (s.saddle) {
+          if (typeof s.saddle.h === "string") state.saddle.h = s.saddle.h;
+          if (typeof s.saddle.at === "string") state.saddle.at = s.saddle.at;
+          if (typeof s.saddle.w === "string") state.saddle.w = s.saddle.w;
+        }
+        if (s.offsetMode === "straight" || s.offsetMode === "rolling") state.offsetMode = s.offsetMode;
+        if (s.offsetMode === "box") state.offsetMode = s.offsetMode;
+        if (s.singleMode === "corner" || s.singleMode === "kick") state.singleMode = s.singleMode;
+        if (s.kick) {
+          ["x", "l", "a"].forEach(function (k) {
+            if (typeof s.kick[k] === "string") state.kick[k] = s.kick[k];
+          });
+        }
+        if (s.box) {
+          if (typeof s.box.from === "string") state.box.from = s.box.from;
+          if (typeof s.box.depth === "string") state.box.depth = s.box.depth;
+        }
+        if ([10, 15, 22.5].indexOf(s.boxAngle) >= 0) state.boxAngle = s.boxAngle;
+        if (s.rolling) {
+          ["start", "rise", "roll"].forEach(function (k) {
+            if (typeof s.rolling[k] === "string") state.rolling[k] = s.rolling[k];
+          });
+        }
+        if (s.saddleMode === "3" || s.saddleMode === "4") state.saddleMode = s.saddleMode;
+        if ([22.5, 30, 45].indexOf(s.saddleAngle) >= 0) state.saddleAngle = s.saddleAngle;
+        if (s.run && Array.isArray(s.run.rows) && s.run.rows.length) {
+          state.run.rows = s.run.rows.slice(0, 8).map(function (r) {
+            return {
+              leg: typeof r.leg === "string" ? r.leg : "",
+              angle: SINGLE_ANGLES.indexOf(r.angle) >= 0 ? r.angle : 90
+            };
+          });
+          if (typeof s.run.final === "string") state.run.final = s.run.final;
+        }
+        if (s.overrides && typeof s.overrides === "object") state.overrides = s.overrides;
+      }
+    } catch (e) { /* ignore broken storage */ }
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        size: state.size, mode: state.mode,
+        singleAngle: state.singleAngle, offsetAngle: state.offsetAngle,
+        tri: state.tri, offset: state.offset, overrides: state.overrides,
+        b2b: state.b2b, saddle: state.saddle, run: state.run,
+        offsetMode: state.offsetMode, rolling: state.rolling,
+        saddleMode: state.saddleMode, saddleAngle: state.saddleAngle,
+        singleMode: state.singleMode, kick: state.kick,
+        box: state.box, boxAngle: state.boxAngle
+      }));
+    } catch (e) { /* private mode etc. */ }
+  }
+
+  function conduit() {
+    var base = CONDUITS[state.size];
+    var c = { label: base.label, gain: base.gain, radius: base.radius, od: base.od, takeUp: base.takeUp };
+    var ov = parseIn(state.overrides[state.size]);
+    if (isFinite(ov) && ov > 0) c.takeUp = ov;
+    return c;
+  }
+
+  /* =====================================================================
+     Geometry
+     ===================================================================== */
+
+  /**
+   * Triangle: connector A --(leg a)--> corner --(leg b)--> connector B,
+   * diagonal d between the connectors. The bend angle is the deflection,
+   * so the interior angle at the corner is (180 - angle).
+   * Law of cosines: d^2 = a^2 + b^2 + 2ab*cos(angle)
+   */
+  function solveTriangle(a, b, d, angle) {
+    var cos = Math.cos(angle * DEG);
+    var sin = Math.sin(angle * DEG);
+    var va = isFinite(a) && a > 0, vb = isFinite(b) && b > 0, vd = isFinite(d) && d > 0;
+
+    if (va && vb) {
+      return { a: a, b: b, d: Math.sqrt(Math.max(0, a * a + b * b + 2 * a * b * cos)) };
+    }
+    if (va && vd) {
+      var disc1 = d * d - a * a * sin * sin;
+      if (disc1 < 0) return null;
+      var bb = -a * cos + Math.sqrt(disc1);
+      if (!(bb > 0)) return null;
+      return { a: a, b: bb, d: d };
+    }
+    if (vb && vd) {
+      var disc2 = d * d - b * b * sin * sin;
+      if (disc2 < 0) return null;
+      var aa = -b * cos + Math.sqrt(disc2);
+      if (!(aa > 0)) return null;
+      return { a: aa, b: b, d: d };
+    }
+    return null;
+  }
+
+  /* =====================================================================
+     SVG: single bend
+     ===================================================================== */
+
+  function diagramSingle(g) {
+    var W = 660, H = 380, padX = 74, padY = 62;
+    var phi = Math.PI - g.angle * DEG;
+
+    var uA = { x: -1, y: 0 };
+    var uB = { x: -Math.cos(phi), y: Math.sin(phi) };
+
+    var pA = { x: -g.a, y: 0 };
+    var pB = { x: g.b * uB.x, y: g.b * uB.y };
+    var pC = { x: 0, y: 0 };
+    var pm = { x: -g.a + g.mark, y: 0 };
+
+    var pts = [pA, pB, pC, pm];
+    var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    pts.forEach(function (p) {
+      minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+      minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
+    });
+
+    var spanX = Math.max(maxX - minX, 1);
+    var spanY = Math.max(maxY - minY, 1);
+    var s = Math.min((W - 2 * padX) / spanX, (H - 2 * padY) / spanY);
+    var cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+    var ox = W / 2, oy = H / 2;
+
+    function P(p) { return { x: ox + (p.x - cx) * s, y: oy - (p.y - cy) * s }; }
+
+    var A = P(pA), B = P(pB), C = P(pC), M = P(pm);
+
+    // unit vectors in screen space
+    var dA = norm({ x: A.x - C.x, y: A.y - C.y });
+    var dB = norm({ x: B.x - C.x, y: B.y - C.y });
+
+    var arcR = Math.min(46, 0.42 * Math.min(dist(A, C), dist(B, C)));
+    var tA = { x: C.x + dA.x * arcR, y: C.y + dA.y * arcR };
+    var tB = { x: C.x + dB.x * arcR, y: C.y + dB.y * arcR };
+
+    var sw = 11;
+    var path = "M " + A.x + " " + A.y + " L " + tA.x + " " + tA.y +
+      " Q " + C.x + " " + C.y + " " + tB.x + " " + tB.y +
+      " L " + B.x + " " + B.y;
+
+    var parts = [];
+    parts.push('<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Layout diagram: leg A, leg B and the bend angle">');
+
+    // grid dots
+    parts.push('<defs><pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#1e2733"/></pattern></defs>');
+    parts.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="url(#dots)"/>');
+
+    // shadow + pipe
+    parts.push('<path d="' + path + '" fill="none" stroke="#000" stroke-opacity=".45" stroke-width="' + (sw + 4) + '" stroke-linecap="round" transform="translate(0,3)"/>');
+    parts.push('<path d="' + path + '" fill="none" stroke="#c9d3e2" stroke-width="' + sw + '" stroke-linecap="round"/>');
+    parts.push('<path d="' + path + '" fill="none" stroke="#ffffff" stroke-opacity=".28" stroke-width="2" stroke-linecap="round" transform="translate(0,-2)"/>');
+
+    // connector boxes
+    parts.push(boxAt(A, dA, -1));
+    parts.push(boxAt(B, dB, 1));
+
+    // diagonal (dashed)
+    parts.push('<line x1="' + A.x + '" y1="' + A.y + '" x2="' + B.x + '" y2="' + B.y + '" stroke="#3f5a7a" stroke-width="1.6" stroke-dasharray="6 6"/>');
+    parts.push(labelAt(mid(A, B), "D " + frac(g.d), "#9db9d8", -14, 0, "middle"));
+
+    // leg dimensions
+    var nA = { x: dA.y, y: -dA.x };
+    var offA = 34;
+    var dA1 = { x: A.x + nA.x * offA, y: A.y + nA.y * offA };
+    var dA2 = { x: C.x + nA.x * offA, y: C.y + nA.y * offA };
+    parts.push(dim(dA1, dA2, "A " + frac(g.a)));
+
+    var nB = { x: -dB.y, y: dB.x };
+    var offB = 34;
+    var dB1 = { x: B.x + nB.x * offB, y: B.y + nB.y * offB };
+    var dB2 = { x: C.x + nB.x * offB, y: C.y + nB.y * offB };
+    parts.push(dim(dB1, dB2, "B " + frac(g.b)));
+
+    // mark tick
+    parts.push('<g transform="rotate(' + (Math.atan2(dA.y, dA.x) * 180 / Math.PI) + ' ' + M.x + " " + M.y + ')">' +
+      '<line x1="' + M.x + '" y1="' + (M.y - 15) + '" x2="' + M.x + '" y2="' + (M.y + 15) + '" stroke="#ffb020" stroke-width="3.5" stroke-linecap="round"/>' +
+      "</g>");
+    parts.push('<circle cx="' + M.x + '" cy="' + M.y + '" r="4.5" fill="#ffb020"/>');
+    parts.push(labelAt(M, "MARK", "#ffb020", -nA.x * 27, -nA.y * 27, "middle", true));
+
+    // angle arc
+    var arcR2 = Math.max(30, arcR + 20);
+    var a1 = Math.atan2(dA.y, dA.x), a2 = Math.atan2(dB.y, dB.x);
+    parts.push('<path d="' + arcPath(C, arcR2, a1, a2) + '" fill="none" stroke="#ffb020" stroke-opacity=".55" stroke-width="1.6"/>');
+    var bis = unitBetween(a1, a2);
+    parts.push(labelAt({ x: C.x + bis.x * (arcR2 + 20), y: C.y + bis.y * (arcR2 + 20) }, g.angle + "°", "#ffb020", 0, 5, "middle", true));
+
+    parts.push("</svg>");
+    return parts.join("");
+  }
+
+  function boxAt(p, dir, side) {
+    var w = 16, h = 26;
+    var ang = Math.atan2(dir.y, dir.x) * 180 / Math.PI;
+    var x = p.x + dir.x * 9, y = p.y + dir.y * 9;
+    return '<g transform="rotate(' + ang + " " + x + " " + y + ')">' +
+      '<rect x="' + (x - 7) + '" y="' + (y - h / 2) + '" width="' + w + '" height="' + h + '" rx="3" fill="#1b2430" stroke="#4a5a70" stroke-width="2"/>' +
+      "</g>";
+  }
+
+  function dim(p1, p2, text) {
+    var a = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    var px = Math.cos(a + Math.PI / 2), py = Math.sin(a + Math.PI / 2);
+    var tick = 8;
+    var out = [];
+    out.push('<line x1="' + p1.x + '" y1="' + p1.y + '" x2="' + p2.x + '" y2="' + p2.y + '" stroke="#46566d" stroke-width="1.3"/>');
+    out.push('<line x1="' + (p1.x - px * tick) + '" y1="' + (p1.y - py * tick) + '" x2="' + (p1.x + px * tick) + '" y2="' + (p1.y + py * tick) + '" stroke="#46566d" stroke-width="1.3"/>');
+    out.push('<line x1="' + (p2.x - px * tick) + '" y1="' + (p2.y - py * tick) + '" x2="' + (p2.x + px * tick) + '" y2="' + (p2.y + py * tick) + '" stroke="#46566d" stroke-width="1.3"/>');
+    out.push(labelAt(mid(p1, p2), text, "#a7b4c6", 0, 0, "middle"));
+    return out.join("");
+  }
+
+  function labelV(p, text, color) {
+    return '<text x="' + p.x + '" y="' + p.y + '" fill="' + color + '" font-family="ui-monospace, Consolas, monospace" font-size="14" font-weight="600" text-anchor="middle" dominant-baseline="middle" stroke="#0c1118" stroke-width="4.5" paint-order="stroke" transform="rotate(-90 ' + p.x + " " + p.y + ')">' + text + "</text>";
+  }
+
+  function labelAt(p, text, color, dx, dy, anchor, bold) {
+    return '<text x="' + (p.x + (dx || 0)) + '" y="' + (p.y + (dy || 0)) + '" fill="' + color + '" font-family="ui-monospace, Consolas, monospace" font-size="' + (bold ? 16 : 15) + '" font-weight="' + (bold ? 700 : 600) + '" text-anchor="' + (anchor || "middle") + '" dominant-baseline="middle" stroke="#0c1118" stroke-width="4.5" paint-order="stroke" letter-spacing=".02em">' + text + "</text>";
+  }
+
+  function mid(a, b) { return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; }
+  function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+  function norm(v) { var l = Math.hypot(v.x, v.y) || 1; return { x: v.x / l, y: v.y / l }; }
+  function angDiff(a, b) { var d = b - a; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return d; }
+  function shortArc(a1, a2) { var d = angDiff(a1, a2); if (Math.abs(d) > Math.PI) d = d > 0 ? d - 2 * Math.PI : d + 2 * Math.PI; return d; }
+  function arcPath(c, r, a1, a2) {
+    var d = shortArc(a1, a2);
+    var x1 = c.x + Math.cos(a1) * r, y1 = c.y + Math.sin(a1) * r;
+    var x2 = c.x + Math.cos(a1 + d) * r, y2 = c.y + Math.sin(a1 + d) * r;
+    var sweep = d > 0 ? 1 : 0;
+    return "M " + x1 + " " + y1 + " A " + r + " " + r + " 0 0 " + sweep + " " + x2 + " " + y2;
+  }
+  function unitBetween(a1, a2, maxDeg) {
+    var d = shortArc(a1, a2);
+    var a = a1 + d / 2;
+    return { x: Math.cos(a), y: Math.sin(a) };
+  }
+
+  /* =====================================================================
+     SVG: offset
+     ===================================================================== */
+
+  function diagramOffset(g) {
+    var W = 660, H = 300, padX = 92, padY = 56;
+    var t = g.angle * DEG;
+    var travel = g.travel;
+    var tail = Math.max(2, Math.min(18, travel * 0.6));
+
+    var p0 = { x: 0, y: 0 };
+    var p1 = { x: g.start, y: 0 };
+    var p2 = { x: p1.x + travel * Math.cos(t), y: p1.y + travel * Math.sin(t) };
+    var p3 = { x: p2.x + tail, y: p2.y };
+    var refEnd = { x: g.start + travel + tail, y: 0 };
+
+    var xs = [0, p3.x, refEnd.x], ys = [0, g.depth];
+    var minX = 0, maxX = Math.max.apply(null, xs);
+    var minY = 0, maxY = g.depth;
+    var spanX = Math.max(maxX - minX, 1), spanY = Math.max(maxY - minY, 1);
+    var s = Math.min((W - 2 * padX) / spanX, (H - 2 * padY) / spanY);
+    var ox = padX - minX * s, oy = (H + g.depth * s) / 2;
+
+    function P(p) { return { x: ox + p.x * s, y: oy - p.y * s }; }
+
+    var P0 = P(p0), P1 = P(p1), P2 = P(p2), P3 = P(p3), RF = P(refEnd);
+    var dir1 = norm({ x: P1.x - P0.x, y: P1.y - P0.y });
+    var dir2 = norm({ x: P2.x - P1.x, y: P2.y - P1.y });
+    var dir3 = norm({ x: P3.x - P2.x, y: P3.y - P2.y });
+
+    var r = Math.min(38, 0.6 * Math.min(dist(P0, P1) || 30, dist(P1, P2), dist(P2, P3) || 30));
+    var t1a = { x: P1.x - dir1.x * r, y: P1.y - dir1.y * r };
+    var t1b = { x: P1.x + dir2.x * r, y: P1.y + dir2.y * r };
+    var t2a = { x: P2.x - dir2.x * r, y: P2.y - dir2.y * r };
+    var t2b = { x: P2.x + dir3.x * r, y: P2.y + dir3.y * r };
+
+    var path = "M " + P0.x + " " + P0.y +
+      " L " + t1a.x + " " + t1a.y + " Q " + P1.x + " " + P1.y + " " + t1b.x + " " + t1b.y +
+      " L " + t2a.x + " " + t2a.y + " Q " + P2.x + " " + P2.y + " " + t2b.x + " " + t2b.y +
+      " L " + P3.x + " " + P3.y;
+
+    var out = [];
+    out.push('<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Offset layout diagram showing both bend marks, the travel and the depth">');
+    out.push('<defs><pattern id="dots2" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#1e2733"/></pattern></defs>');
+    out.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="url(#dots2)"/>');
+
+    // original straight run
+    out.push('<line x1="' + P0.x + '" y1="' + P0.y + '" x2="' + RF.x + '" y2="' + RF.y + '" stroke="#3a4a5f" stroke-width="1.4" stroke-dasharray="7 7"/>');
+
+    // pipe
+    out.push('<path d="' + path + '" fill="none" stroke="#000" stroke-opacity=".45" stroke-width="15" stroke-linecap="round" transform="translate(0,3)"/>');
+    out.push('<path d="' + path + '" fill="none" stroke="#c9d3e2" stroke-width="11" stroke-linecap="round"/>');
+    out.push('<path d="' + path + '" fill="none" stroke="#fff" stroke-opacity=".26" stroke-width="2" stroke-linecap="round" transform="translate(0,-2)"/>');
+
+    // marks
+    [P1, P2].forEach(function (p, i) {
+      out.push('<line x1="' + p.x + '" y1="' + (p.y - 16) + '" x2="' + p.x + '" y2="' + (p.y + 16) + '" stroke="#ffb020" stroke-width="3.5" stroke-linecap="round"/>');
+      out.push('<circle cx="' + p.x + '" cy="' + p.y + '" r="4.5" fill="#ffb020"/>');
+      out.push(labelAt({ x: p.x, y: p.y - 30 }, "MARK " + (i + 1), "#ffb020", 0, 0, "middle", true));
+    });
+
+    // depth dimension on the right
+    var depthX = P3.x + 26;
+    out.push('<line x1="' + P3.x + '" y1="' + P3.y + '" x2="' + P3.x + '" y2="' + P0.y + '" stroke="#46566d" stroke-width="1" stroke-dasharray="4 5" stroke-opacity=".7"/>');
+    out.push('<line x1="' + depthX + '" y1="' + P0.y + '" x2="' + depthX + '" y2="' + P3.y + '" stroke="#46566d" stroke-width="1.3"/>');
+    out.push('<line x1="' + P2.x + '" y1="' + P3.y + '" x2="' + (depthX + 6) + '" y2="' + P3.y + '" stroke="#46566d" stroke-width="1" stroke-dasharray="4 4"/>');
+    out.push('<line x1="' + depthX + '" y1="' + P0.y + '" x2="' + (depthX + 6) + '" y2="' + P0.y + '" stroke="#46566d" stroke-width="1" stroke-dasharray="4 4"/>');
+    out.push(labelV({ x: depthX + 14, y: (P0.y + P3.y) / 2 }, "depth " + frac(g.depth), "#a7b4c6"));
+
+    // travel between marks
+    out.push('<line x1="' + P1.x + '" y1="' + (P0.y + 34) + '" x2="' + P2.x + '" y2="' + (P2.y + 34) + '" stroke="#46566d" stroke-width="1.3" stroke-dasharray="5 4"/>');
+    out.push(labelAt({ x: (P1.x + P2.x) / 2, y: P0.y + 34 },
+      "travel " + frac(g.travel), "#a7b4c6", 0, 0, "middle"));
+
+    // start dimension
+    out.push(dim({ x: P0.x, y: P0.y + 34 }, { x: P1.x, y: P0.y + 34 }, frac(g.start)));
+
+    // shrink callout
+    out.push('<line x1="' + P3.x + '" y1="' + P0.y + '" x2="' + RF.x + '" y2="' + P0.y + '" stroke="#ff8a1f" stroke-width="2.4"/>');
+    out.push('<line x1="' + P3.x + '" y1="' + (P0.y - 7) + '" x2="' + P3.x + '" y2="' + (P0.y + 7) + '" stroke="#ff8a1f" stroke-width="2.4"/>');
+    out.push('<line x1="' + RF.x + '" y1="' + (P0.y - 7) + '" x2="' + RF.x + '" y2="' + (P0.y + 7) + '" stroke="#ff8a1f" stroke-width="2.4"/>');
+    out.push(labelAt({ x: (P3.x + RF.x) / 2, y: P0.y + 20 }, "shrink " + frac(g.shrink), "#ff8a1f", 0, 0, "middle", true));
+
+    out.push("</svg>");
+    return out.join("");
+  }
+
+  /* =====================================================================
+     Rendering
+     ===================================================================== */
+
+  var els = {};
+
+  function buildChips() {
+    var sizeChips = $("#sizeChips");
+    sizeChips.innerHTML = "";
+    SIZE_ORDER.forEach(function (k) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.dataset.size = k;
+      b.textContent = CONDUITS[k].label;
+      b.addEventListener("click", function () {
+        state.size = k;
+        save();
+        syncSizeChips();
+        renderReference();
+        render();
+      });
+      sizeChips.appendChild(b);
+    });
+
+    var angleChips = $("#angleChips");
+    angleChips.innerHTML = "";
+    SINGLE_ANGLES.forEach(function (a) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.dataset.angle = a;
+      b.textContent = a + "°";
+      b.addEventListener("click", function () {
+        state.singleAngle = a;
+        save();
+        syncAngleChips();
+        syncTriangle(false);
+        render();
+      });
+      angleChips.appendChild(b);
+    });
+
+    var offChips = $("#offAngleChips");
+    offChips.innerHTML = "";
+    OFFSET_ANGLES.forEach(function (a) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.dataset.angle = a;
+      b.textContent = a + "°";
+      b.addEventListener("click", function () {
+        state.offsetAngle = a;
+        save();
+        syncOffChips();
+        render();
+      });
+      offChips.appendChild(b);
+    });
+
+    var sadChips = $("#sadAngleChips");
+    sadChips.innerHTML = "";
+    [22.5, 30, 45].forEach(function (a) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.dataset.angle = a;
+      b.textContent = a + "°";
+      b.addEventListener("click", function () {
+        state.saddleAngle = a;
+        save();
+        syncSadChips();
+        render();
+      });
+      sadChips.appendChild(b);
+    });
+
+    var boxChips = $("#boxAngleChips");
+    boxChips.innerHTML = "";
+    [10, 15, 22.5].forEach(function (a) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.dataset.angle = a;
+      b.textContent = a + "°";
+      b.addEventListener("click", function () {
+        state.boxAngle = a;
+        save();
+        syncBoxChips();
+        render();
+      });
+      boxChips.appendChild(b);
+    });
+  }
+
+  function syncSizeChips() {
+    $$("#sizeChips .chip").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.dataset.size === state.size));
+    });
+  }
+  function syncAngleChips() {
+    $$("#angleChips .chip").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(Number(b.dataset.angle) === state.singleAngle));
+    });
+  }
+  function syncOffChips() {
+    $$("#offAngleChips .chip").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(Number(b.dataset.angle) === state.offsetAngle));
+    });
+  }
+  function syncSadChips() {
+    $$("#sadAngleChips .chip").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(Number(b.dataset.angle) === state.saddleAngle));
+    });
+  }
+  function syncBoxChips() {
+    $$("#boxAngleChips .chip").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(Number(b.dataset.angle) === state.boxAngle));
+    });
+  }
+  function syncSubTabs(id, current) {
+    $$("#" + id + " button").forEach(function (b) {
+      b.classList.toggle("on", b.dataset.sub === current);
+      b.setAttribute("aria-pressed", String(b.dataset.sub === current));
+    });
+  }
+
+  var TRI_KEYS = ["a", "b", "d"];
+  var TRI_INPUT = { a: "#inA", b: "#inB", d: "#inD" };
+
+  function triValue(key) { return parseIn(state.tri[key]); }
+
+  /**
+   * Keeps the third field filled from the other two. Exactly one field is
+   * treated as the "solved" field; editing it hands control back to the user.
+   */
+  function okv(x) { return isFinite(x) && x > 0; }
+
+  /** Work out the one value of the triangle that is missing. */
+  function solveFrom(target, v, angle) {
+    if (target === "d" && okv(v.a) && okv(v.b)) {
+      var s = solveTriangle(v.a, v.b, NaN, angle);
+      return s ? s.d : NaN;
+    }
+    if (target === "a" && okv(v.b) && okv(v.d)) {
+      var s1 = solveTriangle(NaN, v.b, v.d, angle);
+      return s1 ? s1.a : NaN;
+    }
+    if (target === "b" && okv(v.a) && okv(v.d)) {
+      var s2 = solveTriangle(v.a, NaN, v.d, angle);
+      return s2 ? s2.b : NaN;
+    }
+    return NaN;
+  }
+
+  function syncTriangle(shouldRender) {
+    var angle = state.singleAngle;
+    var v = { a: triValue("a"), b: triValue("b"), d: triValue("d") };
+    var ok = { a: okv(v.a), b: okv(v.b), d: okv(v.d) };
+
+    var target = null;
+    if (state.lastEdit && !ok[state.lastEdit]) {
+      // the user just cleared a field — leave it alone
+      state.autoKey = null;
+    } else {
+      var others = TRI_KEYS.filter(function (k) { return k !== state.lastEdit; });
+      if (state.autoKey && others.indexOf(state.autoKey) >= 0) {
+        target = state.autoKey;
+      } else {
+        var empties = others.filter(function (k) { return !ok[k]; });
+        if (empties.length === 1) target = empties[0];
+        // two empties = not enough info yet; zero empties = all entered by hand
+      }
+    }
+
+    if (target && (!state.lastEdit || ok[state.lastEdit])) {
+      var val = solveFrom(target, v, angle);
+      if (okv(val)) {
+        state.tri[target] = inputFrac(val);
+        state.autoKey = target;
+      } else if (state.autoKey === target) {
+        state.tri[target] = "";
+        state.autoKey = null;
+      }
+    }
+
+    TRI_KEYS.forEach(function (k) {
+      var el = $(TRI_INPUT[k]);
+      if (document.activeElement !== el) el.value = state.tri[k];
+      el.closest(".field").classList.toggle("is-auto", state.autoKey === k);
+    });
+
+    renderTriNote(angle);
+    if (shouldRender !== false) render();
+  }
+
+  function renderTriNote(angle) {
+    var v = { a: triValue("a"), b: triValue("b"), d: triValue("d") };
+    var note = $("#triNote");
+    var allValid = TRI_KEYS.every(function (k) { return isFinite(v[k]) && v[k] > 0; });
+    var any = TRI_KEYS.some(function (k) { return isFinite(v[k]) && v[k] > 0; });
+
+    if (!any) {
+      note.innerHTML = '<p class="note">Two connectors, one bend. Measure any two of the three and the rest is solved.</p>';
+      return;
+    }
+    if (allValid && !state.autoKey) {
+      var expect = solveTriangle(v.a, v.b, NaN, angle);
+      if (expect && Math.abs(expect.d - v.d) > 0.08) {
+        note.innerHTML = '<p class="note warn">Three sides entered, but they don\'t match a ' + angle + '° bend — the diagonal should be about <b>' + frac(expect.d) + '</b>. Using Leg A and Leg B.</p>';
+        return;
+      }
+    }
+    if (allValid) {
+      note.innerHTML = '<p class="note">Check: a ' + angle + '° bend between those two legs gives a <b>' + frac(solveTriangle(v.a, v.b, NaN, angle).d) + '</b> connector-to-connector gap.</p>';
+      return;
+    }
+    note.innerHTML = "";
+  }
+
+  /* ------------------------------ kick solving ------------------------------ */
+
+  var KICK_KEYS = ["x", "l", "a"];
+  var KICK_INPUT = { x: "#inKickX", l: "#inKickL", a: "#inKickA" };
+
+  function currentKick() {
+    return solveKick(parseIn(state.kick.x), parseIn(state.kick.l), parseIn(state.kick.a));
+  }
+
+  function syncKick(shouldRender) {
+    var v = { x: parseIn(state.kick.x), l: parseIn(state.kick.l), a: parseIn(state.kick.a) };
+    var ok = { x: okv(v.x), l: okv(v.l), a: okv(v.a) };
+    var k = state.kickLast;
+    var target = null;
+
+    // Whatever you just typed is kept; one of the other two is solved from it.
+    if (k && ok[k]) {
+      if (k === "a") {
+        if (ok.l) target = "x";
+        else if (ok.x) target = "l";
+      } else {
+        if (ok.x && ok.l) target = "a";
+        else if (ok.a) target = ok.x ? "l" : "x";
+      }
+    }
+
+    if (target) {
+      var sol = solveKick(
+        target === "x" ? NaN : v.x,
+        target === "l" ? NaN : v.l,
+        target === "a" ? NaN : v.a
+      );
+      if (sol && okv(sol[target])) {
+        state.kick[target] = target === "a" ? sol.a.toFixed(1) : inputFrac(sol[target]);
+        state.kickAuto = target;
+      } else {
+        state.kickAuto = null;
+      }
+    } else {
+      state.kickAuto = null;
+    }
+
+    KICK_KEYS.forEach(function (key) {
+      var el = $(KICK_INPUT[key]);
+      if (document.activeElement !== el) el.value = state.kick[key];
+      el.closest(".field").classList.toggle("is-auto", state.kickAuto === key);
+    });
+
+    if (shouldRender !== false) render();
+  }
+
+  function render() {
+    var c = conduit();
+    ["single", "offset", "b2b", "saddle", "run"].forEach(function (m) {
+      var el = $("#" + (m === "b2b" ? "b2bPanel" : m + "Panel"));
+      if (el) el.hidden = state.mode !== m;
+    });
+    $$("#modeTabs button").forEach(function (b) {
+      var on = b.dataset.mode === state.mode;
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-selected", String(on));
+    });
+
+    var tu = $("#takeUpInput");
+    if (document.activeElement !== tu) tu.value = String(c.takeUp);
+    $("#benderMeta").textContent = "Bender " + c.label + " EMT · chart take-up " + CONDUITS[state.size].takeUp +
+      '" · gain ' + CONDUITS[state.size].gain + '" · bend radius ' + CONDUITS[state.size].radius + '"';
+
+    var budget = $("#budget");
+    if (state.mode !== "run") { budget.hidden = true; budget.innerHTML = ""; }
+
+    // offset sub-mode
+    syncSubTabs("offsetTabs", state.offsetMode);
+    $("#offAngleBlock").hidden = state.offsetMode === "box";
+    $("#offStraightFields").hidden = state.offsetMode !== "straight";
+    $("#offRollingFields").hidden = state.offsetMode !== "rolling";
+    $("#offBoxFields").hidden = state.offsetMode !== "box";
+    $("#offHint").hidden = state.offsetMode === "box";
+    $("#offMeasureHead").hidden = state.offsetMode === "box";
+    $("#offHint").textContent = state.offsetMode === "rolling"
+      ? "Rise and roll are the two directions the offset has to move."
+      : "Measure from the end of the pipe you will hold on your left.";
+    syncBoxChips();
+
+    // single sub-mode
+    syncSubTabs("singleTabs", state.singleMode);
+    $("#singleCorner").hidden = state.singleMode !== "corner";
+    $("#singleKick").hidden = state.singleMode !== "kick";
+
+    // saddle sub-mode
+    syncSubTabs("saddleTabs", state.saddleMode);
+    $("#sad3").hidden = state.saddleMode !== "3";
+    $("#sad4").hidden = state.saddleMode !== "4";
+    syncSadChips();
+
+    if (state.mode === "single") renderSingle(c);
+    else if (state.mode === "offset") renderOffset(c);
+    else if (state.mode === "b2b") renderB2B(c);
+    else if (state.mode === "saddle") renderSaddle(c);
+    else renderRun(c);
+  }
+
+  /* ---------------------------- single bend ---------------------------- */
+
+  function currentSolution() {
+    var angle = state.singleAngle;
+    var v = { a: triValue("a"), b: triValue("b"), d: triValue("d") };
+    if (okv(v.a) && okv(v.b)) return solveTriangle(v.a, v.b, NaN, angle);
+    if (okv(v.a) && okv(v.d)) return solveTriangle(v.a, NaN, v.d, angle);
+    if (okv(v.b) && okv(v.d)) return solveTriangle(NaN, v.b, v.d, angle);
+    return null;
+  }
+
+  function renderSingle(c) {
+    if (state.singleMode === "kick") return renderKick(c);
+    return renderCorner(c);
+  }
+
+  function renderCorner(c) {
+    var angle = state.singleAngle;
+    var v = { a: triValue("a"), b: triValue("b"), d: triValue("d") };
+
+    var sol = currentSolution();
+
+    if (!sol) {
+      emptyState("Enter any two measurements", "Leg A, Leg B or the connector-to-connector diagonal.");
+      var given = [v.a, v.b, v.d].filter(okv).length;
+      if (given >= 2) {
+        var shortest = Math.min(okv(v.a) ? v.a : Infinity, okv(v.b) ? v.b : Infinity);
+        $("#warnSlot").innerHTML = '<p class="warnbox">Those numbers can\'t close into a ' + angle +
+          "° bend. With a leg that short the diagonal has to be at least <b>" +
+          frac(shortest * Math.sin(angle * DEG)) + "</b>.</p>";
+      }
+      return;
+    }
+
+    var allowance = c.takeUp * (angle / 90);
+    var mark = sol.a - allowance;
+    var gain = gainAt(angle, c);
+    var cut = sol.a + sol.b - gain;
+
+    if (!(sol.a > allowance)) {
+      emptyState("Leg A is too short for this bend", "A " + angle + "° bend eats " + frac(allowance) + " of pipe.");
+      $("#warnSlot").innerHTML = '<p class="warnbox">Leg A is only ' + frac(sol.a) + " — a " + angle +
+        "° bend needs about " + frac(allowance) + " of pipe for the bend itself. Lengthen the run, or use a smaller angle.</p>";
+      $("#diagram").innerHTML = diagramSingle({ a: sol.a, b: sol.b, d: sol.d, angle: angle, mark: Math.max(mark, 0.2), takeUp: c.takeUp });
+      return;
+    }
+
+    $("#warnSlot").innerHTML = "";
+    if (mark < 2.5) {
+      $("#warnSlot").innerHTML = '<p class="warnbox soft">Mark 1 lands only ' + frac(mark) + " from the end. The bender hook needs a couple of inches to grab — check it fits before you cut.</p>";
+    }
+
+    heroSingle(mark, angle, sol, false);
+    drawSingleBody({ a: sol.a, b: sol.b, d: sol.d, angle: angle, mark: mark, takeUp: c.takeUp });
+
+    var steps = [];
+    steps.push('Cut the pipe to about <span class="num">' + frac(cut) + "</span> on the long side — you can always trim the far end after the bend.");
+    steps.push('From <b>End A</b>, measure <span class="num">' + frac(mark) + "</span> and mark it. That is the <b>arrow mark</b>.");
+    steps.push("Set the bender with the <b>arrow on the mark</b> and the hook pointing toward End A.");
+    steps.push("Bend to <span class=\"num\">" + angle + "°</span>. " +
+      (angle === 90 ? "Check it against the bender's 90° mark." : "Check it with a level or angle finder."));
+    steps.push("Check Leg A measures <span class=\"num\">" + frac(sol.a) + "</span> from the end to the back of the bend, then trim the far end so Leg B is <span class=\"num\">" + frac(sol.b) + '</span>.');
+
+    $("#steps").innerHTML = steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
+
+    var stats = [
+      ["Leg A", num(sol.a)],
+      ["Leg B", num(sol.b)],
+      ["Diagonal", num(sol.d)],
+      ["Bend", angle + "°"],
+      ["Take-up used", num(allowance)],
+      ["Gain", num(gain)],
+      ["Cut to", num(cut)]
+    ];
+    stats.push(["Conduit", c.label + " EMT"]);
+    renderStats(stats);
+  }
+
+  function heroSingle(mark, angle, sol, bad) {
+    var html = "";
+    html += '<div class="tile hero-1">' +
+      '<span class="k">Mark 1 · bender arrow</span>' +
+      '<span class="v">' + (bad ? "—" : frac(mark)) + "</span>" +
+      '<span class="s">' + (bad ? "Leg A too short" : "from End A · " + dec(mark) + " · hook toward End A") + "</span>" +
+      "</div>";
+    html += '<div class="tile hero-2">' +
+      '<span class="k">Bend to</span>' +
+      '<span class="v">' + angle + "<span class=\"small\">°</span></span>" +
+      '<span class="s">' + (angle === 90 ? "Arrow on the mark · check with a level" : "Arrow on the mark · " + angle + "° from straight") + "</span>" +
+      "</div>";
+    $("#hero").innerHTML = html;
+  }
+
+  function drawSingleBody(g) {
+    $("#diagram").innerHTML = diagramSingle(g);
+  }
+
+  /* ------------------------------ offset ------------------------------ */
+
+  function renderOffset(c) {
+    if (state.offsetMode === "rolling") return renderRolling(c);
+    if (state.offsetMode === "box") return renderBox(c);
+    return renderStraightOffset(c);
+  }
+
+  function renderBox(c) {
+    var from = parseIn(state.box.from);
+    var depth = parseIn(state.box.depth);
+    var ang = state.boxAngle;
+
+    if (!okv(from) || !okv(depth)) {
+      emptyState("First bend position and depth", "Most box offsets sit about 2-1/2” off the end.");
+      return;
+    }
+
+    var travel = depth / Math.sin(ang * DEG);
+    var shrink = depth * Math.tan((ang / 2) * DEG);
+    var mark1 = from, mark2 = from + travel;
+
+    $("#warnSlot").innerHTML = depth > 1
+      ? '<p class="warnbox soft">That is a deep box offset. Past about 1" it stops being a box offset — use a normal offset.</p>'
+      : "";
+
+    $("#hero").innerHTML =
+      tile("Mark 1 · arrow", frac(mark1), "from the box end", "hero-1") +
+      tile("Mark 2 · arrow", frac(mark2), "from the box end · " + frac(travel) + " past mark 1", "hero-1") +
+      tile("Bend each", ang + degMark(), "opposite directions", "hero-2");
+
+    $("#diagram").innerHTML = diagramOffset({ start: mark1, depth: depth, angle: ang, travel: travel, shrink: shrink });
+
+    var steps = [];
+    steps.push('Cut the pipe <span class="num">' + frac(shrink) + "</span> longer than the run.");
+    steps.push('From the <b>box end</b>, measure <span class="num">' + frac(mark1) + "</span> — <b>mark 1</b>.");
+    steps.push('Measure <span class="num">' + frac(travel) + "</span> further — <b>mark 2</b> (" + frac(mark2) + " from the end).");
+    steps.push("Arrow on mark 1, bend <b>" + ang + "°</b>, kicking toward the wall.");
+    steps.push("Flip the pipe end-for-end, arrow on mark 2, bend " + ang + "° back the other way.");
+    steps.push("Hold it against the box — the pipe should sit flat with the connector lined up.");
+
+    $("#steps").innerHTML = steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
+
+    renderStats([
+      ["Depth", num(depth)],
+      ["Mark spacing", num(travel)],
+      ["Shrink", num(shrink)],
+      ["Bend angle", ang + "° ×2"],
+      ["Total bend", ang * 2 + "°"],
+      ["Conduit", c.label + " EMT"]
+    ]);
+  }
+
+  /* --------------------------------- kick --------------------------------- */
+
+  function solveKick(x, l, a) {
+    if (okv(x) && okv(l) && x <= l) return { x: x, l: l, a: Math.asin(x / l) / DEG };
+    if (okv(x) && okv(a) && a < 90) return { x: x, l: x / Math.sin(a * DEG), a: a };
+    if (okv(l) && okv(a)) return { x: l * Math.sin(a * DEG), l: l, a: a };
+    return null;
+  }
+
+  function renderKick(c) {
+    var s = currentKick();
+    if (!s) {
+      emptyState("Fill in any two", "Kick distance, where the bend goes, or the angle.");
+      var vx = parseIn(state.kick.x), vl = parseIn(state.kick.l);
+      if (okv(vx) && okv(vl) && vx > vl) {
+        $("#warnSlot").innerHTML = '<p class="warnbox">A kick can\'t be longer than the distance to the bend — that would need more than a 90° bend.</p>';
+      }
+      $("#kickNote").innerHTML = '<p class="note">The end moves <b>kick</b> inches when you bend <b>angle</b> degrees, <b>L</b> inches from the end.</p>';
+      return;
+    }
+
+    var allowance = c.takeUp * (s.a / 90);
+    var mark = s.l - allowance;
+    var loss = s.l * (1 - Math.cos(s.a * DEG));
+
+    if (mark <= 0) {
+      emptyState("That bend is too close to the end", "The take-up alone is " + frac(allowance) + ".");
+      $("#warnSlot").innerHTML = '<p class="warnbox">The bend needs about ' + frac(allowance) +
+        " of pipe, but it is only " + frac(s.l) + " from the end.</p>";
+      return;
+    }
+
+    $("#warnSlot").innerHTML = s.a > 45
+      ? '<p class="warnbox soft">A ' + s.a.toFixed(1) + "° kick is steep for a hand bender. Move the bend further back to soften it.</p>"
+      : "";
+
+    $("#hero").innerHTML =
+      tile("Mark 1 · arrow", frac(mark), "from the end · " + dec(mark), "hero-1") +
+      tile("Bend to", s.a.toFixed(1) + degMark(), "one bend, kicked toward the box", "hero-2");
+
+    $("#diagram").innerHTML = diagramKick({ l: s.l, x: s.x, a: s.a, mark: mark });
+
+    var steps = [];
+    steps.push('From the end, measure <span class="num">' + frac(mark) + '</span> — <b>mark 1</b>.');
+    steps.push("Arrow on the mark, hook toward the end, bend <span class=\"num\">" + s.a.toFixed(1) + "°</span>.");
+    steps.push("Sight down the run and check the end has moved <span class=\"num\">" + frac(s.x) + "</span> off the line.");
+    steps.push("The run gets about <span class=\"num\">" + frac(loss) + "</span> shorter — trim the far end to fit.");
+
+    $("#steps").innerHTML = steps.map(function (x) { return "<li>" + x + "</li>"; }).join("");
+
+    renderStats([
+      ["Kick", num(s.x)],
+      ["Bend position", num(s.l)],
+      ["Bend angle", s.a.toFixed(1) + "°"],
+      ["Take-up used", num(allowance)],
+      ["Run shortens", num(loss)],
+      ["Conduit", c.label + " EMT"]
+    ]);
+
+    $("#kickNote").innerHTML = '<p class="note">Bending <b>' + s.a.toFixed(1) + "°</b> at <b>" +
+      frac(s.l) + "</b> from the end moves it <b>" + frac(s.x) + "</b> sideways.</p>";
+  }
+
+  function diagramKick(g) {
+    var W = 660, H = 320, padX = 90, padY = 70;
+    var rad = g.a * DEG;
+    var dx = g.l * Math.cos(rad);
+    var dy = g.l * Math.sin(rad);
+    var lead = 110;
+
+    var sx = Math.min((W - 2 * padX) / (lead + dx), H / 200);
+    var sy = sx;
+    // a small kick is nearly invisible at true scale, so lift it enough to read
+    var flat = dy * sx;
+    if (flat < 52) sy = sx * Math.min(7, 52 / Math.max(flat, 0.01));
+
+    var ox = padX;
+    var rise = dy * sy;
+    var oy = (H + rise + 10) / 2;
+    var bx = ox + lead * sx;
+    var ex = bx + dx * sx;
+    var ey = oy - rise;
+
+    var parts = [];
+    parts.push('<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Kick: one bend moving the end of the pipe sideways">');
+    parts.push('<defs><pattern id="dots8" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#1e2733"/></pattern></defs>');
+    parts.push('<rect width="' + W + '" height="' + H + '" fill="url(#dots8)"/>');
+
+    // original line
+    parts.push('<line x1="' + (ox - 26) + '" y1="' + oy + '" x2="' + (ex + 74) + '" y2="' + oy + '" stroke="#3a4a5f" stroke-width="1.3" stroke-dasharray="7 7"/>');
+    parts.push(labelAt({ x: ox - 18, y: oy + 22 }, "original line", "#5d6a7d", 0, 0, "start"));
+
+    // pipe
+    var path = "M " + (ox - 26) + " " + oy + " L " + bx + " " + oy + " L " + ex + " " + ey;
+    parts.push('<path d="' + path + '" fill="none" stroke="#000" stroke-opacity=".45" stroke-width="15" stroke-linecap="round" transform="translate(0,3)"/>');
+    parts.push('<path d="' + path + '" fill="none" stroke="#c9d3e2" stroke-width="11" stroke-linecap="round"/>');
+    parts.push('<path d="' + path + '" fill="none" stroke="#fff" stroke-opacity=".26" stroke-width="2" stroke-linecap="round"/>');
+
+    // kick dimension at the end
+    var kx = ex + 44;
+    parts.push('<line x1="' + ex + '" y1="' + oy + '" x2="' + (kx + 6) + '" y2="' + oy + '" stroke="#46566d" stroke-width="1" stroke-dasharray="4 4"/>');
+    parts.push('<line x1="' + kx + '" y1="' + oy + '" x2="' + kx + '" y2="' + ey + '" stroke="#46566d" stroke-width="1.3"/>');
+    parts.push('<line x1="' + (kx - 7) + '" y1="' + oy + '" x2="' + (kx + 7) + '" y2="' + oy + '" stroke="#46566d" stroke-width="1.3"/>');
+    parts.push('<line x1="' + (kx - 7) + '" y1="' + ey + '" x2="' + (kx + 7) + '" y2="' + ey + '" stroke="#46566d" stroke-width="1.3"/>');
+    parts.push(labelAt({ x: kx + 12, y: (oy + ey) / 2 }, frac(g.x), "#a7b4c6", 0, 0, "start"));
+
+    // bend position, parallel to the kicked leg
+    var sx2 = ex - bx, sy2 = ey - oy, sl = Math.hypot(sx2, sy2) || 1;
+    var nx = -sy2 / sl, ny = sx2 / sl;
+    var off = 30;
+    parts.push(dim({ x: bx + nx * off, y: oy + ny * off }, { x: ex + nx * off, y: ey + ny * off }, frac(g.l)));
+
+    // mark
+    parts.push('<line x1="' + bx + '" y1="' + (oy - 18) + '" x2="' + bx + '" y2="' + (oy + 18) + '" stroke="#ffb020" stroke-width="3.5" stroke-linecap="round"/>');
+    parts.push('<circle cx="' + bx + '" cy="' + oy + '" r="4.5" fill="#ffb020"/>');
+    parts.push(labelAt({ x: bx, y: oy - 34 }, "MARK 1", "#ffb020", 0, 0, "middle", true));
+
+    parts.push("</svg>");
+    return parts.join("");
+  }
+
+  function renderRolling(c) {
+    var angle = state.offsetAngle;
+    var rise = parseIn(state.rolling.rise);
+    var roll = parseIn(state.rolling.roll);
+    var start = parseIn(state.rolling.start);
+
+    if (!okv(rise) || !okv(roll)) {
+      emptyState("Enter the rise and the roll", "The true offset is the diagonal of those two.");
+      return;
+    }
+    if (!okv(start)) {
+      emptyState("Where does the offset start?", "Give the distance from End A so the marks land in the right place.");
+      return;
+    }
+
+    var trueOff = Math.hypot(rise, roll);
+    var travel = trueOff / Math.sin(angle * DEG);
+    var shrink = trueOff * Math.tan((angle / 2) * DEG);
+    var rollDeg = Math.atan2(roll, rise) / DEG;
+    var mark1 = start, mark2 = start + travel;
+
+    $("#warnSlot").innerHTML = travel < 4
+      ? '<p class="warnbox soft">The two marks are only ' + frac(travel) + " apart — a shallower angle will spread them out.</p>"
+      : "";
+
+    $("#hero").innerHTML =
+      tile("Mark 1 · first bend", frac(mark1), "from End A · " + dec(mark1), "hero-1") +
+      tile("Mark 2 · second bend", frac(mark2), "from End A · " + frac(travel) + " past mark 1", "hero-1") +
+      tile("Bend each", angle + degMark(), "in the plane of the diagonal", "hero-2");
+
+    $("#diagram").innerHTML = diagramRolling({ rise: rise, roll: roll, trueOff: trueOff });
+
+    var steps = [];
+    steps.push('Cut the pipe <span class="num">' + frac(shrink) + "</span> longer than the straight run.");
+    steps.push('From <b>End A</b>, measure <span class="num">' + frac(mark1) + '</span> — <b>mark 1</b>.');
+    steps.push('Measure <span class="num">' + frac(travel) + "</span> further — <b>mark 2</b> (" + frac(mark2) + ").");
+    steps.push("Mark a reference line down the pipe so you keep the same roll on both bends.");
+    steps.push("Arrow on mark 1, then bend <span class=\"num\">" + angle + "°</span> with the bender rotated <b>" + rollDeg.toFixed(1) + "°</b> off vertical.");
+    steps.push("Flip the pipe end-for-end, arrow on mark 2, bend " + angle + "° in the same plane.");
+
+    $("#steps").innerHTML = steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
+
+    renderStats([
+      ["Rise", num(rise)],
+      ["Roll", num(roll)],
+      ["True offset", num(trueOff)],
+      ["Travel between marks", num(travel)],
+      ["Roll angle", rollDeg.toFixed(1) + "°"],
+      ["Shrink", num(shrink)],
+      ["Bend angle", angle + "° ×2"],
+      ["Conduit", c.label + " EMT"]
+    ]);
+  }
+
+  function diagramRolling(g) {
+    var W = 660, H = 300, padX = 130, padY = 50;
+    var s = Math.min((W - 2 * padX) / Math.max(g.roll, 1),
+                     (H - 2 * padY) / Math.max(g.rise, 1));
+    var ox = (W - g.roll * s) / 2;
+    var oy = H - padY;
+    var x1 = ox + g.roll * s;
+    var y1 = oy - g.rise * s;
+
+    var parts = [];
+    parts.push('<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Rolling offset: rise and roll legs with the true offset diagonal">');
+    parts.push('<defs><pattern id="dots6" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#1e2733"/></pattern></defs>');
+    parts.push('<rect width="' + W + '" height="' + H + '" fill="url(#dots6)"/>');
+
+    // legs
+    parts.push('<path d="M ' + ox + " " + oy + " L " + x1 + " " + oy + " L " + x1 + " " + y1 +
+      '" fill="none" stroke="#3a4a5f" stroke-width="1.6" stroke-dasharray="6 6"/>');
+
+    // true offset
+    parts.push('<line x1="' + ox + '" y1="' + oy + '" x2="' + x1 + '" y2="' + y1 + '" stroke="#ffb020" stroke-width="3" stroke-linecap="round"/>');
+
+    // labels
+    parts.push(labelAt({ x: (ox + x1) / 2, y: oy + 26 }, "roll " + frac(g.roll), "#a7b4c6", 0, 0, "middle"));
+    parts.push(labelAt({ x: x1 + 14, y: (oy + y1) / 2 }, "rise " + frac(g.rise), "#a7b4c6", 0, 0, "start"));
+
+    var dx = x1 - ox, dy = y1 - oy, len = Math.hypot(dx, dy) || 1;
+    var px = dy / len, py = -dx / len;
+    parts.push(labelAt({ x: (ox + x1) / 2 + px * 22, y: (oy + y1) / 2 + py * 22 },
+      "true " + frac(g.trueOff), "#ffb020", 0, 0, "middle", true));
+
+    // right-angle tick
+    var t = 12;
+    parts.push('<path d="M ' + (x1 - t) + " " + oy + " L " + (x1 - t) + " " + (oy - t) + " L " + x1 + " " + (oy - t) + '" fill="none" stroke="#46566d" stroke-width="1.4"/>');
+
+    parts.push("</svg>");
+    return parts.join("");
+  }
+
+  function renderStraightOffset(c) {
+    var angle = state.offsetAngle;
+    var start = parseIn(state.offset.start);
+    var depth = parseIn(state.offset.depth);
+
+    if (!(isFinite(start) && start >= 0) || !(isFinite(depth) && depth > 0)) {
+      emptyState("Enter a start point and an offset depth", "Both marks are measured from the same end of the pipe.");
+      return;
+    }
+
+    var travel = depth / Math.sin(angle * DEG);
+    var shrink = depth * shrinkFactor(angle);
+    var mark1 = start;
+    var mark2 = start + travel;
+
+    $("#offNote").innerHTML = "";
+
+    if (travel < 4) {
+      $("#warnSlot").innerHTML = '<p class="warnbox soft">The two marks are only ' + frac(travel) + " apart. Most benders need a few inches of pipe between bends — use a shallower angle for a tighter offset.</p>";
+    } else {
+      $("#warnSlot").innerHTML = "";
+    }
+
+    var html = "";
+    html += '<div class="tile hero-1">' +
+      '<span class="k">Mark 1 · first bend</span>' +
+      '<span class="v">' + frac(mark1) + "</span>" +
+      '<span class="s">from End A · ' + dec(mark1) + "</span></div>";
+    html += '<div class="tile hero-1">' +
+      '<span class="k">Mark 2 · second bend</span>' +
+      '<span class="v">' + frac(mark2) + "</span>" +
+      '<span class="s">from End A · ' + dec(mark2) + " · " + frac(travel) + " past mark 1</span></div>";
+    html += '<div class="tile hero-2">' +
+      '<span class="k">Bend each to</span>' +
+      '<span class="v">' + angle + "<span class=\"small\">°</span></span>" +
+      '<span class="s">opposite directions, same plane</span></div>';
+    $("#hero").innerHTML = html;
+
+    $("#diagram").innerHTML = diagramOffset({
+      start: start, depth: depth, angle: angle, travel: travel, shrink: shrink
+    });
+
+    var steps = [];
+    steps.push('Cut the pipe <span class="num">' + frac(shrink) + "</span> longer than the run. The offset eats that much length.");
+    steps.push('From <b>End A</b>, measure <span class="num">' + frac(mark1) + "</span> — that is <b>mark 1</b>.");
+    steps.push('Measure <span class="num">' + frac(travel) + "</span> further along and make <b>mark 2</b> (" + frac(mark2) + " from End A).");
+    steps.push("Arrow on <b>mark 1</b>, hook toward End A, bend <span class=\"num\">" + angle + "°</span>.");
+    steps.push("Turn the pipe end-for-end so the hook points the other way. Arrow on <b>mark 2</b>, bend <span class=\"num\">" + angle + "°</span> — same amount.");
+    steps.push("Sight down the pipe and work out any dogleg before it cools.");
+
+    $("#steps").innerHTML = steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
+
+    renderStats([
+      ["Depth", num(depth)],
+      ["Travel", num(travel)],
+      ["Multiplier", mult(angle).toFixed(3) + "×"],
+      ["Shrink", num(shrink)],
+      ["Bend angle", angle + "° ×2"],
+      ["Total bend", angle * 2 + "°"],
+      ["Conduit", c.label + " EMT"]
+    ]);
+  }
+
+  /* --------------------------- shared output bits --------------------------- */
+
+  function tile(k, v, s, cls) {
+    var plain = String(v).replace(/<[^>]*>/g, "");
+    var long = plain.length >= 6 ? " long" : "";
+    return '<div class="tile ' + cls + '"><span class="k">' + k + '</span>' +
+      '<span class="v' + long + '">' + v + '</span><span class="s">' + s + "</span></div>";
+  }
+  function degMark() { return '<span class="small">°</span>'; }
+
+  /* ----------------------------- back-to-back ----------------------------- */
+
+  function renderB2B(c) {
+    var leg1 = parseIn(state.b2b.leg1);
+    var dist = parseIn(state.b2b.dist);
+    var leg2 = parseIn(state.b2b.leg2);
+
+    if (!okv(leg1) || !okv(dist)) {
+      emptyState("Enter leg 1 and the back-to-back distance", "The second mark is measured from the back of the first 90.");
+      return;
+    }
+
+    var mark1 = leg1 - c.takeUp;
+    if (mark1 <= 0) {
+      emptyState("Leg 1 is too short for a 90", "Take-up on this bender is " + frac(c.takeUp) + ".");
+      $("#warnSlot").innerHTML = '<p class="warnbox">Leg 1 is only ' + frac(leg1) + " — the 90° take-up is " + frac(c.takeUp) + ".</p>";
+      return;
+    }
+
+    $("#warnSlot").innerHTML = "";
+    var mark2 = leg1 + dist;
+    var haveLeg2 = okv(leg2);
+    var cut = leg1 + dist + (haveLeg2 ? leg2 : 0) - 2 * c.gain;
+
+    $("#hero").innerHTML =
+      tile("Mark 1 · arrow", frac(mark1), "from End A · " + dec(mark1), "hero-1") +
+      tile("Mark 2 · star", frac(mark2), "from End A · or " + frac(dist) + " past the back of bend 1", "hero-1") +
+      tile("Bend each", "90" + degMark(), "two bends, same direction", "hero-2");
+
+    $("#diagram").innerHTML = diagramB2B({
+      leg1: leg1, dist: dist, leg2: haveLeg2 ? leg2 : leg1 * 0.75,
+      mark1: mark1, takeUp: c.takeUp
+    });
+
+    var steps = [];
+    steps.push('Cut the pipe to about <span class="num">' + frac(cut) + "</span> — trim the far end after bending.");
+    steps.push('From <b>End A</b>, measure <span class="num">' + frac(mark1) + '</span> and mark it. That is the <b>arrow</b>.');
+    steps.push("Arrow on the mark, hook toward End A, bend <b>90°</b>.");
+    steps.push('Turn the pipe around. From the <b>back of the first 90</b>, measure <span class="num">' + frac(dist) + "</span> and mark it.");
+    steps.push("Put the <b>star</b> on that mark and bend <b>90°</b> the same direction as the first." +
+      (haveLeg2 ? " The far leg ends up " + frac(leg2) + " past the second bend." : ""));
+
+    $("#steps").innerHTML = steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
+
+    var stats = [
+      ["Leg 1", num(leg1)],
+      ["Back-to-back", num(dist)],
+      ["Mark 2 from end", num(mark2)]
+    ];
+    if (haveLeg2) stats.push(["Leg 2", num(leg2)]);
+    stats.push(["Take-up", num(c.takeUp)]);
+    stats.push(["Gain ×2", num(2 * c.gain)]);
+    stats.push(["Cut to", num(cut)]);
+    stats.push(["Conduit", c.label + " EMT"]);
+    renderStats(stats);
+  }
+
+  function diagramB2B(g) {
+    var W = 660, H = 380, padX = 96, padY = 66;
+    var spanW = Math.max(g.dist, 1);
+    var spanH = Math.max(g.leg1, g.leg2, 1);
+    var s = Math.min((W - 2 * padX) / spanW, (H - 2 * padY) / spanH);
+
+    var w = g.dist * s;
+    var h1 = g.leg1 * s;
+    var h2 = g.leg2 * s;
+    var maxH = Math.max(h1, h2);
+    var x0 = (W - w) / 2, x1 = x0 + w;
+    var yTop = (H - maxH) / 2;
+    var y0 = yTop + h1, y1 = yTop + h2;
+
+    var r = Math.min(34, w * 0.28, Math.min(h1, h2) * 0.5, 40);
+
+    var path = "M " + x0 + " " + y0 +
+      " L " + x0 + " " + (yTop + r) +
+      " Q " + x0 + " " + yTop + " " + (x0 + r) + " " + yTop +
+      " L " + (x1 - r) + " " + yTop +
+      " Q " + x1 + " " + yTop + " " + x1 + " " + (yTop + r) +
+      " L " + x1 + " " + y1;
+
+    var parts = [];
+    parts.push('<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Back-to-back 90 diagram">');
+    parts.push('<defs><pattern id="dots3" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#1e2733"/></pattern></defs>');
+    parts.push('<rect width="' + W + '" height="' + H + '" fill="url(#dots3)"/>');
+    parts.push('<path d="' + path + '" fill="none" stroke="#000" stroke-opacity=".45" stroke-width="15" stroke-linecap="round" transform="translate(0,3)"/>');
+    parts.push('<path d="' + path + '" fill="none" stroke="#c9d3e2" stroke-width="11" stroke-linecap="round"/>');
+    parts.push('<path d="' + path + '" fill="none" stroke="#fff" stroke-opacity=".26" stroke-width="2" stroke-linecap="round"/>');
+
+    // leg 1 dimension (left)
+    parts.push(dim({ x: x0 - 34, y: y0 }, { x: x0 - 34, y: yTop }, "A " + frac(g.leg1)));
+    // leg 2 dimension (right)
+    parts.push(dim({ x: x1 + 34, y: y1 }, { x: x1 + 34, y: yTop }, "B " + frac(g.leg2)));
+    // back-to-back along the top
+    parts.push(dim({ x: x0, y: yTop - 34 }, { x: x1, y: yTop - 34 }, "back-to-back " + frac(g.dist)));
+
+    // mark 1 on the left leg
+    var m1y = y0 - (g.leg1 - g.takeUp) * s;
+    parts.push('<line x1="' + (x0 - 11) + '" y1="' + m1y + '" x2="' + (x0 + 11) + '" y2="' + m1y + '" stroke="#ffb020" stroke-width="3.5" stroke-linecap="round"/>');
+    parts.push('<circle cx="' + x0 + '" cy="' + m1y + '" r="4.5" fill="#ffb020"/>');
+    parts.push(labelAt({ x: x0 - 22, y: m1y }, "MARK 1", "#ffb020", 0, 0, "end", true));
+    parts.push('<text x="' + (x0 - 22) + '" y="' + (m1y + 16) + '" fill="#c08b34" font-family="system-ui" font-size="11" text-anchor="end">arrow</text>');
+
+    // mark 2 at the second 90 (star)
+    parts.push('<circle cx="' + x1 + '" cy="' + yTop + '" r="5" fill="#ffb020"/>');
+    parts.push(labelAt({ x: x1 + 18, y: yTop + 16 }, "MARK 2", "#ffb020", 0, 0, "start", true));
+    parts.push('<text x="' + (x1 + 18) + '" y="' + (yTop + 32) + '" fill="#c08b34" font-family="system-ui" font-size="11">star</text>');
+
+    parts.push("</svg>");
+    return parts.join("");
+  }
+
+  /* -------------------------------- saddle -------------------------------- */
+
+  function renderSaddle(c) {
+    if (state.saddleMode === "4") return renderSaddle4(c);
+    return renderSaddle3(c);
+  }
+
+  function renderSaddle3(c) {
+    var h = parseIn(state.saddle.h);
+    var at = parseIn(state.saddle.at);
+
+    if (!okv(h)) {
+      emptyState("Enter the obstruction height", "Everything else comes off that one number.");
+      return;
+    }
+    if (!okv(at)) {
+      emptyState("Where is the obstruction?", "Give the distance from End A so the marks land in the right place.");
+      return;
+    }
+    if (h > 6) {
+      $("#warnSlot").innerHTML = '<p class="warnbox soft">A ' + frac(h) + " saddle is a big ask for a hand bender — consider a 4-point saddle or a larger bend radius.</p>";
+    } else {
+      $("#warnSlot").innerHTML = "";
+    }
+
+    var side = 2.5 * h;
+    var shift = (3 / 16) * h;
+    var shrink = (3 / 8) * h;
+    var center = at + shift;
+    var m1 = center - side;
+    var m2 = center + side;
+
+    if (m1 <= 0) {
+      $("#warnSlot").innerHTML = '<p class="warnbox">The first mark falls before the end of the pipe. Move the saddle further along or cut the pipe longer.</p>';
+    }
+
+    $("#hero").innerHTML =
+      tile("Mark 1 · arrow", frac(m1), "from End A · bend 22.5°", "hero-2") +
+      tile("Mark 2 · teardrop", frac(center), "from End A · bend 45°", "hero-1") +
+      tile("Mark 3 · arrow", frac(m2), "from End A · bend 22.5°", "hero-2");
+
+    $("#diagram").innerHTML = diagramSaddle({ h: h, side: side });
+
+    var steps = [];
+    steps.push('Cut the pipe about <span class="num">' + frac(shrink) + "</span> longer than the run.");
+    steps.push('From <b>End A</b>, measure <span class="num">' + frac(m1) + "</span> — <b>mark 1</b>.");
+    steps.push('Measure <span class="num">' + frac(side) + "</span> further — <b>mark 2</b>, the center (" + frac(center) + ").");
+    steps.push('Measure another <span class="num">' + frac(side) + "</span> — <b>mark 3</b> (" + frac(m2) + ").");
+    steps.push("Bend the <b>center first</b>: mark 2 on the <b>teardrop</b>, 45°.");
+    steps.push("Then the <b>arrow</b> on marks 1 and 3, bending <b>22.5°</b> each — back the other way.");
+
+    $("#steps").innerHTML = steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
+
+    renderStats([
+      ["Obstruction", num(h)],
+      ["Mark spacing", num(side)],
+      ["Center shift", num(shift)],
+      ["Shrink", num(shrink)],
+      ["Bends", "45° + 22.5° ×2"],
+      ["Total degrees", "90°"],
+      ["Conduit", c.label + " EMT"]
+    ]);
+  }
+
+  function diagramSaddle(g) {
+    var W = 660, H = 360, padX = 78, padY = 74;
+    var halfW = g.h / Math.tan(22.5 * DEG);
+    var s = Math.min((W - 2 * padX) / (2 * halfW + 2), (H - 2 * padY) / (1.6 * g.h));
+
+    var cx = W / 2;
+    var baseY = H - padY;
+    var apexY = baseY - g.h * s;
+    var hw = halfW * s;
+    var leftX = cx - hw, rightX = cx + hw;
+    var tail = Math.min(96, leftX - padX);
+
+    var rr = Math.min(20, hw * 0.22, g.h * s * 0.45);
+
+    var L1 = Math.hypot(cx - leftX, apexY - baseY) || 1;
+    var L2 = Math.hypot(rightX - cx, baseY - apexY) || 1;
+    var u1 = { x: (cx - leftX) / L1, y: (apexY - baseY) / L1 };        // up-right
+    var u2 = { x: (rightX - cx) / L2, y: (baseY - apexY) / L2 };       // down-right
+
+    var pA = { x: leftX - rr, y: baseY };
+    var pB = { x: leftX + u1.x * rr, y: baseY + u1.y * rr };
+    var pC = { x: cx - u1.x * rr, y: apexY - u1.y * rr };
+    var pD = { x: cx + u2.x * rr, y: apexY + u2.y * rr };
+    var pE = { x: rightX - u2.x * rr, y: baseY - u2.y * rr };
+    var pF = { x: rightX + rr, y: baseY };
+
+    var path = "M " + (leftX - tail) + " " + baseY +
+      " L " + pA.x + " " + pA.y +
+      " Q " + leftX + " " + baseY + " " + pB.x + " " + pB.y +
+      " L " + pC.x + " " + pC.y +
+      " Q " + cx + " " + apexY + " " + pD.x + " " + pD.y +
+      " L " + pE.x + " " + pE.y +
+      " Q " + rightX + " " + baseY + " " + pF.x + " " + pF.y +
+      " L " + (rightX + tail) + " " + baseY;
+
+    var parts = [];
+    parts.push('<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="3-point saddle profile">');
+    parts.push('<defs><pattern id="dots4" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#1e2733"/></pattern></defs>');
+    parts.push('<rect width="' + W + '" height="' + H + '" fill="url(#dots4)"/>');
+
+    // original line
+    parts.push('<line x1="' + (leftX - tail - 10) + '" y1="' + baseY + '" x2="' + (rightX + tail + 10) + '" y2="' + baseY + '" stroke="#3a4a5f" stroke-width="1.3" stroke-dasharray="7 7"/>');
+    parts.push(labelAt({ x: leftX - tail, y: baseY + 20 }, "original line", "#5d6a7d", 0, 0, "start"));
+
+    parts.push('<path d="' + path + '" fill="none" stroke="#000" stroke-opacity=".45" stroke-width="15" stroke-linecap="round" transform="translate(0,3)"/>');
+    parts.push('<path d="' + path + '" fill="none" stroke="#c9d3e2" stroke-width="11" stroke-linecap="round"/>');
+    parts.push('<path d="' + path + '" fill="none" stroke="#fff" stroke-opacity=".26" stroke-width="2" stroke-linecap="round"/>');
+
+    // height dimension
+    parts.push('<line x1="' + rightX + '" y1="' + apexY + '" x2="' + (rightX + 46) + '" y2="' + apexY + '" stroke="#46566d" stroke-width="1" stroke-dasharray="4 4"/>');
+    parts.push(dim({ x: rightX + 56, y: baseY }, { x: rightX + 56, y: apexY }, frac(g.h)));
+
+    // marks
+    var marks = [
+      { x: leftX, y: baseY, n: "1", ang: "22.5°" },
+      { x: cx, y: apexY, n: "2", ang: "45°" },
+      { x: rightX, y: baseY, n: "3", ang: "22.5°" }
+    ];
+    marks.forEach(function (m, i) {
+      var up = i === 1;
+      parts.push('<line x1="' + m.x + '" y1="' + (m.y - 17) + '" x2="' + m.x + '" y2="' + (m.y + 17) + '" stroke="#ffb020" stroke-width="3.5" stroke-linecap="round"/>');
+      parts.push('<circle cx="' + m.x + '" cy="' + m.y + '" r="4.5" fill="#ffb020"/>');
+      parts.push(labelAt({ x: m.x, y: m.y - (up ? 30 : 32) }, "MARK " + m.n, "#ffb020", 0, 0, "middle", true));
+      parts.push('<text x="' + m.x + '" y="' + (m.y - (up ? 46 : 48)) + '" fill="#c08b34" font-family="ui-monospace,Consolas,monospace" font-size="12" text-anchor="middle">' + m.ang + "</text>");
+    });
+
+    // spacing dimension between marks
+    parts.push(dim({ x: leftX, y: baseY + 40 }, { x: cx, y: baseY + 40 }, "2.5 × h"));
+    parts.push(dim({ x: cx, y: baseY + 40 }, { x: rightX, y: baseY + 40 }, "2.5 × h"));
+
+    parts.push("</svg>");
+    return parts.join("");
+  }
+
+  /* ---------------------------- 4-point saddle ---------------------------- */
+
+  function renderSaddle4(c) {
+    var h = parseIn(state.saddle.h);
+    var w = parseIn(state.saddle.w);
+    var at = parseIn(state.saddle.at);
+    var ang = state.saddleAngle;
+
+    if (!okv(h) || !okv(w) || !okv(at)) {
+      emptyState("Height, width and where it sits", "The width is what you have to clear across the top.");
+      return;
+    }
+
+    var travel = h / Math.sin(ang * DEG);
+    var shrink = h * Math.tan((ang / 2) * DEG);
+    var run = h / Math.tan(ang * DEG);
+
+    var m1 = at - run;
+    var m2 = m1 + travel;
+    var m3 = m2 + w;
+    var m4 = m3 + travel;
+
+    if (m1 <= 0) {
+      $("#warnSlot").innerHTML = '<p class="warnbox">Mark 1 lands at ' + frac(m1) + " — before the end of the pipe. " +
+        "Use a steeper angle or start further along.</p>";
+    } else if (h > 8) {
+      $("#warnSlot").innerHTML = '<p class="warnbox soft">That is a big saddle. Check the bend radius before you commit the pipe.</p>';
+    } else {
+      $("#warnSlot").innerHTML = "";
+    }
+
+    $("#hero").innerHTML =
+      tile("Mark 1 · arrow", frac(m1), "from End A · rise " + ang + "°", "hero-2") +
+      tile("Mark 2 · arrow", frac(m2), "from End A · back to level", "hero-1") +
+      tile("Mark 3 · arrow", frac(m3), "from End A · start the drop", "hero-1") +
+      tile("Mark 4 · arrow", frac(m4), "from End A · back to level", "hero-2");
+
+    $("#diagram").innerHTML = diagramSaddle4({ h: h, w: w, ang: ang });
+
+    var steps = [];
+    steps.push('Cut the pipe <span class="num">' + frac(2 * shrink) + "</span> longer than the run.");
+    steps.push('From <b>End A</b>, mark <span class="num">' + frac(m1) + "</span>, <span class=\"num\">" +
+      frac(m2) + "</span>, <span class=\"num\">" + frac(m3) + "</span>, <span class=\"num\">" + frac(m4) + "</span>.");
+    steps.push("Arrow on mark 1, bend <b>" + ang + "°</b>, then flip and bend " + ang + "° at mark 2 — that is the rise.");
+    steps.push("Do <b>not</b> flip. Arrow on mark 3, bend " + ang + "° — it drops from here.");
+    steps.push("Flip once more, arrow on mark 4, bend " + ang + "° to come back level.");
+
+    $("#steps").innerHTML = steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
+
+    renderStats([
+      ["Height", num(h)],
+      ["Width", num(w)],
+      ["Mark spacing", num(travel)],
+      ["Flat span", num(w)],
+      ["Shrink", num(2 * shrink)],
+      ["Bends", ang + "° ×4"],
+      ["Total degrees", ang * 4 + "°"],
+      ["Conduit", c.label + " EMT"]
+    ]);
+  }
+
+  function diagramSaddle4(g) {
+    var W = 660, H = 360, padX = 74, padY = 78;
+    var runX = g.h / Math.tan(g.ang * DEG);
+    var total = 2 * runX + g.w;
+    var s = Math.min((W - 2 * padX) / (total * 1.15), (H - 2 * padY) / (1.7 * g.h));
+
+    var cx = W / 2;
+    var baseY = (H + g.h * s) / 2 + 3;
+    var topY = baseY - g.h * s;
+    var half = (total / 2) * s;
+    var runPx = runX * s;
+    var left = cx - half, right = cx + half;
+    var inL = left + runPx, inR = right - runPx;
+
+    var rr = Math.min(18, runPx * 0.28, g.h * s * 0.4);
+
+    var L1 = Math.hypot(runPx, g.h * s) || 1;
+    var u1 = { x: runPx / L1, y: -(g.h * s) / L1 };
+    var u2 = { x: runPx / L1, y: (g.h * s) / L1 };
+
+    var path = "M " + (left - 40) + " " + baseY +
+      " L " + (left - rr) + " " + baseY +
+      " Q " + left + " " + baseY + " " + (left + u1.x * rr) + " " + (baseY + u1.y * rr) +
+      " L " + (inL - u1.x * rr) + " " + (topY - u1.y * rr) +
+      " Q " + inL + " " + topY + " " + (inL + rr) + " " + topY +
+      " L " + (inR - rr) + " " + topY +
+      " Q " + inR + " " + topY + " " + (inR + u2.x * rr) + " " + (topY + u2.y * rr) +
+      " L " + (right - u2.x * rr) + " " + (baseY - u2.y * rr) +
+      " Q " + right + " " + baseY + " " + (right + rr) + " " + baseY +
+      " L " + (right + 40) + " " + baseY;
+
+    var parts = [];
+    parts.push('<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="4-point saddle profile">');
+    parts.push('<defs><pattern id="dots7" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#1e2733"/></pattern></defs>');
+    parts.push('<rect width="' + W + '" height="' + H + '" fill="url(#dots7)"/>');
+
+    parts.push('<line x1="' + (left - 50) + '" y1="' + baseY + '" x2="' + (right + 50) + '" y2="' + baseY + '" stroke="#3a4a5f" stroke-width="1.3" stroke-dasharray="7 7"/>');
+    parts.push(labelAt({ x: left - 46, y: baseY + 22 }, "original line", "#5d6a7d", 0, 0, "start"));
+
+    parts.push('<path d="' + path + '" fill="none" stroke="#000" stroke-opacity=".45" stroke-width="15" stroke-linecap="round" transform="translate(0,3)"/>');
+    parts.push('<path d="' + path + '" fill="none" stroke="#c9d3e2" stroke-width="11" stroke-linecap="round"/>');
+    parts.push('<path d="' + path + '" fill="none" stroke="#fff" stroke-opacity=".26" stroke-width="2" stroke-linecap="round"/>');
+
+    // height dimension
+    parts.push('<line x1="' + right + '" y1="' + topY + '" x2="' + (right + 52) + '" y2="' + topY + '" stroke="#46566d" stroke-width="1" stroke-dasharray="4 4"/>');
+    parts.push(dim({ x: right + 62, y: baseY }, { x: right + 62, y: topY }, frac(g.h)));
+
+    // width dimension
+    parts.push(dim({ x: inL, y: topY + 32 }, { x: inR, y: topY + 32 }, "width " + frac(g.w)));
+
+    // marks
+    var marks = [
+      { x: left, y: baseY, n: "1" },
+      { x: inL, y: topY, n: "2" },
+      { x: inR, y: topY, n: "3" },
+      { x: right, y: baseY, n: "4" }
+    ];
+    marks.forEach(function (m, i) {
+      var up = i === 1 || i === 2;
+      parts.push('<line x1="' + m.x + '" y1="' + (m.y - 16) + '" x2="' + m.x + '" y2="' + (m.y + 16) + '" stroke="#ffb020" stroke-width="3.5" stroke-linecap="round"/>');
+      parts.push('<circle cx="' + m.x + '" cy="' + m.y + '" r="4.5" fill="#ffb020"/>');
+      parts.push('<circle cx="' + m.x + '" cy="' + (m.y - (up ? 34 : 30)) + '" r="10" fill="#ffb020"/>');
+      parts.push('<text x="' + m.x + '" y="' + (m.y - (up ? 30 : 26)) + '" fill="#22160a" font-family="ui-monospace,Consolas,monospace" font-size="12" font-weight="700" text-anchor="middle">' + m.n + "</text>");
+    });
+
+    parts.push("</svg>");
+    return parts.join("");
+  }
+
+  /* --------------------------------- run --------------------------------- */
+
+  function runTotals() {
+    var c = conduit();
+    var rows = state.run.rows;
+    var back = 0, totalDeg = 0, gains = 0, marks = [], ok = true;
+
+    for (var i = 0; i < rows.length; i++) {
+      var leg = parseIn(rows[i].leg);
+      var ang = rows[i].angle;
+      if (!(isFinite(leg) && leg >= 0)) { ok = false; break; }
+      back += leg;
+      totalDeg += ang;
+      gains += gainAt(ang, c);
+      marks.push({
+        n: i + 1, leg: leg, back: back, mark: back - c.takeUp * (ang / 90), angle: ang
+      });
+    }
+
+    var fin = parseIn(state.run.final);
+    return {
+      ok: ok && marks.length > 0,
+      marks: marks, totalDeg: totalDeg, gains: gains,
+      final: isFinite(fin) && fin > 0 ? fin : NaN
+    };
+  }
+
+  function renderBudget(totalDeg) {
+    var el = $("#budget");
+    el.hidden = false;
+    var over = totalDeg > 360;
+    el.className = "budget" + (over ? " over" : "");
+    el.innerHTML = '<div class="degbar' + (over ? " over" : "") + '"><i style="width:' +
+      Math.min(100, (totalDeg / 360) * 100) + '%"></i></div>' +
+      '<span class="txt">' + totalDeg + "° / 360°</span>";
+  }
+
+  function renderRun(c) {
+    var t = runTotals();
+    renderBudget(t.totalDeg);
+
+    if (!t.ok) {
+      emptyState("Fill in a leg for each bend", "Add bends with the + button, then enter the leg lengths.");
+      return;
+    }
+
+    if (t.totalDeg > 360) {
+      $("#warnSlot").innerHTML = '<p class="warnbox">This run totals <b>' + t.totalDeg +
+        "°</b> between pull points. NEC 358.26 allows 360° — add a pull point or split the run.</p>";
+    } else if (t.totalDeg > 300) {
+      $("#warnSlot").innerHTML = '<p class="warnbox soft">' + t.totalDeg + "° of the 360° budget used. Not much room left for another bend.</p>";
+    } else {
+      $("#warnSlot").innerHTML = "";
+    }
+
+    var last = t.marks[t.marks.length - 1];
+    var cut = last.back + (isFinite(t.final) ? t.final : 0) - t.gains;
+
+    $("#hero").innerHTML =
+      tile("Mark 1 · arrow", frac(t.marks[0].mark), "from End A · " + dec(t.marks[0].mark), "hero-1") +
+      tile("Bends", String(t.marks.length), t.totalDeg + "° total", "hero-2") +
+      tile("Cut to", isFinite(t.final) ? frac(cut) : "—",
+        isFinite(t.final) ? "before bending" : "add the final leg", "hero-2");
+
+    $("#diagram").innerHTML = markStrip(t.marks, cut, t.totalDeg);
+
+    var steps = [];
+    steps.push('Cut the pipe to about <span class="num">' + frac(cut) + "</span> — mark everything before you bend.");
+    t.marks.forEach(function (m, i) {
+      var gap = i === 0 ? m.mark : m.mark - t.marks[i - 1].mark;
+      var where = i === 0 ? "" : " (" + frac(gap) + " past mark " + i + ")";
+      var how = m.angle === 90
+        ? "Arrow on it, hook toward End A, bend 90°."
+        : "Arrow on it, bend " + m.angle + "°.";
+      steps.push("<b>Mark " + m.n + "</b> — " + frac(m.mark) + " from End A" + where + ". " + how);
+    });
+    if (isFinite(t.final)) {
+      steps.push("Trim the far end so the last leg is <span class=\"num\">" + frac(t.final) + "</span>.");
+    }
+
+    $("#steps").innerHTML = steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
+
+    var stats = [];
+    t.marks.forEach(function (m) {
+      stats.push(["Mark " + m.n, num(m.mark)]);
+    });
+    stats.push(["Total bend", t.totalDeg + "°"]);
+    stats.push(["Gain", num(t.gains)]);
+    stats.push(["Cut to", isFinite(t.final) ? num(cut) : "—"]);
+    stats.push(["Conduit", c.label + " EMT"]);
+    renderStats(stats);
+  }
+
+  function markStrip(marks, total, totalDeg) {
+    var W = 660, H = 190, padX = 54, y = 112;
+    var span = Math.max(total, 1);
+    var s = (W - 2 * padX) / span;
+
+    var parts = [];
+    parts.push('<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Mark layout along the pipe">');
+    parts.push('<defs><pattern id="dots5" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#1e2733"/></pattern></defs>');
+    parts.push('<rect width="' + W + '" height="' + H + '" fill="url(#dots5)"/>');
+
+    // pipe
+    parts.push('<line x1="' + padX + '" y1="' + y + '" x2="' + (W - padX) + '" y2="' + y + '" stroke="#000" stroke-opacity=".45" stroke-width="15" stroke-linecap="round" transform="translate(0,3)"/>');
+    parts.push('<line x1="' + padX + '" y1="' + y + '" x2="' + (W - padX) + '" y2="' + y + '" stroke="#c9d3e2" stroke-width="11" stroke-linecap="round"/>');
+    parts.push('<line x1="' + padX + '" y1="' + (y - 2) + '" x2="' + (W - padX) + '" y2="' + (y - 2) + '" stroke="#fff" stroke-opacity=".26" stroke-width="2" stroke-linecap="round"/>');
+
+    // ends
+    parts.push(labelAt({ x: padX, y: y + 30 }, "End A", "#5d6a7d", 0, 0, "middle"));
+    parts.push(labelAt({ x: W - padX, y: y + 30 }, total > 0 ? frac(total) : "End B", "#5d6a7d", 0, 0, "middle"));
+
+    var prevX = -9999, prevRow = 1;
+    marks.forEach(function (m) {
+      var x = padX + m.mark * s;
+      var row = (x - prevX < 72) ? (prevRow === 0 ? 1 : 0) : 0;
+      prevX = x; prevRow = row;
+
+      parts.push('<line x1="' + x + '" y1="' + (y - 17) + '" x2="' + x + '" y2="' + (y + 17) + '" stroke="#ffb020" stroke-width="3" stroke-linecap="round"/>');
+      parts.push('<circle cx="' + x + '" cy="' + (y - 26 - row * 34) + '" r="10" fill="#ffb020"/>');
+      parts.push('<text x="' + x + '" y="' + (y - 22 - row * 34) + '" fill="#22160a" font-family="ui-monospace,Consolas,monospace" font-size="12" font-weight="700" text-anchor="middle">' + m.n + "</text>");
+      parts.push('<text x="' + x + '" y="' + (y + 36 + row * 22) + '" fill="#a7b4c6" font-family="ui-monospace,Consolas,monospace" font-size="12" text-anchor="middle">' + frac(m.mark) + "</text>");
+    });
+
+    parts.push('<text x="' + padX + '" y="' + (H - 8) + '" fill="#5d6a7d" font-family="system-ui" font-size="11" letter-spacing=".08em">' + totalDeg + "° TOTAL</text>");
+    parts.push("</svg>");
+    return parts.join("");
+  }
+
+  function buildRunRows() {
+    var wrap = $("#runRows");
+    wrap.innerHTML = "";
+
+    state.run.rows.forEach(function (row, i) {
+      var div = document.createElement("div");
+      div.className = "runrow";
+
+      var idx = document.createElement("span");
+      idx.className = "runidx";
+      idx.textContent = String(i + 1);
+
+      var inp = document.createElement("input");
+      inp.type = "text";
+      inp.setAttribute("inputmode", "text");
+      inp.setAttribute("autocomplete", "off");
+      inp.spellcheck = false;
+      inp.placeholder = i === 0 ? "from End A" : "from previous";
+      inp.value = row.leg;
+      inp.setAttribute("aria-label", "Leg " + (i + 1) + " in inches");
+      inp.addEventListener("input", function () {
+        state.run.rows[i].leg = inp.value;
+        save();
+        render();
+      });
+
+      var sel = document.createElement("select");
+      sel.className = "runangle";
+      sel.setAttribute("aria-label", "Bend " + (i + 1) + " angle");
+      SINGLE_ANGLES.forEach(function (a) {
+        var o = document.createElement("option");
+        o.value = String(a);
+        o.textContent = a + "°";
+        if (a === row.angle) o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.addEventListener("change", function () {
+        state.run.rows[i].angle = Number(sel.value);
+        save();
+        render();
+      });
+
+      var del = document.createElement("button");
+      del.type = "button";
+      del.className = "del";
+      del.innerHTML = "&times;";
+      del.setAttribute("aria-label", "Remove bend " + (i + 1));
+      del.addEventListener("click", function () {
+        if (state.run.rows.length <= 1) return;
+        state.run.rows.splice(i, 1);
+        save();
+        buildRunRows();
+        render();
+      });
+
+      div.appendChild(idx);
+      div.appendChild(inp);
+      div.appendChild(sel);
+      div.appendChild(del);
+      wrap.appendChild(div);
+    });
+
+    var add = $("#addBend");
+    var maxed = state.run.rows.length >= 8;
+    add.disabled = maxed;
+    add.style.opacity = maxed ? ".4" : "1";
+    add.style.cursor = maxed ? "default" : "pointer";
+  }
+
+  /* ---------------------------- shared bits ---------------------------- */
+
+  function renderStats(items) {
+    $("#stats").innerHTML = items.map(function (it) {
+      return '<div class="stat"><dt>' + it[0] + "</dt><dd>" + it[1] + "</dd></div>";
+    }).join("");
+  }
+
+  function emptyState(title, sub) {
+    $("#warnSlot").innerHTML = "";
+    $("#hero").innerHTML =
+      '<div class="tile hero-1"><span class="k">Mark 1 · bender arrow</span><span class="v">—</span><span class="s">waiting on measurements</span></div>' +
+      '<div class="tile hero-2"><span class="k">Bend to</span><span class="v">—</span><span class="s">angle</span></div>';
+    $("#diagram").innerHTML = '<div class="empty">' + title + "<br><span style=\"color:#3f4b5c\">" + sub + "</span></div>";
+    $("#steps").innerHTML = "";
+    $("#stats").innerHTML = "";
+  }
+
+  /* =====================================================================
+     Wiring
+     ===================================================================== */
+
+  function wire() {
+    $("#inA").addEventListener("input", function (e) {
+      state.tri.a = e.target.value;
+      state.lastEdit = "a";
+      if (state.autoKey === "a") state.autoKey = null;
+      save();
+      syncTriangle();
+    });
+    $("#inB").addEventListener("input", function (e) {
+      state.tri.b = e.target.value;
+      state.lastEdit = "b";
+      if (state.autoKey === "b") state.autoKey = null;
+      save();
+      syncTriangle();
+    });
+    $("#inD").addEventListener("input", function (e) {
+      state.tri.d = e.target.value;
+      state.lastEdit = "d";
+      if (state.autoKey === "d") state.autoKey = null;
+      save();
+      syncTriangle();
+    });
+
+    $("#inStart").addEventListener("input", function (e) {
+      state.offset.start = e.target.value;
+      save();
+      render();
+    });
+    $("#inDepth").addEventListener("input", function (e) {
+      state.offset.depth = e.target.value;
+      save();
+      render();
+    });
+
+    function simpleInput(id, obj, key) {
+      var el = $(id);
+      el.addEventListener("input", function () {
+        obj[key] = el.value;
+        save();
+        render();
+      });
+    }
+    simpleInput("#inB2bLeg1", state.b2b, "leg1");
+    simpleInput("#inB2bDist", state.b2b, "dist");
+    simpleInput("#inB2bLeg2", state.b2b, "leg2");
+    simpleInput("#inSadH", state.saddle, "h");
+    simpleInput("#inSadAt", state.saddle, "at");
+    simpleInput("#inRunFinal", state.run, "final");
+
+    simpleInput("#inRollStart", state.rolling, "start");
+    simpleInput("#inRollRise", state.rolling, "rise");
+    simpleInput("#inRollRoll", state.rolling, "roll");
+    simpleInput("#inBoxFrom", state.box, "from");
+    simpleInput("#inBoxDepth", state.box, "depth");
+    simpleInput("#inSad4H", state.saddle, "h");
+    simpleInput("#inSad4W", state.saddle, "w");
+    simpleInput("#inSad4At", state.saddle, "at");
+
+    // the 3-point and 4-point panels share height / position
+    [["#inSadH", "#inSad4H"], ["#inSadAt", "#inSad4At"]].forEach(function (pair) {
+      var a = $(pair[0]), b = $(pair[1]);
+      a.addEventListener("input", function () { b.value = a.value; });
+      b.addEventListener("input", function () { a.value = b.value; });
+    });
+
+    $$("#offsetTabs button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state.offsetMode = b.dataset.sub;
+        save();
+        render();
+      });
+    });
+    $$("#saddleTabs button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state.saddleMode = b.dataset.sub;
+        save();
+        render();
+      });
+    });
+    $$("#singleTabs button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state.singleMode = b.dataset.sub;
+        save();
+        render();
+      });
+    });
+
+    KICK_KEYS.forEach(function (k) {
+      $(KICK_INPUT[k]).addEventListener("input", function (e) {
+        state.kick[k] = e.target.value;
+        state.kickLast = k;
+        if (state.kickAuto === k) state.kickAuto = null;
+        save();
+        syncKick();
+      });
+    });
+
+    $("#addBend").addEventListener("click", function () {
+      if (state.run.rows.length >= 8) return;
+      state.run.rows.push({ leg: "", angle: 90 });
+      save();
+      buildRunRows();
+      render();
+    });
+
+    $("#swapLegs").addEventListener("click", function () {
+      var t = state.tri.a;
+      state.tri.a = state.tri.b;
+      state.tri.b = t;
+      if (state.autoKey === "a") state.autoKey = "b";
+      else if (state.autoKey === "b") state.autoKey = "a";
+      save();
+      $("#inA").value = state.tri.a;
+      $("#inB").value = state.tri.b;
+      syncTriangle();
+    });
+
+    $$("#modeTabs button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state.mode = b.dataset.mode;
+        save();
+        render();
+      });
+    });
+
+    $("#takeUpInput").addEventListener("input", function (e) {
+      var v = parseIn(e.target.value);
+      if (isFinite(v) && v > 0 && v !== CONDUITS[state.size].takeUp) state.overrides[state.size] = String(v);
+      else if (isFinite(v) && v === CONDUITS[state.size].takeUp) delete state.overrides[state.size];
+      save();
+      render();
+    });
+
+    $("#resetBender").addEventListener("click", function () {
+      delete state.overrides[state.size];
+      save();
+      render();
+    });
+
+    $("#printBtn").addEventListener("click", function () { window.print(); });
+
+    $("#copyBtn").addEventListener("click", function () {
+      var txt = buildCopy();
+      var btn = this;
+      var old = btn.textContent;
+      copyText(txt).then(function () {
+        btn.textContent = "Copied";
+        setTimeout(function () { btn.textContent = old; }, 1400);
+      }).catch(function () {
+        btn.textContent = "Copy failed";
+        setTimeout(function () { btn.textContent = old; }, 1800);
+      });
+    });
+
+    window.addEventListener("keydown", function (e) {
+      if (e.key >= "1" && e.key <= "4" && !/input|textarea/i.test(document.activeElement.tagName)) {
+        var keys = SIZE_ORDER;
+        var i = parseInt(e.key, 10) - 1;
+        if (keys[i]) { state.size = keys[i]; save(); syncSizeChips(); render(); }
+      }
+    });
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        resolve();
+      } catch (e) { reject(e); }
+    });
+  }
+
+  function buildCopy() {
+    var c = conduit();
+    var lines = ["EMT Bender Buddy — " + c.label + " EMT", ""];
+
+    if (state.mode === "single") {
+      if (state.singleMode === "kick") {
+        var k = currentKick();
+        if (!k) return "No measurements yet.";
+        lines.push("Kick: " + frac(k.x) + " over " + frac(k.l) + " from the end");
+        lines.push("Bend " + k.a.toFixed(1) + "°");
+        lines.push("MARK 1: " + frac(k.l - c.takeUp * (k.a / 90)) + " from the end");
+        return lines.join("\n");
+      }
+      var angle = state.singleAngle;
+      var sol = currentSolution();
+      if (!sol) return "No measurements yet.";
+      var allowance = c.takeUp * (angle / 90);
+      lines.push("Bend: " + angle + "°");
+      lines.push("Leg A: " + frac(sol.a) + "   Leg B: " + frac(sol.b) + "   Diagonal: " + frac(sol.d));
+      lines.push("MARK 1: " + frac(sol.a - allowance) + " from End A");
+      lines.push("Arrow on mark, hook toward End A, bend to " + angle + "°.");
+      lines.push("Bend allowance used: " + frac(allowance));
+
+    } else if (state.mode === "offset") {
+      if (state.offsetMode === "box") {
+        var bf = parseIn(state.box.from), bd = parseIn(state.box.depth);
+        if (!okv(bf) || !okv(bd)) return "No measurements yet.";
+        var ba = state.boxAngle;
+        var bt = bd / Math.sin(ba * DEG);
+        lines.push("Box offset: " + frac(bd) + " deep at " + ba + "°");
+        lines.push("MARK 1: " + frac(bf) + " from the box end");
+        lines.push("MARK 2: " + frac(bf + bt) + " from the box end");
+        lines.push("Bend " + ba + "° each, opposite directions.");
+        return lines.join("\n");
+      }
+      if (state.offsetMode === "rolling") {
+        var rr = parseIn(state.rolling.rise), rl = parseIn(state.rolling.roll), rs = parseIn(state.rolling.start);
+        if (!okv(rr) || !okv(rl) || !okv(rs)) return "No measurements yet.";
+        var to = Math.hypot(rr, rl);
+        var a3 = state.offsetAngle;
+        lines.push("Rolling offset: rise " + frac(rr) + ", roll " + frac(rl));
+        lines.push("True offset: " + frac(to) + "   Roll angle: " + (Math.atan2(rl, rr) / DEG).toFixed(1) + "°");
+        lines.push("MARK 1: " + frac(rs) + " from End A");
+        lines.push("MARK 2: " + frac(rs + to / Math.sin(a3 * DEG)) + " from End A");
+        lines.push("Bend both to " + a3 + "° in the plane of the diagonal.");
+        return lines.join("\n");
+      }
+      var angle2 = state.offsetAngle;
+      var start = parseIn(state.offset.start), depth = parseIn(state.offset.depth);
+      if (!isFinite(start) || !isFinite(depth)) return "No measurements yet.";
+      var travel = depth / Math.sin(angle2 * DEG);
+      var shrink = depth * shrinkFactor(angle2);
+      lines.push("Offset: " + frac(depth) + " deep at " + angle2 + "°");
+      lines.push("MARK 1: " + frac(start) + " from End A");
+      lines.push("MARK 2: " + frac(start + travel) + " from End A");
+      lines.push("Bend both to " + angle2 + "° in opposite directions.");
+      lines.push("Cut " + frac(shrink) + " long to allow for shrink.");
+
+    } else if (state.mode === "b2b") {
+      var leg1 = parseIn(state.b2b.leg1), dist = parseIn(state.b2b.dist), leg2 = parseIn(state.b2b.leg2);
+      if (!okv(leg1) || !okv(dist)) return "No measurements yet.";
+      lines.push("Back-to-back 90s: " + frac(dist) + " between the backs");
+      lines.push("MARK 1: " + frac(leg1 - c.takeUp) + " from End A (arrow)");
+      lines.push("Bend 90°.");
+      lines.push("MARK 2: " + frac(dist) + " from the back of the first 90 (star)");
+      lines.push("Bend 90° the same direction.");
+      if (okv(leg2)) lines.push("Cut to " + frac(leg1 + dist + leg2 - 2 * c.gain) + ".");
+
+    } else if (state.mode === "saddle") {
+      if (state.saddleMode === "4") {
+        var h4 = parseIn(state.saddle.h), w4 = parseIn(state.saddle.w), a4 = parseIn(state.saddle.at);
+        if (!okv(h4) || !okv(w4) || !okv(a4)) return "No measurements yet.";
+        var sa = state.saddleAngle;
+        var tr = h4 / Math.sin(sa * DEG);
+        var sh = h4 * Math.tan((sa / 2) * DEG);
+        var m1 = a4 - h4 / Math.tan(sa * DEG);
+        lines.push("4-point saddle: " + frac(h4) + " high, " + frac(w4) + " wide, " + sa + "° bends");
+        lines.push("MARK 1: " + frac(m1) + "   MARK 2: " + frac(m1 + tr));
+        lines.push("MARK 3: " + frac(m1 + tr + w4) + "   MARK 4: " + frac(m1 + 2 * tr + w4));
+        lines.push("Bend 1, flip, bend 2. No flip: bend 3. Flip: bend 4.");
+        lines.push("Cut " + frac(2 * sh) + " long.");
+        return lines.join("\n");
+      }
+      var h = parseIn(state.saddle.h), at = parseIn(state.saddle.at);
+      if (!okv(h) || !okv(at)) return "No measurements yet.";
+      var side = 2.5 * h, center = at + (3 / 16) * h;
+      lines.push("3-point saddle: " + frac(h) + " high");
+      lines.push("MARK 1 (arrow): " + frac(center - side) + " from End A — bend 22.5°");
+      lines.push("MARK 2 (teardrop): " + frac(center) + " from End A — bend 45° first");
+      lines.push("MARK 3 (arrow): " + frac(center + side) + " from End A — bend 22.5°");
+      lines.push("Cut " + frac((3 / 8) * h) + " long to allow for shrink.");
+
+    } else {
+      var t = runTotals();
+      if (!t.ok) return "No measurements yet.";
+      lines.push("Run of " + t.marks.length + " bends, " + t.totalDeg + "° total");
+      t.marks.forEach(function (m) {
+        lines.push("MARK " + m.n + ": " + frac(m.mark) + " from End A — bend " + m.angle + "°");
+      });
+      if (isFinite(t.final)) {
+        lines.push("Cut to " + frac(t.marks[t.marks.length - 1].back + t.final - t.gains) + ".");
+      }
+    }
+
+    return lines.join("\n");
+  }
+
+  /* =====================================================================
+     Reference tables
+     ===================================================================== */
+
+  function renderReference() {
+    var rows = SIZE_ORDER.map(function (k) {
+      var c = CONDUITS[k];
+      return '<tr class="' + (k === state.size ? "on" : "") + '"><td>' + c.label + " EMT</td><td>" + c.takeUp + '"</td><td>' + c.gain + '"</td></tr>';
+    });
+    $("#refBender").innerHTML = rows.join("");
+
+    $("#refOffset").innerHTML = OFFSET_ANGLES.map(function (a) {
+      return '<tr><td>' + a + "°</td><td>" + CHART_MULT[a].toFixed(1) + "×</td><td>" + frac(SHRINK_PER_IN[a]) + "</td></tr>";
+    }).join("");
+
+    var all = [10, 15, 22.5, 30, 45, 60, 75, 90];
+    $("#refExact").innerHTML = all.map(function (a) {
+      return "<tr><td>" + a + "°</td><td>" + mult(a).toFixed(3) + "×</td></tr>";
+    }).join("");
+  }
+
+  /* =====================================================================
+     Boot
+     ===================================================================== */
+
+  function init() {
+    load();
+    buildChips();
+    syncSizeChips();
+    syncAngleChips();
+    syncOffChips();
+    wire();
+
+    $("#inA").value = state.tri.a;
+    $("#inB").value = state.tri.b;
+    $("#inD").value = state.tri.d;
+    $("#inStart").value = state.offset.start;
+    $("#inDepth").value = state.offset.depth;
+    $("#inB2bLeg1").value = state.b2b.leg1;
+    $("#inB2bDist").value = state.b2b.dist;
+    $("#inB2bLeg2").value = state.b2b.leg2;
+    $("#inSadH").value = state.saddle.h;
+    $("#inSadAt").value = state.saddle.at;
+    $("#inSad4H").value = state.saddle.h;
+    $("#inSad4W").value = state.saddle.w;
+    $("#inSad4At").value = state.saddle.at;
+    $("#inRollStart").value = state.rolling.start;
+    $("#inRollRise").value = state.rolling.rise;
+    $("#inRollRoll").value = state.rolling.roll;
+    $("#inBoxFrom").value = state.box.from;
+    $("#inBoxDepth").value = state.box.depth;
+    $("#inKickX").value = state.kick.x;
+    $("#inKickL").value = state.kick.l;
+    $("#inKickA").value = state.kick.a;
+    $("#inRunFinal").value = state.run.final;
+
+    buildRunRows();
+
+    if (state.tri.a && state.tri.b) { state.autoKey = "d"; state.lastEdit = "b"; }
+
+    renderReference();
+    render();
+
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js").catch(function () {});
+      });
+    }
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
+</body>
+</html>

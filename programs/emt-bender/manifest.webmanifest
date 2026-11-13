@@ -1,0 +1,19 @@
+{
+  "name": "EMT Bender Buddy",
+  "short_name": "EMT Bender",
+  "description": "Work out where to mark EMT conduit and what angle to bend it — single bends and offsets.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0e13",
+  "theme_color": "#0b0e13",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

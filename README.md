@@ -1,13 +1,51 @@
+# DumpsterWare.com
+
+The official DumpsterWare website — a static portfolio for the studio and its
+programs.
+
+## What's here
+
+| Path | Purpose |
+| --- | --- |
+| `index.html` | The whole landing page (hero, programs, about, contact) |
+| `assets/css/site.css` | Design system and layout |
+| `assets/js/site.js` | Mobile nav, scroll reveal, sticky header |
+| `assets/img/` | Brand art, screenshots, icons |
+| `programs/emt-bender/` | The playable EMT Bender Buddy PWA (self-contained) |
+| `404.html` | Styled not-found page |
+| `legacy/` | The original 2021 Jekyll site, preserved for reference |
+
+## Editing
+
+Everything is plain HTML, CSS and JavaScript — no build step, no dependencies.
+
+Open `index.html` in a browser, or serve the folder locally:
+
+```powershell
+# from this directory
+python -m http.server 8000
+# then visit http://localhost:8000
+```
+
+A local server is recommended when testing `programs/emt-bender/` so the service
+worker can register.
+
+## Hosting
+
+The root of `main` is deploy-ready for GitHub Pages (Static HTML). `.nojekyll`
+disables Jekyll processing so files are served exactly as committed.
+
+The `CNAME` file was removed because `dumpsterware.com` did not resolve. Re-add
+it at the repo root if the custom domain is configured again.
+
+## Programs
+
+### EMT Bender Buddy
+
+A conduit-bending calculator for electricians. The web build lives in
+`programs/emt-bender/`; the native Godot build is developed at
+[`emt-bender-buddy-godot`](https://github.com/EsotericRyoushi/emt-bender-buddy-godot).
+
 ---
-layout: page
-title: About
-permalink: /about/
----
 
-![alt text](/public/img/logo2.jpg)
-
-# DumpsterWare Games
-
-DumpsterWare Games is an open book right now, so there isn't much to say. We have always just wanted to make games, so we are going to start. Simple as that, following our dreams. 
-
-Give us your money!
+© DumpsterWare

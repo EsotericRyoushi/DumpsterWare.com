@@ -63,6 +63,8 @@ Live at **https://esotericryoushi.github.io/DumpsterWare.com/** on GitHub Pages
 (public repo, deployed from `main` / root). `.nojekyll` disables Jekyll
 processing, and pushes to `main` rebuild automatically.
 
+Day-to-day work happens on the `Dev` branch. Merge `Dev` into `main` to publish.
+
 For a custom domain, add `dumpsterware.com` in the repository's Pages settings
 and create the DNS records GitHub shows; GitHub provisions HTTPS. The `CNAME`
 file was removed because the domain did not resolve.

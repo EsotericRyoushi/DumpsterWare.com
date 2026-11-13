@@ -93,8 +93,8 @@ Family apps for the road and the kitchen table.
 Practical, offline-first tools for the trades.
 
 - **EMT Bender Buddy** — a conduit-bending calculator for electricians. The web
-  build lives in `programs/emt-bender/`; the native Godot build is developed at
-  [`emt-bender-buddy-godot`](https://github.com/EsotericRyoushi/emt-bender-buddy-godot).
+  build lives in `programs/emt-bender/`; the native Godot build is developed in
+  a separate private repository.
 
 ---
 

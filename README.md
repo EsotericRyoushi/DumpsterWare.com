@@ -9,7 +9,7 @@ The official DumpsterWare site — one studio, three divisions.
 | `/` | Redirects to `/home/` |
 | `/home/` | **Company** — the studio, house rules, contact |
 | `/games/` | **Games** — life-sim sandboxes with no finish line |
-| `/games/sandbox/` | **Project: Sandbox** — the working-title game, in depth |
+| `/games/red-sands/` | **Red Sands** — the working-title game, in depth |
 | `/apps/` | **Apps** — family apps such as Are We There Yet |
 | `/tools/` | **Tools** — field tools such as EMT Bender Buddy |
 | `/devlog/` | **Devlog** — notes from the workshop |
@@ -138,8 +138,8 @@ file was removed because the domain did not resolve.
 
 Life-sim sandboxes with no finish line — drop into a world, pick a trade, make
 a living, and keep playing. The first project, working title
-**Project: Sandbox**, is in development; it has its own page at
-`/games/sandbox/`.
+**Red Sands**, is in development; it has its own page at
+`/games/red-sands/`.
 
 ### Apps
 

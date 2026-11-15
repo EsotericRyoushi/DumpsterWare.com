@@ -752,6 +752,38 @@ ul {
   color: #f0e3d4 !important;
 }
 
+.about-quote {
+  margin: 30px 0 0;
+  padding: 2px 0 2px 22px;
+  border-left: 3px solid var(--accent);
+}
+
+.about-quote p {
+  max-width: 34ch;
+  font-family: var(--display);
+  font-size: clamp(1.18rem, 1.6vw, 1.38rem);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: #f0e3d4;
+}
+
+.about-grid .about-quote p {
+  margin-top: 0;
+}
+
+.about-quote cite {
+  display: block;
+  margin-top: 12px;
+  font-style: normal;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
 .about-foot {
   display: flex;
   align-items: center;

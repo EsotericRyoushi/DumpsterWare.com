@@ -746,42 +746,42 @@ ul {
   margin-top: 18px;
 }
 
-.about-sign {
-  font-family: var(--display);
-  font-weight: 600;
-  color: #f0e3d4 !important;
+.quote-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  padding: clamp(28px, 4vw, 44px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(520px 280px at 15% 0%, rgba(232, 90, 28, 0.14), transparent 65%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
 }
 
-.about-quote {
-  margin: 30px 0 0;
-  padding: 2px 0 2px 22px;
-  border-left: 3px solid var(--accent);
-}
-
-.about-quote p {
-  max-width: 34ch;
+.quote-card blockquote {
+  margin: 0;
   font-family: var(--display);
-  font-size: clamp(1.18rem, 1.6vw, 1.38rem);
+  font-size: clamp(1.35rem, 2.2vw, 1.8rem);
   font-style: italic;
   font-weight: 600;
-  line-height: 1.45;
+  line-height: 1.35;
   letter-spacing: -0.01em;
+  text-wrap: balance;
   color: #f0e3d4;
 }
 
-.about-grid .about-quote p {
-  margin-top: 0;
-}
-
-.about-quote cite {
-  display: block;
-  margin-top: 12px;
-  font-style: normal;
+.quote-card figcaption {
+  margin-top: 18px;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--dim);
+}
+
+.about-grid + .value-grid {
+  margin-top: clamp(32px, 4.5vw, 56px);
 }
 
 .about-foot {

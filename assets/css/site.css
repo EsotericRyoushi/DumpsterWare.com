@@ -196,24 +196,6 @@ ul {
   filter: drop-shadow(0 8px 18px rgba(217, 72, 27, 0.35));
 }
 
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  font-size: 0.92rem;
-  font-weight: 500;
-}
-
-.nav a {
-  padding-block: 0.3rem;
-  color: var(--mut);
-  transition: color 0.18s ease;
-}
-
-.nav a:hover {
-  color: var(--txt);
-}
-
 .nav-icon {
   display: inline-flex;
   align-items: center;
@@ -234,36 +216,6 @@ ul {
 .nav-icon svg {
   width: 18px;
   height: 18px;
-}
-
-.nav-toggle {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  width: 42px;
-  height: 42px;
-  padding: 0 10px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: transparent;
-  cursor: pointer;
-}
-
-.nav-toggle span {
-  display: block;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--txt);
-  transition: transform 0.22s ease, opacity 0.22s ease;
-}
-
-.nav-toggle[aria-expanded="true"] span:first-child {
-  transform: translateY(4px) rotate(45deg);
-}
-
-.nav-toggle[aria-expanded="true"] span:last-child {
-  transform: translateY(-4px) rotate(-45deg);
 }
 
 /* ---------- Shared bits -------------------------------------------------- */

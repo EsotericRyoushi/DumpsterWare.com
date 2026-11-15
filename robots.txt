@@ -1,0 +1,10 @@
+# DumpsterWare.com
+# https://esotericryoushi.github.io/DumpsterWare.com/
+
+User-agent: *
+Allow: /
+
+# The 2021 Jekyll site is preserved for reference, not for search results.
+Disallow: /legacy/
+
+Sitemap: https://esotericryoushi.github.io/DumpsterWare.com/sitemap.xml

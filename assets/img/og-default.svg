@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="glowTop" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#b8492f" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#b8492f" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowBottom" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e85a1c" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#e85a1c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="markGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e85a1c" stop-opacity="0.45"/>
+      <stop offset="70%" stop-color="#e85a1c" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#e85a1c" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="headlineGrad" x1="0" y1="0" x2="1" y2="0.6">
+      <stop offset="0%" stop-color="#ffb877"/>
+      <stop offset="45%" stop-color="#ef6a24"/>
+      <stop offset="100%" stop-color="#c9430f"/>
+    </linearGradient>
+    <pattern id="grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M72 0H0V72" fill="none" stroke="#ffe7d0" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#0a0807"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="1010" cy="40" r="520" fill="url(#glowTop)"/>
+  <circle cx="120" cy="700" r="480" fill="url(#glowBottom)"/>
+
+  <circle cx="955" cy="315" r="330" fill="url(#markGlow)"/>
+  <g transform="rotate(-6 955 315)">
+    <image href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJEdW1wc3RlcldhcmUgbG9nbyI+CiAgPHRpdGxlPkR1bXBzdGVyV2FyZTwvdGl0bGU+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9IiNkOTQ4MWIiLz4KCiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTIwIDApIj4KICAgIDwhLS0gZmxvcHB5IGRpc2sgLS0+CiAgICA8ZyB0cmFuc2Zvcm09InJvdGF0ZSgtMTYgMzg2IDIyNSkiPgogICAgICA8cGF0aCBkPSJNMzE2IDEwOGgxMzRsMzIgMzJ2MTU4SDMxNnoiIGZpbGw9IiMyYjMwMzgiIHN0cm9rZT0iIzFkMTEwYiIgc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogICAgICA8cmVjdCB4PSIzNDQiIHk9IjEyNiIgd2lkdGg9Ijk4IiBoZWlnaHQ9IjU2IiByeD0iOCIgZmlsbD0iI2NmYzliZCIgc3Ryb2tlPSIjMWQxMTBiIiBzdHJva2Utd2lkdGg9IjEwIi8+CiAgICAgIDxyZWN0IHg9IjM5MCIgeT0iMTM5IiB3aWR0aD0iMjYiIGhlaWdodD0iMzAiIHJ4PSI0IiBmaWxsPSIjMmIzMDM4Ii8+CiAgICAgIDxyZWN0IHg9IjM0MiIgeT0iMjAwIiB3aWR0aD0iMTA4IiBoZWlnaHQ9Ijc4IiByeD0iNiIgZmlsbD0iI2Y0ZThkNCIgc3Ryb2tlPSIjMWQxMTBiIiBzdHJva2Utd2lkdGg9IjEwIi8+CiAgICAgIDxwYXRoIGQ9Ik0zNjAgMjIyaDY0TTM2MCAyNDJoNjRNMzYwIDI2Mmg0NiIgc3Ryb2tlPSIjZDk0ODFiIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPC9nPgoKICAgIDwhLS0gZmxhbWUgcmlzaW5nIGZyb20gdGhlIGRpc2sgc2xvdCAtLT4KICAgIDxwYXRoIGQ9Ik0zNTAgMTU2Yy0yMC0xNS0yOC0zNy0xNi01OSA0IDEyIDEwIDE4IDE2IDI0LTQtMjIgNC00MiAyMC02MC0yIDIyIDggMzIgMTIgNDYgMTAtMTIgMTItMjggOC00MCAxNiAyMiAyMCA0OCA2IDY2LTEwIDE0LTI4IDI0LTQ2IDIzeiIgZmlsbD0iI2ZmOWE0ZCIgc3Ryb2tlPSIjMWQxMTBiIiBzdHJva2Utd2lkdGg9IjEyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMzUyIDE0NWMtMTQtMTEtMTktMjctMTEtNDMgNCA5IDkgMTQgMTMgMTgtMi0xNiA0LTMwIDE0LTQyLTIgMTYgNiAyNCA5IDM0IDctOCA4LTE4IDYtMjYgMTAgMTQgMTIgMzIgNCA0NC02IDEwLTE4IDE2LTM1IDE1eiIgZmlsbD0iI2ZmZDliMyIvPgoKICAgIDwhLS0gc2lkZSBoYW5kbGVzIC0tPgogICAgPHJlY3QgeD0iMTI0IiB5PSIzMTgiIHdpZHRoPSIzMCIgaGVpZ2h0PSI1OCIgcng9IjE1IiBmaWxsPSIjZWZlMmNjIiBzdHJva2U9IiMxZDExMGIiIHN0cm9rZS13aWR0aD0iMTMiLz4KICAgIDxyZWN0IHg9IjMxNCIgeT0iMzE4IiB3aWR0aD0iMzAiIGhlaWdodD0iNTgiIHJ4PSIxNSIgZmlsbD0iI2VmZTJjYyIgc3Ryb2tlPSIjMWQxMTBiIiBzdHJva2Utd2lkdGg9IjEzIi8+CgogICAgPCEtLSBjYW4gYm9keSAtLT4KICAgIDxwYXRoIGQ9Ik0xNDYgMjc4aDE3NmwtOCAxMzZjLTEgMTItOSAyMC0yMSAyMEgxNzVjLTEyIDAtMjAtOC0yMS0yMHoiIGZpbGw9IiNlZmUyY2MiIHN0cm9rZT0iIzFkMTEwYiIgc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTE4OCAyOThsNSAxMTBNMjI2IDI5OGwyIDExME0yNjQgMjk4bC0yIDExME0zMDAgMjk4bC01IDExMCIgc3Ryb2tlPSIjYzliN2EwIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgoKICAgIDwhLS0gcmltIC0tPgogICAgPHJlY3QgeD0iMTMyIiB5PSIyNDAiIHdpZHRoPSIyMDQiIGhlaWdodD0iNDAiIHJ4PSIxNCIgZmlsbD0iI2Y0ZThkNCIgc3Ryb2tlPSIjMWQxMTBiIiBzdHJva2Utd2lkdGg9IjE0Ii8+CgogICAgPCEtLSBsaWQgLS0+CiAgICA8ZyB0cmFuc2Zvcm09InJvdGF0ZSgtMjIgMTkwIDIyMCkiPgogICAgICA8cmVjdCB4PSIxNTIiIHk9IjE4MiIgd2lkdGg9Ijc2IiBoZWlnaHQ9IjI2IiByeD0iMTMiIGZpbGw9IiNmNGU4ZDQiIHN0cm9rZT0iIzFkMTEwYiIgc3Ryb2tlLXdpZHRoPSIxMiIvPgogICAgICA8cmVjdCB4PSI5MiIgeT0iMjA0IiB3aWR0aD0iMTk2IiBoZWlnaHQ9IjQyIiByeD0iMjEiIGZpbGw9IiNmNGU4ZDQiIHN0cm9rZT0iIzFkMTEwYiIgc3Ryb2tlLXdpZHRoPSIxNCIvPgogICAgICA8cGF0aCBkPSJNMTEyIDIyNGgxMTYiIHN0cm9rZT0iI2M5YjdhMCIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=" x="830" y="190" width="250" height="250"/>
+  </g>
+
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <text x="72" y="196" font-size="19" font-weight="600" letter-spacing="4.5" fill="#e85a1c">INDEPENDENT STUDIO &#183; EST. 2021</text>
+  </g>
+
+  <g font-family="Georgia, 'Times New Roman', serif" font-weight="bold">
+    <text x="72" y="308" font-size="82" letter-spacing="-2.5" fill="#f6eee5">Games first.</text>
+    <text x="72" y="400" font-size="82" letter-spacing="-2.5" fill="url(#headlineGrad)">Useful on the side.</text>
+  </g>
+
+  <text x="74" y="466" font-family="Segoe UI, Arial, sans-serif" font-size="25" fill="#b7a89b">Games, family apps, and field tools &#8212; built to be kept.</text>
+
+  <rect x="72" y="520" width="1056" height="1" fill="#ffe7d0" fill-opacity="0.16"/>
+
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="19" fill="#9c8d80">
+    <text x="72" y="574" font-weight="600" letter-spacing="2.4" fill="#f6eee5">DUMPSTERWARE</text>
+    <text x="72" y="604" font-size="16" letter-spacing="0.4">Games &#183; Apps &#183; Tools</text>
+    <text x="1128" y="574" text-anchor="end" font-size="16" fill="#9c8d80">EST. 2021</text>
+  </g>
+</svg>

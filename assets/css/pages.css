@@ -1,6 +1,6 @@
 /* ==========================================================================
    DumpsterWare — division pages and site switcher
-   Loaded after site.css on /home, /games and /software.
+   Loaded after site.css on every page.
    ========================================================================== */
 
 .sr-only {
@@ -80,6 +80,32 @@ html {
 
 .page-hero .actions {
   margin-top: 30px;
+}
+
+/* ---------- Breadcrumbs -------------------------------------------------- */
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--dim);
+}
+
+.breadcrumbs a {
+  color: var(--mut);
+}
+
+.breadcrumbs a:hover {
+  color: var(--accent);
+}
+
+.breadcrumbs [aria-hidden="true"] {
+  color: var(--dim);
+  opacity: 0.7;
 }
 
 .hero-panel {
@@ -421,6 +447,152 @@ html {
   margin-top: 26px;
 }
 
+/* ---------- Devlog ------------------------------------------------------- */
+
+.log-list {
+  max-width: 780px;
+}
+
+.log-entry {
+  padding: clamp(28px, 4vw, 44px) 0;
+  border-top: 1px solid var(--line);
+}
+
+.log-entry:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.log-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.log-meta time {
+  color: var(--dim);
+}
+
+.log-tag {
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--mut);
+}
+
+.log-entry h2 {
+  margin-top: 14px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.log-body {
+  margin-top: 18px;
+}
+
+.log-body p {
+  margin-top: 14px;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--mut);
+}
+
+.log-body p:first-child {
+  margin-top: 0;
+}
+
+.log-body strong {
+  font-weight: 600;
+  color: var(--txt);
+}
+
+.log-body em {
+  color: #f0e3d4;
+}
+
+.log-body a {
+  color: #f4c9a4;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(232, 90, 28, 0.5);
+}
+
+.log-body a:hover {
+  color: var(--accent);
+}
+
+/* Devlog teasers (home) */
+
+.log-teaser-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.log-teaser {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.012));
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.log-teaser:hover {
+  transform: translateY(-3px);
+  border-color: rgba(232, 90, 28, 0.5);
+  background: rgba(232, 90, 28, 0.06);
+}
+
+.log-teaser time {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.log-teaser h3 {
+  font-size: 1.28rem;
+}
+
+.log-teaser p {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--mut);
+}
+
+.log-teaser .more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.log-teaser .more svg {
+  width: 14px;
+  height: 14px;
+}
+
+.log-teaser-grid + .actions {
+  margin-top: 26px;
+}
+
 /* ---------- Footer ------------------------------------------------------- */
 
 .site-footer {
@@ -609,6 +781,10 @@ html {
 @media (max-width: 760px) {
   .value-grid,
   .principles {
+    grid-template-columns: 1fr;
+  }
+
+  .log-teaser-grid {
     grid-template-columns: 1fr;
   }
 

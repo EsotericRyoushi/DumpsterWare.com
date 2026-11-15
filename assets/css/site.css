@@ -261,6 +261,12 @@ ul {
   color: transparent;
 }
 
+.h1-kicker {
+  display: inline-block;
+  margin-top: 0.14em;
+  font-size: 0.84em;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

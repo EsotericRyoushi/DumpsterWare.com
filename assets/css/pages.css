@@ -536,6 +536,143 @@ html {
   color: var(--accent);
 }
 
+/* Devlog archive */
+
+.devlog-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  grid-template-areas: "list archive";
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+}
+
+.devlog-layout .log-list {
+  grid-area: list;
+}
+
+.devlog-archive {
+  grid-area: archive;
+  position: sticky;
+  top: 100px;
+  max-height: calc(100vh - 120px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.012));
+}
+
+.devlog-archive h2 {
+  font-size: 1.45rem;
+}
+
+.archive-controls {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.archive-controls label {
+  margin-top: 4px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.archive-controls select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--bg-soft);
+  color: var(--txt);
+  font: inherit;
+  font-size: 0.86rem;
+}
+
+.archive-status {
+  margin-top: 16px;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--dim);
+}
+
+.archive-list {
+  display: grid;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.archive-list h3 {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.archive-list ul {
+  display: grid;
+  gap: 2px;
+  margin-top: 6px;
+}
+
+.archive-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  color: var(--mut);
+}
+
+.archive-list a:hover,
+.archive-list a.is-active {
+  background: rgba(232, 90, 28, 0.09);
+  color: var(--txt);
+}
+
+.archive-list a span {
+  font-size: 0.72rem;
+  color: var(--dim);
+}
+
+.archive-clear {
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.archive-clear:hover {
+  color: var(--txt);
+}
+
+html:not(.js) .devlog-archive {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .devlog-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas: "archive" "list";
+  }
+
+  .devlog-archive {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
 /* Devlog teasers (home) */
 
 .log-teaser-grid {

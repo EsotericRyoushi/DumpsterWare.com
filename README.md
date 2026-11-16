@@ -1,6 +1,6 @@
 # DumpsterWare.com
 
-The official DumpsterWare site — one studio, three divisions.
+The official DumpsterWare site — one workshop, three kinds of work.
 
 ## Structure
 
@@ -23,7 +23,7 @@ Shared files:
 | `assets/css/site.css` | Design system, typography, shared components |
 | `assets/css/pages.css` | Site switcher, page heroes, app/game cards, devlog, footer |
 | `assets/js/site.js` | Sticky header, scroll reveal, current year |
-| `assets/img/` | Brand art, WebP screenshots, brick texture, division icons, share card |
+| `assets/img/` | Brand art, WebP screenshots, brick texture, Games/Apps/Tools icons, share card |
 | `assets/img/og-default.svg` | Source art for the social share card |
 | `assets/img/og-default.jpg` | Rendered 1200×630 share card used by `og:image` |
 | `site.webmanifest` | Installable site metadata and home-screen icons |
@@ -62,7 +62,9 @@ worker can register.
    `<time datetime="YYYY-MM-DD">` value to match the visible date.
 3. Add a matching teaser to the "From the workshop" grid on `home/index.html`,
    linking to `/devlog/#your-id`.
-4. If you add a whole new page (not just an entry), add its URL to
+4. The archive sidebar and year/month filters are generated from each entry's
+   `<time datetime>`, so there is no archive list to update by hand.
+5. If you add a whole new page (not just an entry), add its URL to
    `sitemap.xml` and refresh the `lastmod` dates for pages that changed.
 
 ### Updating the share card
@@ -132,7 +134,7 @@ file was removed because the domain did not resolve.
 - Lighthouse (accessibility, best practices, SEO) audits at 100 on the local build.
 - Social sharing uses a dedicated 1200×630 card; `sitemap.xml`, `robots.txt` and a web manifest cover discovery and install.
 
-## Divisions
+## What we make
 
 ### Games
 

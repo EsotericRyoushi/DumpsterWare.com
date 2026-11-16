@@ -87,16 +87,37 @@
     </section>
 
     <section class="section">
-      <div class="wrap">
+      <div class="wrap devlog-layout">
+        <aside class="devlog-archive reveal" aria-labelledby="archive-title">
+          <p class="eyebrow">Archive</p>
+          <h2 id="archive-title">Browse by date</h2>
+
+          <div class="archive-controls">
+            <label for="archive-year">Year</label>
+            <select id="archive-year">
+              <option value="">All years</option>
+            </select>
+
+            <label for="archive-month">Month</label>
+            <select id="archive-month">
+              <option value="">All months</option>
+            </select>
+          </div>
+
+          <p class="archive-status" id="archive-status" role="status">Showing all notes.</p>
+          <ul class="archive-list" id="archive-list"></ul>
+          <button class="archive-clear" type="button" hidden>Show all notes</button>
+        </aside>
+
         <div class="log-list">
-          <article class="log-entry reveal" id="three-divisions">
+          <article class="log-entry reveal" id="one-workshop">
             <header>
               <p class="log-meta"><time datetime="2026-11-14">14 November 2026</time> <span class="log-tag">Site</span></p>
-              <h2>Three divisions, one workshop</h2>
+              <h2>One workshop, three kinds of work</h2>
             </header>
             <div class="log-body">
-              <p>The site used to be one long page with everything stacked on it: games, an app, a conduit calculator. It worked, but it made DumpsterWare look like a pile of unrelated things instead of a studio with a few interests.</p>
-              <p>So the site is now split into four places that share one header: <strong>Company</strong> for the studio, <a href="../games/"><strong>Games</strong></a> for the sandbox work, <a href="../apps/"><strong>Apps</strong></a> for family software, and <a href="../tools/"><strong>Tools</strong></a> for the trade tools. Same voice, clearer rooms.</p>
+              <p>The site used to be one long page with everything stacked on it: games, an app, a conduit calculator. It worked, but it made DumpsterWare look like a pile of unrelated things instead of one workshop with a few interests.</p>
+              <p>Now the same work has four places under one header: <strong>Company</strong> for the people behind it, <a href="../games/"><strong>Games</strong></a> for the sandbox work, <a href="../apps/"><strong>Apps</strong></a> for the household problems we kept hearing about, and <a href="../tools/"><strong>Tools</strong></a> for the trades. They're not separate businesses — just what we need and want, for ourselves and the people close to us, given room to breathe.</p>
               <p>This round also added a proper page for <a href="../games/red-sands/"><strong>Red Sands</strong></a> — the life-sim sandbox that has been a single card for too long — plus this devlog, a sitemap, and a share card so links don't look bare when someone posts one.</p>
               <p>None of that is a launch. It's just the workshop getting tidier before the next thing gets built.</p>
             </div>
@@ -165,5 +186,6 @@
   </footer>
 
   <script src="../assets/js/site.js" defer></script>
+  <script src="../assets/js/devlog.js" defer></script>
 </body>
 </html>

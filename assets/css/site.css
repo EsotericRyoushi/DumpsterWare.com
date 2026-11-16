@@ -798,7 +798,8 @@ ul {
   color: var(--dim);
 }
 
-.about-grid + .value-grid {
+.about-grid + .value-grid,
+.about-grid + .principles {
   margin-top: clamp(32px, 4.5vw, 56px);
 }
 

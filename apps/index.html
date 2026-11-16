@@ -125,8 +125,101 @@
             <p class="app-note">In development. No release date yet — we're still deciding what belongs in the first version. Suggestions are welcome.</p>
           </div>
 
-          <div class="program-media program-media--icon">
-            <img src="../assets/img/app-are-we-there-yet.svg" alt="Are We There Yet app icon" width="512" height="512" loading="lazy" decoding="async">
+          <div class="program-media shot-carousel">
+            <div class="shot-viewport" tabindex="0" role="region" aria-label="Are We There Yet screenshots">
+              <ul class="shot-track">
+                <li class="shot-slide">
+                  <figure class="shot">
+                    <picture>
+                      <source type="image/webp" srcset="../assets/img/are-we-there-yet/driver-trip.webp">
+                      <img src="../assets/img/are-we-there-yet/driver-trip.png" alt="Trip planning screen in Are We There Yet with route, packing, and offline map options" width="720" height="1280" decoding="async">
+                    </picture>
+                    <figcaption>Plan the trip and keep the route offline.</figcaption>
+                  </figure>
+                </li>
+                <li class="shot-slide">
+                  <figure class="shot">
+                    <picture>
+                      <source type="image/webp" srcset="../assets/img/are-we-there-yet/kid-ride.webp">
+                      <img src="../assets/img/are-we-there-yet/kid-ride.png" alt="Back-seat ride screen with the countdown, next stop, and request buttons" width="720" height="1280" decoding="async">
+                    </picture>
+                    <figcaption>The back seat sees the countdown and next stop.</figcaption>
+                  </figure>
+                </li>
+                <li class="shot-slide">
+                  <figure class="shot">
+                    <picture>
+                      <source type="image/webp" srcset="../assets/img/are-we-there-yet/driver-packing.webp">
+                      <img src="../assets/img/are-we-there-yet/driver-packing.png" alt="Packing list and trip countdown in Are We There Yet" width="720" height="1280" loading="lazy" decoding="async">
+                    </picture>
+                    <figcaption>Set the countdown and build the packing list.</figcaption>
+                  </figure>
+                </li>
+                <li class="shot-slide">
+                  <figure class="shot">
+                    <picture>
+                      <source type="image/webp" srcset="../assets/img/are-we-there-yet/kid-packing.webp">
+                      <img src="../assets/img/are-we-there-yet/kid-packing.png" alt="Packing list viewed from the back seat" width="720" height="1280" loading="lazy" decoding="async">
+                    </picture>
+                    <figcaption>The packing list works from either seat.</figcaption>
+                  </figure>
+                </li>
+                <li class="shot-slide">
+                  <figure class="shot">
+                    <picture>
+                      <source type="image/webp" srcset="../assets/img/are-we-there-yet/driver-pairing.webp">
+                      <img src="../assets/img/are-we-there-yet/driver-pairing.png" alt="Pair-the-back-seat screen with a four-digit code" width="720" height="1280" loading="lazy" decoding="async">
+                    </picture>
+                    <figcaption>Pair the kids' tablets in seconds.</figcaption>
+                  </figure>
+                </li>
+                <li class="shot-slide">
+                  <figure class="shot">
+                    <picture>
+                      <source type="image/webp" srcset="../assets/img/are-we-there-yet/kid-ride-next.webp">
+                      <img src="../assets/img/are-we-there-yet/kid-ride-next.png" alt="Back-seat view focused on the next stop" width="720" height="1280" loading="lazy" decoding="async">
+                    </picture>
+                    <figcaption>Flip to the next stop when it matters.</figcaption>
+                  </figure>
+                </li>
+                <li class="shot-slide">
+                  <figure class="shot">
+                    <picture>
+                      <source type="image/webp" srcset="../assets/img/are-we-there-yet/driver-saved-places.webp">
+                      <img src="../assets/img/are-we-there-yet/driver-saved-places.png" alt="Saved places screen with restrooms, fuel, and scenic stops" width="720" height="1280" loading="lazy" decoding="async">
+                    </picture>
+                    <figcaption>Keep the places worth coming back to.</figcaption>
+                  </figure>
+                </li>
+                <li class="shot-slide">
+                  <figure class="shot">
+                    <picture>
+                      <source type="image/webp" srcset="../assets/img/are-we-there-yet/kid-games.webp">
+                      <img src="../assets/img/are-we-there-yet/kid-games.png" alt="Car games shelf with Would You Rather, Red Car Duel, Connect 4, and Tic Tac Toe" width="720" height="1280" loading="lazy" decoding="async">
+                    </picture>
+                    <figcaption>A shelf of car games for the back seat.</figcaption>
+                  </figure>
+                </li>
+                <li class="shot-slide">
+                  <figure class="shot">
+                    <picture>
+                      <source type="image/webp" srcset="../assets/img/are-we-there-yet/kid-games-ttt.webp">
+                      <img src="../assets/img/are-we-there-yet/kid-games-ttt.png" alt="Tic Tac Toe game in progress on the back seat" width="720" height="1280" loading="lazy" decoding="async">
+                    </picture>
+                    <figcaption>Play together, or pick another game.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </div>
+            <div class="shot-controls">
+              <button class="shot-prev" type="button" aria-label="Previous screenshot">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M13 4l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <span class="shot-count" aria-live="polite">1 / 9</span>
+              <button class="shot-next" type="button" aria-label="Next screenshot">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
           </div>
         </article>
       </div>
@@ -211,5 +304,6 @@
   </footer>
 
   <script src="../assets/js/site.js" defer></script>
+  <script src="../assets/js/shot-carousel.js" defer></script>
 </body>
 </html>

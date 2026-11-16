@@ -10,7 +10,7 @@ The official DumpsterWare site — one workshop, three kinds of work.
 | `/home/` | **Company** — the studio, house rules, contact |
 | `/games/` | **Games** — life-sim sandboxes with no finish line |
 | `/games/red-sands/` | **Red Sands** — the working-title game, in depth |
-| `/apps/` | **Apps** — family apps such as Are We There Yet |
+| `/apps/` | **Apps** — small, practical apps such as Are We There Yet |
 | `/tools/` | **Tools** — field tools such as EMT Bender Buddy |
 | `/devlog/` | **Devlog** — notes from the workshop |
 | `/software/` | Redirects to `/home/` (old combined page) |
@@ -145,9 +145,9 @@ a living, and keep playing. The first project, working title
 
 ### Apps
 
-Family apps for the road and the kitchen table.
+Small, practical apps for real life.
 
-- **Are We There Yet** — a family road-trip app, in development.
+- **Are We There Yet** — a road-trip app, in development.
 
 ### Tools
 
